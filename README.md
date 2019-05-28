@@ -1,6 +1,6 @@
 # NeuralNetwork.Visualizer
 Easy neural network visualizer winform control for .Net
-This is the new version of ![NeuralNetworkVisualizer](https://github.com/sebastiantramontana/NeuralNetworkVisualizer)
+This is the new version of [NeuralNetworkVisualizer](https://github.com/sebastiantramontana/NeuralNetworkVisualizer)
 
 ## Screenshots
 ### Normal without layers titles
@@ -22,14 +22,14 @@ In the following screenshot: Input nodes (dark green), edges connectors (orange)
 ## Example
 
 ```C#
-			/**************** Using... **********************/
-			using NeuralNetwork.Model;
-			using NeuralNetwork.Model.Layers;
-			using NeuralNetwork.Model.Nodes;
-			using NeuralNetwork.Visualizer.Preferences.Brushes;
-			using NeuralNetwork.Visualizer.Preferences.Formatting;
-			using NeuralNetwork.Visualizer.Preferences.Text;
-			using NeuralNetwork.Visualizer.Selection;
+	    /**************** Using... **********************/
+	    using NeuralNetwork.Model;
+	    using NeuralNetwork.Model.Layers;
+	    using NeuralNetwork.Model.Nodes;
+	    using NeuralNetwork.Visualizer.Preferences.Brushes;
+	    using NeuralNetwork.Visualizer.Preferences.Formatting;
+	    using NeuralNetwork.Visualizer.Preferences.Text;
+	    using NeuralNetwork.Visualizer.Selection;
 
             /******** Configure Some Preferences: ********/
             
@@ -127,10 +127,6 @@ In the following screenshot: Input nodes (dark green), edges connectors (orange)
             NeuralNetworkVisualizerControl1.InputLayer = _input; //Automatic rendering
             //NeuralNetworkVisualizerControl1.InputLayer = null; //Leave blank when needed
             
-            
-            
-            
-            
             /*************** Make NN Elements Selectable *****************/
             //The selectable elements are: Layers, Nodes (all types) and Edge connectors.
             // Do a single click for single selection.
@@ -148,14 +144,14 @@ In the following screenshot: Input nodes (dark green), edges connectors (orange)
             NeuralNetworkVisualizerControl1.SelectNeuronLayer += NeuralNetworkVisualizerControl1_SelectNeuronLayer;
             
             private void NeuralNetworkVisualizerControl1_SelectNeuronLayer(object sender, SelectionEventArgs<NeuronLayer> e)
-			{
-			   //...
-			}
+	    {
+	        //...
+	    }
 
-			private void NeuralNetworkVisualizerControl1_SelectNeuron(object sender, SelectionEventArgs<Neuron> e)
-			{
-				//...
-			}
+	    private void NeuralNetworkVisualizerControl1_SelectNeuron(object sender, SelectionEventArgs<Neuron> e)
+	    {
+		//...
+	    }
 
             private void NeuralNetworkVisualizerControl1_SelectInputLayer(object sender, SelectionEventArgs<InputLayer> e)
             {
