@@ -1,6 +1,6 @@
-﻿using NeuralNetworkVisualizer.Drawing.Canvas;
+﻿using NeuralNetwork.Visualizer.Drawing.Canvas;
 
-namespace NeuralNetworkVisualizer.Drawing
+namespace NeuralNetwork.Visualizer.Drawing
 {
     internal interface IDrawing
     {

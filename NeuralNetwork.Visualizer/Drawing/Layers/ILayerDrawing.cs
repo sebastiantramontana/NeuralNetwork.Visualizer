@@ -1,7 +1,7 @@
-﻿using NeuralNetworkVisualizer.Drawing.Nodes;
+﻿using NeuralNetwork.Visualizer.Drawing.Nodes;
 using System.Collections.Generic;
 
-namespace NeuralNetworkVisualizer.Drawing.Layers
+namespace NeuralNetwork.Visualizer.Drawing.Layers
 {
     internal interface ILayerDrawing : IDrawing
     {

@@ -1,16 +1,16 @@
 ﻿using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetworkVisualizer.Drawing.Cache;
-using NeuralNetworkVisualizer.Drawing.Canvas;
-using NeuralNetworkVisualizer.Drawing.Nodes;
-using NeuralNetworkVisualizer.Preferences;
-using NeuralNetworkVisualizer.Preferences.Brushes;
-using NeuralNetworkVisualizer.Selection;
+using NeuralNetwork.Visualizer.Drawing.Cache;
+using NeuralNetwork.Visualizer.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Drawing.Nodes;
+using NeuralNetwork.Visualizer.Preferences;
+using NeuralNetwork.Visualizer.Preferences.Brushes;
+using NeuralNetwork.Visualizer.Selection;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace NeuralNetworkVisualizer.Drawing.Layers
+namespace NeuralNetwork.Visualizer.Drawing.Layers
 {
     internal abstract class LayerBaseDrawing<TLayer, TNode> : DrawingBase<TLayer>, ILayerDrawing
         where TLayer : LayerBase<TNode>

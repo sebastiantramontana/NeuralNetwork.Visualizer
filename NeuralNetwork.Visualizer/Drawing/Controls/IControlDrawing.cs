@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Threading.Tasks;
 
-namespace NeuralNetworkVisualizer.Drawing.Controls
+namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
     internal interface IControlDrawing
     {

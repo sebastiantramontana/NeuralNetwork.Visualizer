@@ -1,9 +1,9 @@
-﻿using NeuralNetworkVisualizer.Preferences.Formatting;
-using NeuralNetworkVisualizer.Preferences.Text;
+﻿using NeuralNetwork.Visualizer.Preferences.Formatting;
+using NeuralNetwork.Visualizer.Preferences.Text;
 
-namespace NeuralNetworkVisualizer.Preferences
+namespace NeuralNetwork.Visualizer.Preferences
 {
-    public class PerceptronPreference : NodePreference
+    public class NeuronPreference : NodePreference
     {
         private IFormatter<TextPreference> _sumValueFormatter;
         public IFormatter<TextPreference> SumValueFormatter

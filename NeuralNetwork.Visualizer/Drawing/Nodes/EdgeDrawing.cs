@@ -1,13 +1,13 @@
 ﻿using NeuralNetwork.Model.Nodes;
-using NeuralNetworkVisualizer.Drawing.Cache;
-using NeuralNetworkVisualizer.Drawing.Canvas;
-using NeuralNetworkVisualizer.Preferences;
-using NeuralNetworkVisualizer.Selection;
+using NeuralNetwork.Visualizer.Drawing.Cache;
+using NeuralNetwork.Visualizer.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Preferences;
+using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace NeuralNetworkVisualizer.Drawing.Nodes
+namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
     internal class EdgeDrawing : DrawingBase<Edge>
     {

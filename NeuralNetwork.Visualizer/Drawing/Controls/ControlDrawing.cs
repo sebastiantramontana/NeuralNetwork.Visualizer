@@ -1,17 +1,17 @@
 ﻿using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetworkVisualizer.Drawing.Cache;
-using NeuralNetworkVisualizer.Drawing.Canvas;
-using NeuralNetworkVisualizer.Drawing.Layers;
-using NeuralNetworkVisualizer.Drawing.Nodes;
-using NeuralNetworkVisualizer.Selection;
+using NeuralNetwork.Visualizer.Drawing.Cache;
+using NeuralNetwork.Visualizer.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Drawing.Layers;
+using NeuralNetwork.Visualizer.Drawing.Nodes;
+using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NeuralNetworkVisualizer.Drawing.Controls
+namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
     internal class ControlDrawing : IControlDrawing
     {
@@ -127,7 +127,7 @@ namespace NeuralNetworkVisualizer.Drawing.Controls
 
             LayerSizesPreCalc layersCache = new LayerSizesPreCalc(layersDrawingSize, inputLayer.GetMaxNodeCountInLayer(), preferences);
             SimpleNodeSizesPreCalc simpleNodesCache = new SimpleNodeSizesPreCalc();
-            PerceptronSizesPreCalc perceptronCache = new PerceptronSizesPreCalc(preferences);
+            NeuronSizesPreCalc neuronCache = new NeuronSizesPreCalc(preferences);
             EdgeSizesPreCalc edgesCache = new EdgeSizesPreCalc();
 
             for (LayerBase layer = inputLayer; layer != null; layer = layer.Next)
@@ -140,7 +140,7 @@ namespace NeuralNetworkVisualizer.Drawing.Controls
                 }
                 else
                 {
-                    layerDrawing = new PerceptronLayerDrawing(layer as PerceptronLayer, previousNodesDic, graphCanvas, preferences, layersCache, perceptronCache, simpleNodesCache, edgesCache, _selectionChecker, _selectableElementRegister);
+                    layerDrawing = new NeuronLayerDrawing(layer as NeuronLayer, previousNodesDic, graphCanvas, preferences, layersCache, neuronCache, simpleNodesCache, edgesCache, _selectionChecker, _selectableElementRegister);
                 }
 
                 var canvasRect = new Rectangle(x, 0, layersDrawingSize.Width, layersDrawingSize.Height);

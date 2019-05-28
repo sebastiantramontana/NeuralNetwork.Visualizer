@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Preferences.Pens
+namespace NeuralNetwork.Visualizer.Preferences.Pens
 {
     public interface IPen : IDisposable
     {

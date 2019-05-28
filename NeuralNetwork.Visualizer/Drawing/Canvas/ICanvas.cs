@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Drawing.Canvas
+namespace NeuralNetwork.Visualizer.Drawing.Canvas
 {
     internal interface ICanvas
     {

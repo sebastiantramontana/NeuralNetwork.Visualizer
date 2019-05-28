@@ -1,9 +1,9 @@
-﻿using NeuralNetworkVisualizer.Preferences.Brushes;
-using NeuralNetworkVisualizer.Preferences.Pens;
+﻿using NeuralNetwork.Visualizer.Preferences.Brushes;
+using NeuralNetwork.Visualizer.Preferences.Pens;
 using System;
 using Draw = System.Drawing;
 
-namespace NeuralNetworkVisualizer.Preferences
+namespace NeuralNetwork.Visualizer.Preferences
 {
     public class LayerPreference : IDisposable
     {

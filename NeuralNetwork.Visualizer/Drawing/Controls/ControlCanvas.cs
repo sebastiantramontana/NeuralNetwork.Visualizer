@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
 
-namespace NeuralNetworkVisualizer.Drawing.Controls
+namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
     internal class ControlCanvas : IControlCanvas
     {

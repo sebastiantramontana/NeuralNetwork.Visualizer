@@ -1,9 +1,9 @@
-﻿using NeuralNetworkVisualizer.Drawing.Controls;
+﻿using NeuralNetwork.Visualizer.Drawing.Controls;
 using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetworkVisualizer.Preferences;
-using NeuralNetworkVisualizer.Selection;
+using NeuralNetwork.Visualizer.Preferences;
+using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NeuralNetworkVisualizer
+namespace NeuralNetwork.Visualizer
 {
     public partial class NeuralNetworkVisualizerControl : UserControl
     {
@@ -23,10 +23,10 @@ namespace NeuralNetworkVisualizer
         private readonly IToolTipFiring _toolTipFiring;
 
         public event EventHandler<SelectionEventArgs<InputLayer>> SelectInputLayer;
-        public event EventHandler<SelectionEventArgs<PerceptronLayer>> SelectPerceptronLayer;
+        public event EventHandler<SelectionEventArgs<NeuronLayer>> SelectNeuronLayer;
         public event EventHandler<SelectionEventArgs<Bias>> SelectBias;
         public event EventHandler<SelectionEventArgs<Input>> SelectInput;
-        public event EventHandler<SelectionEventArgs<Perceptron>> SelectPerceptron;
+        public event EventHandler<SelectionEventArgs<Neuron>> SelectNeuron;
         public event EventHandler<SelectionEventArgs<Edge>> SelectEdge;
 
         public NeuralNetworkVisualizerControl()
@@ -40,10 +40,10 @@ namespace NeuralNetworkVisualizer
             _toolTipFiring = new ToolTipFiring(this, picCanvas, selectableElementRegisterResolver);
             _selectionEventFiring = new SelectionEventFiring(this, _selector,
                                        () => this.SelectInputLayer,
-                                       () => this.SelectPerceptronLayer,
+                                       () => this.SelectNeuronLayer,
                                        () => this.SelectBias,
                                        () => this.SelectInput,
-                                       () => this.SelectPerceptron,
+                                       () => this.SelectNeuron,
                                        () => this.SelectEdge);
 
             Control.CheckForIllegalCrossThreadCalls = true;

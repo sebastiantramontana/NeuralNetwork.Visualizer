@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace NeuralNetworkVisualizer.Selection
+namespace NeuralNetwork.Visualizer.Selection
 {
     internal class ElementSelector : IElementSelector
     {

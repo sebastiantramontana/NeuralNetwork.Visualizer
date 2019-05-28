@@ -1,17 +1,17 @@
 ﻿using NeuralNetwork.Model;
-using NeuralNetworkVisualizer.Selection;
+using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using SelectBias = System.Func<System.EventHandler<NeuralNetworkVisualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Bias>>>;
-using SelectEdge = System.Func<System.EventHandler<NeuralNetworkVisualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Edge>>>;
-using SelectInput = System.Func<System.EventHandler<NeuralNetworkVisualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Input>>>;
-using SelectInputLayer = System.Func<System.EventHandler<NeuralNetworkVisualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Layers.InputLayer>>>;
-using SelectPerceptron = System.Func<System.EventHandler<NeuralNetworkVisualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Perceptron>>>;
-using SelectPerceptronLayer = System.Func<System.EventHandler<NeuralNetworkVisualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Layers.PerceptronLayer>>>;
+using SelectBias = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Bias>>>;
+using SelectEdge = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Edge>>>;
+using SelectInput = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Input>>>;
+using SelectInputLayer = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Layers.InputLayer>>>;
+using SelectNeuron = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Neuron>>>;
+using SelectNeuronLayer = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Layers.NeuronLayer>>>;
 
 
-namespace NeuralNetworkVisualizer.Drawing.Controls
+namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
     internal class SelectionEventFiring : ISelectionEventFiring
     {
@@ -19,28 +19,28 @@ namespace NeuralNetworkVisualizer.Drawing.Controls
         private readonly IElementSelector _selector;
 
         private readonly SelectInputLayer _selectInputLayer;
-        private readonly SelectPerceptronLayer _selectPerceptronLayer;
+        private readonly SelectNeuronLayer _selectNeuronLayer;
         private readonly SelectBias _selectBias;
         private readonly SelectInput _selectInput;
-        private readonly SelectPerceptron _selectPerceptron;
+        private readonly SelectNeuron _selectNeuron;
         private readonly SelectEdge _selectEdge;
 
         internal SelectionEventFiring(NeuralNetworkVisualizerControl control, IElementSelector selector,
             SelectInputLayer selectInputLayer,
-            SelectPerceptronLayer selectPerceptronLayer,
+            SelectNeuronLayer selectNeuronLayer,
             SelectBias selectBias,
             SelectInput selectInput,
-            SelectPerceptron selectPerceptron,
+            SelectNeuron selectNeuron,
             SelectEdge selectEdge)
         {
             _control = control;
             _selector = selector;
 
             _selectInputLayer = selectInputLayer;
-            _selectPerceptronLayer = selectPerceptronLayer;
+            this._selectNeuronLayer = selectNeuronLayer;
             _selectBias = selectBias;
             _selectInput = selectInput;
-            _selectPerceptron = selectPerceptron;
+            _selectNeuron = selectNeuron;
             _selectEdge = selectEdge;
         }
 
@@ -84,7 +84,7 @@ namespace NeuralNetworkVisualizer.Drawing.Controls
             if (FireSelectionEvent(element, isSelected, _selectInputLayer))
                 return;
 
-            if (FireSelectionEvent(element, isSelected, _selectPerceptronLayer))
+            if (FireSelectionEvent(element, isSelected, _selectNeuronLayer))
                 return;
 
             if (FireSelectionEvent(element, isSelected, _selectBias))
@@ -93,7 +93,7 @@ namespace NeuralNetworkVisualizer.Drawing.Controls
             if (FireSelectionEvent(element, isSelected, _selectInput))
                 return;
 
-            if (FireSelectionEvent(element, isSelected, _selectPerceptron))
+            if (FireSelectionEvent(element, isSelected, _selectNeuron))
                 return;
 
             if (FireSelectionEvent(element, isSelected, _selectEdge))

@@ -1,11 +1,11 @@
 ﻿using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetworkVisualizer.Drawing.Cache;
-using NeuralNetworkVisualizer.Drawing.Nodes;
-using NeuralNetworkVisualizer.Preferences;
-using NeuralNetworkVisualizer.Selection;
+using NeuralNetwork.Visualizer.Drawing.Cache;
+using NeuralNetwork.Visualizer.Drawing.Nodes;
+using NeuralNetwork.Visualizer.Preferences;
+using NeuralNetwork.Visualizer.Selection;
 
-namespace NeuralNetworkVisualizer.Drawing.Layers
+namespace NeuralNetwork.Visualizer.Drawing.Layers
 {
     internal class InputLayerDrawing : LayerBaseDrawing<InputLayer, Input>
     {

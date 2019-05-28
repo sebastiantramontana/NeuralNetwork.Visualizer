@@ -1,4 +1,4 @@
-﻿namespace NeuralNetworkVisualizer
+﻿namespace NeuralNetwork.Visualizer
 {
     partial class NeuralNetworkVisualizerControl
     {

@@ -1,8 +1,8 @@
-﻿using NeuralNetworkVisualizer.Drawing.Canvas;
+﻿using NeuralNetwork.Visualizer.Drawing.Canvas;
 using NeuralNetwork.Model;
 using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Selection
+namespace NeuralNetwork.Visualizer.Selection
 {
     internal interface ISelectionResolver
     {

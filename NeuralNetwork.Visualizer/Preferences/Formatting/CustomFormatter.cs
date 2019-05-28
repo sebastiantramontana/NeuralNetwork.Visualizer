@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NeuralNetworkVisualizer.Preferences.Formatting
+namespace NeuralNetwork.Visualizer.Preferences.Formatting
 {
     /// <summary>
     /// Build a NEW custom formatter by passed value.

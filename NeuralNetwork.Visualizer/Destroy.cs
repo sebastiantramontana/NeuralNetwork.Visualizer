@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NeuralNetworkVisualizer
+namespace NeuralNetwork.Visualizer
 {
     internal static class Destroy
     {

@@ -1,10 +1,10 @@
-﻿using NeuralNetworkVisualizer.Preferences.Brushes;
-using NeuralNetworkVisualizer.Preferences.Pens;
-using NeuralNetworkVisualizer.Preferences.Text;
+﻿using NeuralNetwork.Visualizer.Preferences.Brushes;
+using NeuralNetwork.Visualizer.Preferences.Pens;
+using NeuralNetwork.Visualizer.Preferences.Text;
 using System;
 using Draw = System.Drawing;
 
-namespace NeuralNetworkVisualizer.Preferences
+namespace NeuralNetwork.Visualizer.Preferences
 {
     public class Preference : IDisposable
     {
@@ -18,7 +18,7 @@ namespace NeuralNetworkVisualizer.Preferences
         };
 
         private NodePreference _inputs;
-        private PerceptronPreference _perceptrons;
+        private NeuronPreference _neurons;
         private NodePreference _biases;
         private EdgePreference _edges;
 
@@ -40,16 +40,16 @@ namespace NeuralNetworkVisualizer.Preferences
             set => _inputs = value;
         }
 
-        public PerceptronPreference Perceptrons
+        public NeuronPreference Neurons
         {
-            get => _perceptrons ?? (_perceptrons = new PerceptronPreference
+            get => _neurons ?? (_neurons = new NeuronPreference
             {
                 Background = new SolidBrushPreference(Draw.Color.Azure),
                 BackgroundSelected = new SolidBrushPreference(Draw.Color.LightSteelBlue),
                 Border = new SimplePen(new Draw.Pen(Draw.Color.LightBlue, 3f)),
                 BorderSelected = new SimplePen(new Draw.Pen(Draw.Color.DeepSkyBlue, 3f))
             });
-            set => _perceptrons = value;
+            set => _neurons = value;
         }
 
         public NodePreference Biases
@@ -78,7 +78,7 @@ namespace NeuralNetworkVisualizer.Preferences
         {
             Destroy.Disposable(ref _layers);
             Destroy.Disposable(ref _inputs);
-            Destroy.Disposable(ref _perceptrons);
+            Destroy.Disposable(ref _neurons);
             Destroy.Disposable(ref _biases);
         }
     }

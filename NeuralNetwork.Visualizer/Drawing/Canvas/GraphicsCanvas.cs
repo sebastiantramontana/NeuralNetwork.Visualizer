@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace NeuralNetworkVisualizer.Drawing.Canvas
+namespace NeuralNetwork.Visualizer.Drawing.Canvas
 {
     internal class GraphicsCanvas : ICanvas
     {

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Drawing
+namespace NeuralNetwork.Visualizer.Drawing
 {
     internal class FontInfo
     {

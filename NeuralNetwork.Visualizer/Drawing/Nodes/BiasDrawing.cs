@@ -1,9 +1,9 @@
 ﻿using NeuralNetwork.Model.Nodes;
-using NeuralNetworkVisualizer.Drawing.Cache;
-using NeuralNetworkVisualizer.Preferences;
-using NeuralNetworkVisualizer.Selection;
+using NeuralNetwork.Visualizer.Drawing.Cache;
+using NeuralNetwork.Visualizer.Preferences;
+using NeuralNetwork.Visualizer.Selection;
 
-namespace NeuralNetworkVisualizer.Drawing.Nodes
+namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
     internal class BiasDrawing : SimpleNodeDrawing<Bias>
     {

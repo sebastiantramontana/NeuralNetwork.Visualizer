@@ -1,26 +1,26 @@
 ﻿using NeuralNetwork.Model;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetworkVisualizer.Drawing.Cache;
-using NeuralNetworkVisualizer.Drawing.Canvas;
-using NeuralNetworkVisualizer.Preferences;
-using NeuralNetworkVisualizer.Selection;
+using NeuralNetwork.Visualizer.Drawing.Cache;
+using NeuralNetwork.Visualizer.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Preferences;
+using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Drawing.Nodes
+namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
-    internal class PerceptronDrawing : NodeBaseDrawing<Perceptron>
+    internal class NeuronDrawing : NodeBaseDrawing<Neuron>
     {
         private readonly IDictionary<NodeBase, INodeDrawing> _previousNodes;
         private readonly ICanvas _edgesCanvas;
         private readonly Preference _preferences;
-        private readonly PerceptronSizesPreCalc _cache;
+        private readonly NeuronSizesPreCalc _cache;
         private readonly EdgeSizesPreCalc _edgesCache;
         private readonly IElementSelectionChecker _selectionChecker;
         private readonly ISelectableElementRegister _selectableElementRegister;
 
-        internal PerceptronDrawing(Perceptron element, IDictionary<NodeBase, INodeDrawing> previousNodes, ICanvas edgesCanvas, Preference preferences, PerceptronSizesPreCalc cache, EdgeSizesPreCalc edgesCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(element, preferences.Perceptrons, cache, selectableElementRegister, selectionChecker)
+        internal NeuronDrawing(Neuron element, IDictionary<NodeBase, INodeDrawing> previousNodes, ICanvas edgesCanvas, Preference preferences, NeuronSizesPreCalc cache, EdgeSizesPreCalc edgesCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(element, preferences.Neurons, cache, selectableElementRegister, selectionChecker)
         {
             _previousNodes = previousNodes;
             _edgesCanvas = edgesCanvas;
@@ -35,11 +35,11 @@ namespace NeuralNetworkVisualizer.Drawing.Nodes
         {
             var sizesPositions = GetSizePositions(rect);
 
-            var roundingDigits = _preferences.Perceptrons.RoundingDigits;
+            var roundingDigits = _preferences.Neurons.RoundingDigits;
 
             if (this.Element.SumValue.HasValue)
             {
-                using (var sumFormat = _preferences.Perceptrons.SumValueFormatter.GetFormat(this.Element.SumValue.Value))
+                using (var sumFormat = _preferences.Neurons.SumValueFormatter.GetFormat(this.Element.SumValue.Value))
                 using (var sumBrushFontPreference = sumFormat.Brush.CreateBrush())
                 {
                     canvas.DrawText('\u2211' + " " + Math.Round(this.Element.SumValue.Value, roundingDigits).ToString(), sumFormat.CreateFontInfo(), sizesPositions.SumRectangle, sumBrushFontPreference, sumFormat.Format);
@@ -50,7 +50,7 @@ namespace NeuralNetworkVisualizer.Drawing.Nodes
 
             if (this.Element.OutputValue.HasValue)
             {
-                using (var outputFormat = _preferences.Perceptrons.OutputValueFormatter.GetFormat(this.Element.OutputValue.Value))
+                using (var outputFormat = _preferences.Neurons.OutputValueFormatter.GetFormat(this.Element.OutputValue.Value))
                 using (var outputBrushFontPreference = outputFormat.Brush.CreateBrush())
                 {
 

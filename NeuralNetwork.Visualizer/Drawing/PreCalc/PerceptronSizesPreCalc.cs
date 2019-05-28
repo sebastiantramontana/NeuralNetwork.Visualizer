@@ -1,13 +1,13 @@
-﻿using NeuralNetworkVisualizer.Preferences;
+﻿using NeuralNetwork.Visualizer.Preferences;
 using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Drawing.Cache
+namespace NeuralNetwork.Visualizer.Drawing.Cache
 {
-    internal class PerceptronSizesPreCalc : NodeSizesPreCalc
+    internal class NeuronSizesPreCalc : NodeSizesPreCalc
     {
         private readonly Preference _preferences;
 
-        public PerceptronSizesPreCalc(Preference preferences)
+        public NeuronSizesPreCalc(Preference preferences)
         {
             _preferences = preferences;
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Selection
+namespace NeuralNetwork.Visualizer.Selection
 {
     internal interface IElementSelector : IElementSelectionChecker
     {

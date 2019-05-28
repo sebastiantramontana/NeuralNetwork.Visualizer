@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Drawing.Controls
+namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
     internal interface ISelectionEventFiring
     {

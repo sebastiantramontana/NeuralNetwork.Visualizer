@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Drawing.Canvas
+namespace NeuralNetwork.Visualizer.Drawing.Canvas
 {
     internal class NestedCanvas : ICanvas
     {

@@ -1,9 +1,9 @@
-﻿using NeuralNetworkVisualizer.Preferences.Brushes;
-using NeuralNetworkVisualizer.Preferences.Text;
+﻿using NeuralNetwork.Visualizer.Preferences.Brushes;
+using NeuralNetwork.Visualizer.Preferences.Text;
 using System;
 using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Preferences
+namespace NeuralNetwork.Visualizer.Preferences
 {
     public class LayerTitlePreference : IDisposable
     {

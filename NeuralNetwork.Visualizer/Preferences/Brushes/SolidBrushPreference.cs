@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Preferences.Brushes
+namespace NeuralNetwork.Visualizer.Preferences.Brushes
 {
     public class SolidBrushPreference : IBrushPreference
     {

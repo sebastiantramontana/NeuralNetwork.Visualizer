@@ -1,10 +1,10 @@
 ﻿using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetworkVisualizer.Preferences.Brushes;
-using NeuralNetworkVisualizer.Preferences.Formatting;
-using NeuralNetworkVisualizer.Preferences.Text;
-using NeuralNetworkVisualizer.Selection;
+using NeuralNetwork.Visualizer.Preferences.Brushes;
+using NeuralNetwork.Visualizer.Preferences.Formatting;
+using NeuralNetwork.Visualizer.Preferences.Text;
+using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -23,20 +23,20 @@ namespace WindowsFormsApp1
             NeuralNetworkVisualizerControl1.SelectEdge += NeuralNetworkVisualizerControl1_SelectEdge;
             NeuralNetworkVisualizerControl1.SelectInput += NeuralNetworkVisualizerControl1_SelectInput;
             NeuralNetworkVisualizerControl1.SelectInputLayer += NeuralNetworkVisualizerControl1_SelectInputLayer;
-            NeuralNetworkVisualizerControl1.SelectPerceptron += NeuralNetworkVisualizerControl1_SelectPerceptron;
-            NeuralNetworkVisualizerControl1.SelectPerceptronLayer += NeuralNetworkVisualizerControl1_SelectPerceptronLayer;
+            NeuralNetworkVisualizerControl1.SelectNeuron += NeuralNetworkVisualizerControl1_SelectNeuron;
+            NeuralNetworkVisualizerControl1.SelectNeuronLayer += NeuralNetworkVisualizerControl1_SelectNeuronLayer;
         }
 
-        private void NeuralNetworkVisualizerControl1_SelectPerceptronLayer(object sender, SelectionEventArgs<PerceptronLayer> e)
+        private void NeuralNetworkVisualizerControl1_SelectNeuronLayer(object sender, SelectionEventArgs<NeuronLayer> e)
         {
             ShowSelectedElements();
-            ShowLastSelection($"Perceptron Layer: {e.Element.Id}", e.IsSelected);
+            ShowLastSelection($"Neuron Layer: {e.Element.Id}", e.IsSelected);
         }
 
-        private void NeuralNetworkVisualizerControl1_SelectPerceptron(object sender, SelectionEventArgs<Perceptron> e)
+        private void NeuralNetworkVisualizerControl1_SelectNeuron(object sender, SelectionEventArgs<Neuron> e)
         {
             ShowSelectedElements();
-            ShowLastSelection($"Perceptron: {e.Element.Id}", e.IsSelected);
+            ShowLastSelection($"Neuron: {e.Element.Id}", e.IsSelected);
         }
 
         private void NeuralNetworkVisualizerControl1_SelectInputLayer(object sender, SelectionEventArgs<InputLayer> e)
@@ -91,7 +91,7 @@ namespace WindowsFormsApp1
                 () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) }
             );
 
-            NeuralNetworkVisualizerControl1.Preferences.Perceptrons.OutputValueFormatter = new ByValueSignFormatter<TextPreference>(
+            NeuralNetworkVisualizerControl1.Preferences.Neurons.OutputValueFormatter = new ByValueSignFormatter<TextPreference>(
                 () => new TextPreference { Brush = new SolidBrushPreference(Color.Red) },
                 () => new TextPreference { Brush = new SolidBrushPreference(Color.Gray) },
                 () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) },
@@ -134,22 +134,22 @@ namespace WindowsFormsApp1
             //_input.AddNode(new Input("e11") { OutputValue = -11.67656 });
             //_input.AddNode(new Input("e12") { OutputValue = -1.001 });
 
-            var hidden = new PerceptronLayer("Hidden");
+            var hidden = new NeuronLayer("Hidden");
 
-            hidden.AddNode(new Perceptron("o1") { ActivationFunction = ActivationFunction.Tanh, OutputValue = 2.364, SumValue = 2.364 });
-            hidden.AddNode(new Perceptron("o2") { ActivationFunction = ActivationFunction.LeakyRelu, OutputValue = -0.552, SumValue = 55.44 });
-            hidden.AddNode(new Perceptron("o4") { ActivationFunction = ActivationFunction.Relu, OutputValue = 1.324, SumValue = 4.34 });
-            //hidden.AddNode(new Perceptron("o3") { ActivationFunction = ActivationFunction.Linear, OutputValue = 0.0, SumValue = 19.22 });
-            //hidden.AddNode(new Perceptron("o5") { ActivationFunction = ActivationFunction.Sigmoid, OutputValue = -0.12, SumValue = 25.224 });
-            //hidden.AddNode(new Perceptron("o6") { ActivationFunction = ActivationFunction.Tanh, OutputValue = 10.3, SumValue = 1.222 });
+            hidden.AddNode(new Neuron("o1") { ActivationFunction = ActivationFunction.Tanh, OutputValue = 2.364, SumValue = 2.364 });
+            hidden.AddNode(new Neuron("o2") { ActivationFunction = ActivationFunction.LeakyRelu, OutputValue = -0.552, SumValue = 55.44 });
+            hidden.AddNode(new Neuron("o4") { ActivationFunction = ActivationFunction.Relu, OutputValue = 1.324, SumValue = 4.34 });
+            //hidden.AddNode(new Neuron("o3") { ActivationFunction = ActivationFunction.Linear, OutputValue = 0.0, SumValue = 19.22 });
+            //hidden.AddNode(new Neuron("o5") { ActivationFunction = ActivationFunction.Sigmoid, OutputValue = -0.12, SumValue = 25.224 });
+            //hidden.AddNode(new Neuron("o6") { ActivationFunction = ActivationFunction.Tanh, OutputValue = 10.3, SumValue = 1.222 });
 
             _input.Connect(hidden);
 
-            var output = new PerceptronLayer("Output");
-            output.AddNode(new Perceptron("s1") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.567656, SumValue = 0.454 });
-            output.AddNode(new Perceptron("s2") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.176545, SumValue = 0.54 });
-            //output.AddNode(new Perceptron("s3") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.9545, SumValue = 0.133 });
-            //output.AddNode(new Perceptron("s4") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.145, SumValue = 0.88 });
+            var output = new NeuronLayer("Output");
+            output.AddNode(new Neuron("s1") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.567656, SumValue = 0.454 });
+            output.AddNode(new Neuron("s2") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.176545, SumValue = 0.54 });
+            //output.AddNode(new Neuron("s3") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.9545, SumValue = 0.133 });
+            //output.AddNode(new Neuron("s4") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.145, SumValue = 0.88 });
 
             hidden.Connect(output);
 

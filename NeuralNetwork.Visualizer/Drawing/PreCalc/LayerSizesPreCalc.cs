@@ -1,8 +1,8 @@
-﻿using NeuralNetworkVisualizer.Preferences;
+﻿using NeuralNetwork.Visualizer.Preferences;
 using System;
 using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Drawing.Cache
+namespace NeuralNetwork.Visualizer.Drawing.Cache
 {
     internal class LayerSizesPreCalc
     {
@@ -12,9 +12,9 @@ namespace NeuralNetworkVisualizer.Drawing.Cache
             float maxBorder;
 
             using (var inputPen = preferences.Inputs.Border.CreatePen())
-            using (var perceptronPen = preferences.Perceptrons.Border.CreatePen())
+            using (var neuronPen = preferences.Neurons.Border.CreatePen())
             {
-                maxBorder = Math.Max(inputPen.Width, perceptronPen.Width);
+                maxBorder = Math.Max(inputPen.Width, neuronPen.Width);
             }
 
             this.TotalNodesHeight = canvasSize.Height - (preferences.Layers.Title.Height + doubleNodeMargin);

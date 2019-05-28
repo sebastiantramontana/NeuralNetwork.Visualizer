@@ -1,4 +1,4 @@
-﻿namespace NeuralNetworkVisualizer.Selection
+﻿namespace NeuralNetwork.Visualizer.Selection
 {
     internal interface ISelectableElementRegister
     {

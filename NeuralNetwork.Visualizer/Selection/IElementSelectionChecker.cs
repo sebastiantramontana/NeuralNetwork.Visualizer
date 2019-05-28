@@ -1,6 +1,6 @@
 ﻿using NeuralNetwork.Model;
 
-namespace NeuralNetworkVisualizer.Selection
+namespace NeuralNetwork.Visualizer.Selection
 {
     internal interface IElementSelectionChecker
     {

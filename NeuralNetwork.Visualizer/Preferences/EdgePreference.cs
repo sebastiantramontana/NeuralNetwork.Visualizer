@@ -1,10 +1,10 @@
-﻿using NeuralNetworkVisualizer.Preferences.Formatting;
-using NeuralNetworkVisualizer.Preferences.Pens;
-using NeuralNetworkVisualizer.Preferences.Text;
+﻿using NeuralNetwork.Visualizer.Preferences.Formatting;
+using NeuralNetwork.Visualizer.Preferences.Pens;
+using NeuralNetwork.Visualizer.Preferences.Text;
 using System.Drawing;
 using Draw = System.Drawing;
 
-namespace NeuralNetworkVisualizer.Preferences
+namespace NeuralNetwork.Visualizer.Preferences
 {
     public class EdgePreference
     {

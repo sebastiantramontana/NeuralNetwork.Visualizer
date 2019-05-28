@@ -1,7 +1,7 @@
 ﻿using NeuralNetwork.Model;
 using System;
 
-namespace NeuralNetworkVisualizer.Selection
+namespace NeuralNetwork.Visualizer.Selection
 {
     public class SelectionEventArgs<TElement> : EventArgs where TElement : Element
     {

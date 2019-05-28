@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace NeuralNetworkVisualizer.Preferences.Brushes
+namespace NeuralNetwork.Visualizer.Preferences.Brushes
 {
     public class GradientBrushPreference : IBrushPreference
     {

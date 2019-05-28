@@ -1,4 +1,4 @@
-﻿namespace NeuralNetworkVisualizer.Drawing.Cache
+﻿namespace NeuralNetwork.Visualizer.Drawing.Cache
 {
     internal class SimpleNodeSizesPreCalc : NodeSizesPreCalc
     {

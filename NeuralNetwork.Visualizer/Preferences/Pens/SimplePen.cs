@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Preferences.Pens
+namespace NeuralNetwork.Visualizer.Preferences.Pens
 {
     public class SimplePen : IPen
     {

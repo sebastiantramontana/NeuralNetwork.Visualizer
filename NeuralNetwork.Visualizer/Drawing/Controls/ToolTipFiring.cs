@@ -1,14 +1,14 @@
 ﻿using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetworkVisualizer.Selection;
+using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace NeuralNetworkVisualizer.Drawing.Controls
+namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
     internal class ToolTipFiring : IToolTipFiring
     {
@@ -92,18 +92,27 @@ namespace NeuralNetworkVisualizer.Drawing.Controls
         {
             StringBuilder builder = new StringBuilder();
 
-            if (element is InputLayer inputLayer)
-                AddInputLayerText(inputLayer, builder);
-            else if (element is PerceptronLayer perceptronLayer)
-                AddPerceptronLayerText(perceptronLayer, builder);
-            else if (element is Bias bias)
-                AddBiasText(bias, builder);
-            else if (element is Input input)
-                AddInputText(input, builder);
-            else if (element is Perceptron perceptron)
-                AddPerceptronText(perceptron, builder);
-            else if (element is Edge edge)
-                AddEdgeText(edge, builder);
+            switch(element)
+            {
+                case InputLayer inputLayer:
+                    AddInputLayerText(inputLayer, builder);
+                    break;
+                case NeuronLayer neuronLayer:
+                    AddNeuronLayerText(neuronLayer, builder);
+                    break;
+                case Bias bias:
+                    AddBiasText(bias, builder);
+                    break;
+                case Input input:
+                    AddInputText(input, builder);
+                    break;
+                case Neuron neuron:
+                    AddNeuronText(neuron, builder);
+                    break;
+                case Edge edge:
+                    AddEdgeText(edge, builder);
+                    break;
+            }
 
             AddElementText(element, builder);
             return builder.ToString();
@@ -114,7 +123,7 @@ namespace NeuralNetworkVisualizer.Drawing.Controls
             AddLayerText(layer, builder);
         }
 
-        private void AddPerceptronLayerText(PerceptronLayer layer, StringBuilder builder)
+        private void AddNeuronLayerText(NeuronLayer layer, StringBuilder builder)
         {
             AddLayerText(layer, builder);
             builder.AppendLine("Previous layer: " + layer.Previous.Id);
@@ -130,16 +139,16 @@ namespace NeuralNetworkVisualizer.Drawing.Controls
             AddNodeText(input, builder);
         }
 
-        private void AddPerceptronText(Perceptron perceptron, StringBuilder builder)
+        private void AddNeuronText(Neuron neuron, StringBuilder builder)
         {
-            string actFunc = perceptron.ActivationFunction.ToString();
-            string sumValue = perceptron.SumValue?.ToString() ?? "(none)";
-            string edgesCount = perceptron.Edges.Count().ToString();
+            string actFunc = neuron.ActivationFunction.ToString();
+            string sumValue = neuron.SumValue?.ToString() ?? "(none)";
+            string edgesCount = neuron.Edges.Count().ToString();
 
             builder.AppendLine("Activation function: " + actFunc);
             builder.AppendLine("Sum value: " + sumValue);
 
-            AddNodeText(perceptron, builder);
+            AddNodeText(neuron, builder);
 
             builder.AppendLine("Edges: " + edgesCount);
         }

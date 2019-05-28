@@ -35,7 +35,7 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.cboQuality = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.NeuralNetworkVisualizerControl1 = new NeuralNetworkVisualizer.NeuralNetworkVisualizerControl();
+            this.NeuralNetworkVisualizerControl1 = new NeuralNetwork.Visualizer.NeuralNetworkVisualizerControl();
             this.btnChangeValue = new System.Windows.Forms.Button();
             this.chSelectable = new System.Windows.Forms.CheckBox();
             this.txtSelectedElements = new System.Windows.Forms.TextBox();
@@ -220,7 +220,7 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.ComboBox cboQuality;
         private System.Windows.Forms.Label label2;
-        private NeuralNetworkVisualizer.NeuralNetworkVisualizerControl NeuralNetworkVisualizerControl1;
+        private NeuralNetwork.Visualizer.NeuralNetworkVisualizerControl NeuralNetworkVisualizerControl1;
         private System.Windows.Forms.Button btnChangeValue;
         private System.Windows.Forms.CheckBox chSelectable;
         private System.Windows.Forms.TextBox txtSelectedElements;

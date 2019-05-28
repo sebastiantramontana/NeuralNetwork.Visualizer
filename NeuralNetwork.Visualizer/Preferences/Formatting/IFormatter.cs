@@ -1,4 +1,4 @@
-﻿namespace NeuralNetworkVisualizer.Preferences.Formatting
+﻿namespace NeuralNetwork.Visualizer.Preferences.Formatting
 {
     public interface IFormatter<T>
     {

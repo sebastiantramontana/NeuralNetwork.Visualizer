@@ -1,10 +1,10 @@
-﻿using NeuralNetworkVisualizer.Drawing.Canvas;
+﻿using NeuralNetwork.Visualizer.Drawing.Canvas;
 using NeuralNetwork.Model;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace NeuralNetworkVisualizer.Selection
+namespace NeuralNetwork.Visualizer.Selection
 {
     internal class SelectableElementRegister : ISelectableElementRegister, ISelectionResolver
     {

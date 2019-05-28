@@ -1,9 +1,9 @@
-﻿using NeuralNetworkVisualizer.Drawing;
-using NeuralNetworkVisualizer.Preferences.Brushes;
+﻿using NeuralNetwork.Visualizer.Drawing;
+using NeuralNetwork.Visualizer.Preferences.Brushes;
 using System;
 using System.Drawing;
 
-namespace NeuralNetworkVisualizer.Preferences.Text
+namespace NeuralNetwork.Visualizer.Preferences.Text
 {
     public class TextPreference : IDisposable
     {
