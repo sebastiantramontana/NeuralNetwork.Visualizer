@@ -73,14 +73,14 @@
     <Compile Include="Drawing\Canvas\GraphicsCanvas.cs" />
     <Compile Include="Drawing\DrawingBase.cs" />
     <Compile Include="Drawing\FontInfo.cs" />
-    <Compile Include="Drawing\Layers\PerceptronLayerDrawing.cs" />
+    <Compile Include="Drawing\Layers\NeuronLayerDrawing.cs" />
     <Compile Include="Drawing\Layers\InputLayerDrawing.cs" />
     <Compile Include="Drawing\Layers\LayerBaseDrawing.cs" />
     <Compile Include="Drawing\Nodes\BiasDrawing.cs" />
     <Compile Include="Drawing\Nodes\EdgeDrawing.cs" />
     <Compile Include="Drawing\Nodes\InputDrawing.cs" />
     <Compile Include="Drawing\Nodes\NodeBaseDrawing.cs" />
-    <Compile Include="Drawing\Nodes\PerceptronDrawing.cs" />
+    <Compile Include="Drawing\Nodes\NeuronDrawing.cs" />
     <Compile Include="Drawing\Nodes\SimpleNodeDrawing.cs" />
     <Compile Include="Drawing\RenderQuality.cs" />
     <Compile Include="NeuralNetworkVisualizerControl.cs">
