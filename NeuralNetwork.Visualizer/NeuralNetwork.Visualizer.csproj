@@ -61,6 +61,7 @@
     <Compile Include="Drawing\Controls\IToolTipFiring.cs" />
     <Compile Include="Drawing\Controls\SelectionEventFiring.cs" />
     <Compile Include="Drawing\Controls\ToolTipFiring.cs" />
+    <Compile Include="Drawing\AutoRedrawMode.cs" />
     <Compile Include="Drawing\IDrawing.cs" />
     <Compile Include="Drawing\Layers\ILayerDrawing.cs" />
     <Compile Include="Drawing\PreCalc\EdgeSizesPreCalc.cs" />

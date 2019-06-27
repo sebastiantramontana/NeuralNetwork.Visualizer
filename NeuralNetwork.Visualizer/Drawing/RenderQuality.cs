@@ -1,6 +1,9 @@
-﻿public enum RenderQuality
+﻿namespace NeuralNetwork.Visualizer.Drawing
 {
-    Low,
-    Medium,
-    High
+   public enum RenderQuality
+   {
+      Low,
+      Medium,
+      High
+   }
 }

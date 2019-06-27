@@ -65,7 +65,6 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
             Bitmap bmp = new Bitmap(_pictureBox.ClientSize.Width, _pictureBox.ClientSize.Height);
             Graphics graph = Graphics.FromImage(bmp);
 
-            //graph.Clear(_pictureBox.Parent.BackColor);
             SetQuality(graph);
 
             return (graph, bmp);
@@ -83,7 +82,6 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
 
         private void PrepareToDrawing()
         {
-            //DestroyImageCanvas();
             ResizeCanvas();
         }
 
