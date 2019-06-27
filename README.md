@@ -174,5 +174,25 @@ In the following screenshot: Input nodes (dark green), edges connectors (orange)
             {
                 //...
             }
+	    
+	    private async void AddHiddenBias()
+	    {
+		 NeuralNetworkVisualizerControl1.SuspendAutoRedraw(); //Suspend temporarily the auto redraw mode when will there are many changes on model to avoid redraw overhead!
+
+		 var newbias = new Bias("HiddenBias") { OutputValue = 0.777 };
+		 _input.Next.Bias = newbias;
+
+		 var outputs = _input.Next.Next.Nodes;
+		 var edges = outputs.SelectMany(o => o.Edges.Where(e => e.Source == newbias));
+
+		 double weight = 1.99;
+		 foreach (var edge in edges)
+		 {
+		    edge.Weight = weight;
+		    weight++;
+		 }
+
+		 await NeuralNetworkVisualizerControl1.ResumeAutoRedraw(); //resume auto redraw for model changes take effect
+	    }
             
             
