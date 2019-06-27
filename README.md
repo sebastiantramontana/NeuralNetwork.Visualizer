@@ -34,7 +34,8 @@ In the following screenshot: Input nodes (dark green), edges connectors (orange)
 
             /******** Configure Some Preferences: ********/
             
-            //Drawing resize behavior
+            //Drawing behavior
+	    NeuralNetworkVisualizerControl1.Preferences.AutoRedrawMode = AutoRedrawMode.AutoRedrawAsync; //set the auto redraw mode: none, sync or async.
             NeuralNetworkVisualizerControl1.Preferences.AsyncRedrawOnResize = false; //default is true
             
             //Font, Colors, etc.
