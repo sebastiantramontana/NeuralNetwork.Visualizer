@@ -12,116 +12,123 @@ using System.Linq;
 
 namespace NeuralNetwork.Visualizer.Drawing.Layers
 {
-    internal abstract class LayerBaseDrawing<TLayer, TNode> : DrawingBase<TLayer>, ILayerDrawing
+   internal abstract class LayerBaseDrawing<TLayer, TNode> : DrawingBase<TLayer>, ILayerDrawing
         where TLayer : LayerBase<TNode>
         where TNode : NodeBase
-    {
-        private readonly Preference _preferences;
-        private readonly LayerSizesPreCalc _cache;
-        private readonly SimpleNodeSizesPreCalc _biasCache;
-        private readonly IElementSelectionChecker _selectionChecker;
-        private readonly ISelectableElementRegister _selectableElementRegister;
-        private readonly IList<INodeDrawing> _nodesDrawing;
+   {
+      private readonly Preference _preferences;
+      private readonly LayerSizesPreCalc _cache;
+      private readonly SimpleNodeSizesPreCalc _biasCache;
+      private readonly IElementSelectionChecker _selectionChecker;
+      private readonly ISelectableElementRegister _selectableElementRegister;
+      private readonly IList<INodeDrawing> _nodesDrawing;
 
-        internal LayerBaseDrawing(TLayer layer, Preference preferences, LayerSizesPreCalc cache, SimpleNodeSizesPreCalc biasCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(layer)
-        {
-            _preferences = preferences;
-            _cache = cache;
-            _biasCache = biasCache;
-            _selectionChecker = selectionChecker;
-            _selectableElementRegister = selectableElementRegister;
-            _nodesDrawing = new List<INodeDrawing>(layer.GetAllNodes().Count());
-        }
+      internal LayerBaseDrawing(TLayer layer, Preference preferences, LayerSizesPreCalc cache, SimpleNodeSizesPreCalc biasCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(layer)
+      {
+         _preferences = preferences;
+         _cache = cache;
+         _biasCache = biasCache;
+         _selectionChecker = selectionChecker;
+         _selectableElementRegister = selectableElementRegister;
+         _nodesDrawing = new List<INodeDrawing>(layer.GetAllNodes().Count());
+      }
 
-        public IEnumerable<INodeDrawing> NodesDrawing { get { return _nodesDrawing; } }
+      public IEnumerable<INodeDrawing> NodesDrawing { get { return _nodesDrawing; } }
 
-        public override void Draw(ICanvas canvas)
-        {
-            var rect = new Rectangle(0, 0, canvas.MaxWidth, canvas.MaxHeight);
-            _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Region(rect), 1));
+      public override void Draw(ICanvas canvas)
+      {
+         var rect = new Rectangle(0, 0, canvas.MaxWidth, canvas.MaxHeight);
+         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Region(rect), 1));
 
-            var isSelected = _selectionChecker.IsSelected(this.Element);
+         var isSelected = _selectionChecker.IsSelected(this.Element);
 
-            using (var brush = GetBrush(isSelected))
-            using (var pen = GetPen(isSelected))
-            {
-                canvas.DrawRectangle(rect, pen, brush);
-            }
+         using (var brush = GetBrush(isSelected, rect))
+         using (var pen = GetPen(isSelected))
+         {
+            canvas.DrawRectangle(rect, pen, brush);
+         }
 
-            DrawTitle(canvas);
-            DrawNodes(canvas);
-        }
+         DrawTitle(canvas);
+         DrawNodes(canvas);
+      }
 
-        private Pen GetPen(bool isSelected)
-        {
-            return (isSelected)
-                ? _preferences.Layers.BorderSelected.CreatePen()
-                : _preferences.Layers.Border.CreatePen();
-        }
+      private Pen GetPen(bool isSelected)
+      {
+         return (isSelected)
+             ? _preferences.Layers.BorderSelected.CreatePen()
+             : _preferences.Layers.Border.CreatePen();
+      }
 
-        private Brush GetBrush(bool isSelected)
-        {
-            return (isSelected)
-                ? _preferences.Layers.BackgroundSelected.CreateBrush()
-                : _preferences.Layers.Background.CreateBrush();
-        }
+      private Brush GetBrush(bool isSelected, Rectangle gradientRectangle)
+      {
+         var brush = (isSelected)
+             ? _preferences.Layers.BackgroundSelected
+             : _preferences.Layers.Background;
 
-        private void DrawNodes(ICanvas canvas)
-        {
-            int y = _cache.StartingY + (_cache.TotalNodesHeight - _cache.NodeHeight * this.Element.GetAllNodes().Count()) / 2;
+         if(brush is GradientBrushPreference gradientBrush)
+         {
+            gradientBrush.Rectangle = gradientRectangle;
+         }
 
-            if (this.Element.Bias != null)
-            {
-                var biasDrawing = new BiasDrawing(this.Element.Bias, _preferences, _biasCache, _selectableElementRegister, _selectionChecker);
-                InternalDrawNode(biasDrawing);
-            }
+         return brush.CreateBrush();
+      }
 
-            foreach (var node in this.Element.Nodes)
-            {
-                var nodeDrawing = CreateDrawingNode(node);
-                InternalDrawNode(nodeDrawing);
-            }
+      private void DrawNodes(ICanvas canvas)
+      {
+         int y = _cache.StartingY + (_cache.TotalNodesHeight - _cache.NodeHeight * this.Element.GetAllNodes().Count()) / 2;
 
-            void InternalDrawNode(INodeDrawing nodeDrawing)
-            {
-                _nodesDrawing.Add(nodeDrawing);
+         if (this.Element.Bias != null)
+         {
+            var biasDrawing = new BiasDrawing(this.Element.Bias, _preferences, _biasCache, _selectableElementRegister, _selectionChecker);
+            InternalDrawNode(biasDrawing);
+         }
 
-                DrawNode(nodeDrawing, canvas, y);
-                y += _cache.NodeHeight;
-            }
-        }
+         foreach (var node in this.Element.Nodes)
+         {
+            var nodeDrawing = CreateDrawingNode(node);
+            InternalDrawNode(nodeDrawing);
+         }
 
-        private void DrawNode(INodeDrawing nodeDrawing, ICanvas parentCanvas, int y)
-        {
-            var newCanvas = new NestedCanvas(new Rectangle(_preferences.NodeMargins, y, _cache.NodeWidth, _cache.NodeEllipseHeight), parentCanvas);
-            nodeDrawing.Draw(newCanvas);
-        }
+         void InternalDrawNode(INodeDrawing nodeDrawing)
+         {
+            _nodesDrawing.Add(nodeDrawing);
 
-        private void DrawTitle(ICanvas canvas)
-        {
-            if (_preferences.Layers.Title.Height <= 0)
-            {
-                return;
-            }
+            DrawNode(nodeDrawing, canvas, y);
+            y += _cache.NodeHeight;
+         }
+      }
 
-            var rectTitle = new Rectangle(0, 0, canvas.MaxWidth, _preferences.Layers.Title.Height);
+      private void DrawNode(INodeDrawing nodeDrawing, ICanvas parentCanvas, int y)
+      {
+         var newCanvas = new NestedCanvas(new Rectangle(_preferences.NodeMargins, y, _cache.NodeWidth, _cache.NodeEllipseHeight), parentCanvas);
+         nodeDrawing.Draw(newCanvas);
+      }
 
-            if (_preferences.Layers.Title.Background is GradientBrushPreference backTitle)
-            {
-                backTitle.Rectangle = rectTitle;
-            }
+      private void DrawTitle(ICanvas canvas)
+      {
+         if (_preferences.Layers.Title.Height <= 0)
+         {
+            return;
+         }
 
-            using (var backgroundTitle = _preferences.Layers.Title.Background.CreateBrush())
-            {
-                canvas.DrawRectangle(rectTitle, null, backgroundTitle);
-            }
+         var rectTitle = new Rectangle(0, 0, canvas.MaxWidth, _preferences.Layers.Title.Height);
 
-            using (var brush = _preferences.Layers.Title.Font.Brush.CreateBrush())
-            {
-                canvas.DrawText(this.Element.Id, _preferences.Layers.Title.Font.CreateFontInfo(), rectTitle, brush, _preferences.Layers.Title.Font.Format);
-            }
-        }
+         if (_preferences.Layers.Title.Background is GradientBrushPreference backTitle)
+         {
+            backTitle.Rectangle = rectTitle;
+         }
 
-        protected abstract INodeDrawing CreateDrawingNode(TNode node);
-    }
+         using (var backgroundTitle = _preferences.Layers.Title.Background.CreateBrush())
+         {
+            canvas.DrawRectangle(rectTitle, null, backgroundTitle);
+         }
+
+         using (var brush = _preferences.Layers.Title.Font.Brush.CreateBrush())
+         {
+            canvas.DrawText(this.Element.Id, _preferences.Layers.Title.Font.CreateFontInfo(), rectTitle, brush, _preferences.Layers.Title.Font.Format);
+         }
+      }
+
+      protected abstract INodeDrawing CreateDrawingNode(TNode node);
+   }
 }

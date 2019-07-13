@@ -2,18 +2,18 @@
 
 namespace NeuralNetwork.Visualizer.Preferences.Brushes
 {
-    public class SolidBrushPreference : IBrushPreference
-    {
-        private readonly Color _color;
+   public class SolidBrushPreference : IBrushPreference
+   {
+      public SolidBrushPreference(Color color)
+      {
+         this.Color = color;
+      }
 
-        public SolidBrushPreference(Color color)
-        {
-            this._color = color;
-        }
+      public Color Color { get; }
 
-        public Brush CreateBrush()
-        {
-            return (_color.ToArgb() != Color.Transparent.ToArgb() ? new SolidBrush(_color) : System.Drawing.Brushes.Transparent.Clone() as Brush);
-        }
-    }
+      public Brush CreateBrush()
+      {
+         return (this.Color.ToArgb() != Color.Transparent.ToArgb() ? new SolidBrush(this.Color) : System.Drawing.Brushes.Transparent.Clone() as Brush);
+      }
+   }
 }

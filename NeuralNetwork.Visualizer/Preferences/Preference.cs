@@ -12,7 +12,7 @@ namespace NeuralNetwork.Visualizer.Preferences
       private LayerPreference _layers = new LayerPreference
       {
          Background = new SolidBrushPreference(Draw.Color.White),
-         Title = new LayerTitlePreference() { Background = new GradientBrushPreference(Draw.Color.LightSteelBlue, Draw.Color.LightSkyBlue, 90), Font = new TextPreference { FontStyle = Draw.FontStyle.Bold }, Height = 20 },
+         Title = new LayerTitlePreference() { Background = new GradientBrushPreference(Draw.Color.LightSteelBlue, Draw.Color.LightSkyBlue, 90, Draw.Rectangle.Empty), Font = new TextPreference { FontStyle = Draw.FontStyle.Bold }, Height = 20 },
          Border = new SimplePen(Draw.Pens.Black),
          BorderSelected = new SimplePen(Draw.Pens.Orange),
          BackgroundSelected = new SolidBrushPreference(Draw.Color.WhiteSmoke)
