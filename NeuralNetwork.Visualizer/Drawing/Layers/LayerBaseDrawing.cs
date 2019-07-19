@@ -41,8 +41,8 @@ namespace NeuralNetwork.Visualizer.Drawing.Layers
          _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Region(rect), 1));
 
          var isSelected = _selectionChecker.IsSelected(this.Element);
+         var brush = GetBrush(isSelected);
 
-         using (var brush = GetBrush(isSelected, rect))
          using (var pen = GetPen(isSelected))
          {
             canvas.DrawRectangle(rect, pen, brush);
@@ -59,18 +59,13 @@ namespace NeuralNetwork.Visualizer.Drawing.Layers
              : _preferences.Layers.Border.CreatePen();
       }
 
-      private Brush GetBrush(bool isSelected, Rectangle gradientRectangle)
+      private IBrush GetBrush(bool isSelected)
       {
          var brush = (isSelected)
              ? _preferences.Layers.BackgroundSelected
              : _preferences.Layers.Background;
 
-         if(brush is GradientBrushPreference gradientBrush)
-         {
-            gradientBrush.Rectangle = gradientRectangle;
-         }
-
-         return brush.CreateBrush();
+         return brush;
       }
 
       private void DrawNodes(ICanvas canvas)
@@ -112,21 +107,10 @@ namespace NeuralNetwork.Visualizer.Drawing.Layers
          }
 
          var rectTitle = new Rectangle(0, 0, canvas.MaxWidth, _preferences.Layers.Title.Height);
+         canvas.DrawRectangle(rectTitle, null, _preferences.Layers.Title.Background);
 
-         if (_preferences.Layers.Title.Background is GradientBrushPreference backTitle)
-         {
-            backTitle.Rectangle = rectTitle;
-         }
-
-         using (var backgroundTitle = _preferences.Layers.Title.Background.CreateBrush())
-         {
-            canvas.DrawRectangle(rectTitle, null, backgroundTitle);
-         }
-
-         using (var brush = _preferences.Layers.Title.Font.Brush.CreateBrush())
-         {
-            canvas.DrawText(this.Element.Id, _preferences.Layers.Title.Font.CreateFontInfo(), rectTitle, brush, _preferences.Layers.Title.Font.Format);
-         }
+         var brush = _preferences.Layers.Title.Font.Brush;
+         canvas.DrawText(this.Element.Id, _preferences.Layers.Title.Font.CreateFontInfo(), rectTitle, brush, _preferences.Layers.Title.Font.Format);
       }
 
       protected abstract INodeDrawing CreateDrawingNode(TNode node);

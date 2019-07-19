@@ -2,7 +2,7 @@
 
 namespace NeuralNetwork.Visualizer.Preferences.Brushes
 {
-   public class SolidBrushPreference : IBrushPreference
+   public class SolidBrushPreference : IBrush
    {
       public SolidBrushPreference(Color color)
       {
@@ -11,7 +11,7 @@ namespace NeuralNetwork.Visualizer.Preferences.Brushes
 
       public Color Color { get; }
 
-      public Brush CreateBrush()
+      public Brush CreateBrush(Rectangle rectangle)
       {
          return (this.Color.ToArgb() != Color.Transparent.ToArgb() ? new SolidBrush(this.Color) : System.Drawing.Brushes.Transparent.Clone() as Brush);
       }

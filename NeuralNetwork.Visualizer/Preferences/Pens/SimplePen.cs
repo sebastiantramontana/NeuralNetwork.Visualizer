@@ -2,26 +2,23 @@
 
 namespace NeuralNetwork.Visualizer.Preferences.Pens
 {
-    public class SimplePen : IPen
-    {
-        private readonly Pen _pen;
+   public class SimplePen : IPen
+   {
+      private readonly Pen _pen;
 
-        public SimplePen(Pen pen)
-        {
-            _pen = pen.Clone() as Pen;
-        }
+      public SimplePen(Pen pen)
+      {
+         _pen = pen.Clone() as Pen;
+      }
 
-        public Pen CreatePen()
-        {
-            lock (_pen)
-            {
-                return _pen.Clone() as Pen;
-            }
-        }
+      public Pen CreatePen()
+      {
+         return _pen.Clone() as Pen;
+      }
 
-        public void Dispose()
-        {
-            _pen.Dispose();
-        }
-    }
+      public void Dispose()
+      {
+         _pen.Dispose();
+      }
+   }
 }

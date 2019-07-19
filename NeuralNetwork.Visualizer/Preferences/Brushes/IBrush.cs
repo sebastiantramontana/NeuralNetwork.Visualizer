@@ -2,8 +2,8 @@
 
 namespace NeuralNetwork.Visualizer.Preferences.Brushes
 {
-    public interface IBrushPreference
+    public interface IBrush
     {
-        Brush CreateBrush();
+        Brush CreateBrush(Rectangle rectangle);
     }
 }

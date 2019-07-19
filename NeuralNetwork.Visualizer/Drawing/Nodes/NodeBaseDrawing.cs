@@ -55,18 +55,12 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          bool isSelected = _selectionChecker.IsSelected(this.Element);
 
          using (var pen = GetPen(isSelected))
-         using (var backBrush = GetBrush(isSelected, GetGradientRectangle((int)pen.Width)))
          {
+            var backBrush = GetBrush(isSelected);
             canvas.DrawEllipse(_cache.EllipseRectangle.Value, pen, backBrush);
          }
 
          DrawContent(canvas, _cache.EllipseRectangle.Value);
-      }
-
-      private Rectangle GetGradientRectangle(int borderWidth)
-      {
-         var borders2 = borderWidth * 2;
-         return Rectangle.Inflate(_cache.EllipseRectangle.Value, borders2, borders2);
       }
 
       private void RegisterSelectableNodeEllipse(ICanvas canvas)
@@ -84,18 +78,14 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
              : _preferences.Border.CreatePen();
       }
 
-      private Brush GetBrush(bool isSelected, Rectangle gradientRectangle)
+      //TODO: Repeated. Apply DRY
+      private IBrush GetBrush(bool isSelected)
       {
          var brush = (isSelected)
                 ? _preferences.BackgroundSelected
                 : _preferences.Background;
 
-         if (brush is GradientBrushPreference gradientBrush)
-         {
-            gradientBrush.Rectangle = gradientRectangle;
-         }
-
-         return brush.CreateBrush();
+         return brush;
       }
 
       public NodeBase Node => this.Element;

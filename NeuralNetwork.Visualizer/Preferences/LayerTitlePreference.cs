@@ -14,8 +14,8 @@ namespace NeuralNetwork.Visualizer.Preferences
             set => _font = value;
         }
 
-        private IBrushPreference _background;
-        public IBrushPreference Background
+        private IBrush _background;
+        public IBrush Background
         {
             get => _background ?? (_background = new SolidBrushPreference(Color.Transparent));
             set => _background = value;

@@ -7,8 +7,8 @@ namespace NeuralNetwork.Visualizer.Preferences
 {
     public class LayerPreference : IDisposable
     {
-        private IBrushPreference _background;
-        public IBrushPreference Background
+        private IBrush _background;
+        public IBrush Background
         {
             get => _background ?? (_background = new SolidBrushPreference(Draw.Color.Transparent));
             set => _background = value;
@@ -28,8 +28,8 @@ namespace NeuralNetwork.Visualizer.Preferences
             set => _borderSelected = value;
         }
 
-        private IBrushPreference _backgroundSelected;
-        public IBrushPreference BackgroundSelected
+        private IBrush _backgroundSelected;
+        public IBrush BackgroundSelected
         {
             get => _backgroundSelected ?? (_backgroundSelected = new SolidBrushPreference(Draw.Color.Transparent));
             set => _backgroundSelected = value;

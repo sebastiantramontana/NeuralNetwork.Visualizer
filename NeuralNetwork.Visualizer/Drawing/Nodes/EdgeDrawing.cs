@@ -74,9 +74,8 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          var sizesPositions = GetSizesPositions();
 
          using (var valueFormat = _preferences.ValueFormatter.GetFormat(this.Element.Weight.Value))
-         using (var brush = valueFormat.Brush.CreateBrush())
          {
-            canvas.DrawText(weightValue, valueFormat.CreateFontInfo(), sizesPositions.TextRectangle, brush, valueFormat.Format, sizesPositions.Angle);
+            canvas.DrawText(weightValue, valueFormat.CreateFontInfo(), sizesPositions.TextRectangle, valueFormat.Brush, valueFormat.Format, sizesPositions.Angle);
          }
       }
 

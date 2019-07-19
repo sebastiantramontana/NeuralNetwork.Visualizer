@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeuralNetwork.Visualizer.Preferences.Brushes;
+using System;
 using System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Canvas
@@ -16,7 +17,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Canvas
         public int MaxWidth => _Rect.Width;
         public int MaxHeight => _Rect.Height;
 
-        public void DrawEllipse(Rectangle rect, Pen pen, Brush brush)
+        public void DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
         {
             rect.Offset(_Rect.Location);
             rect.Width = Math.Min(this.MaxWidth, rect.Width);
@@ -33,7 +34,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Canvas
             _Container.DrawLine(p1, p2, pen);
         }
 
-        public void DrawRectangle(Rectangle rect, Pen pen, Brush brush)
+        public void DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
         {
             rect.Offset(_Rect.Location);
             rect.Width = Math.Min(this.MaxWidth, rect.Width);
@@ -42,19 +43,19 @@ namespace NeuralNetwork.Visualizer.Drawing.Canvas
             _Container.DrawRectangle(rect, pen, brush);
         }
 
-        public void DrawText(string text, Font font, Point position, Brush brush, StringFormat format)
+        public void DrawText(string text, Font font, Point position, IBrush brush, StringFormat format)
         {
             position.Offset(_Rect.Location);
             _Container.DrawText(text, font, position, brush, format);
         }
 
-        public void DrawText(string text, FontInfo font, Rectangle rect, Brush brush, StringFormat format)
+        public void DrawText(string text, FontInfo font, Rectangle rect, IBrush brush, StringFormat format)
         {
             rect.Offset(_Rect.Location);
             _Container.DrawText(text, font, rect, brush, format);
         }
 
-        public void DrawText(string text, FontInfo font, Rectangle rect, Brush brush, StringFormat format, float angle)
+        public void DrawText(string text, FontInfo font, Rectangle rect, IBrush brush, StringFormat format, float angle)
         {
             rect.Offset(_Rect.Location);
             _Container.DrawText(text, font, rect, brush, format, angle);

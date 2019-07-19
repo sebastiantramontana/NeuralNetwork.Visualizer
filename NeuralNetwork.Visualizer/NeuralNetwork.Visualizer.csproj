@@ -67,7 +67,7 @@
     <Compile Include="Drawing\PreCalc\EdgeSizesPreCalc.cs" />
     <Compile Include="Drawing\PreCalc\LayerSizesPreCalc.cs" />
     <Compile Include="Drawing\PreCalc\NodeSizesPreCalc.cs" />
-    <Compile Include="Drawing\PreCalc\PerceptronSizesPreCalc.cs" />
+    <Compile Include="Drawing\PreCalc\NeuronSizesPreCalc.cs" />
     <Compile Include="Drawing\PreCalc\SimpleNodeSizesPreCalc.cs" />
     <Compile Include="Drawing\Canvas\ICanvas.cs" />
     <Compile Include="Drawing\Canvas\NestedCanvas.cs" />
@@ -91,7 +91,7 @@
       <DependentUpon>NeuralNetworkVisualizerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Preferences\Brushes\GradientBrushPreference.cs" />
-    <Compile Include="Preferences\Brushes\IBrushPreference.cs" />
+    <Compile Include="Preferences\Brushes\IBrush.cs" />
     <Compile Include="Preferences\Brushes\SolidBrushPreference.cs" />
     <Compile Include="Preferences\Formatting\BasicFormatter.cs" />
     <Compile Include="Preferences\Formatting\ByValueSignFormatter.cs" />
