@@ -61,8 +61,8 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
       private Pen GetPen(bool isSelected)
       {
          return (isSelected)
-             ? _preferences.WhenSelected.CreatePen()
-             : _preferences.Connector.GetFormat(this.Element.Weight);
+             ? _preferences.ConnectorSelectedFormatter.GetFormat(this.Element.Weight)
+             : _preferences.ConnectorFormatter.GetFormat(this.Element.Weight);
       }
 
       private void DrawWeight(ICanvas canvas)
@@ -73,7 +73,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          var weightValue = Math.Round(this.Element.Weight.Value, _preferences.RoundingDigits).ToString();
          var sizesPositions = GetSizesPositions();
 
-         using (var valueFormat = _preferences.ValueFormatter.GetFormat(this.Element.Weight.Value))
+         using (var valueFormat = _preferences.WeightFormatter.GetFormat(this.Element.Weight.Value))
          {
             canvas.DrawText(weightValue, valueFormat.CreateFontInfo(), sizesPositions.TextRectangle, valueFormat.Brush, valueFormat.Format, sizesPositions.Angle);
          }
