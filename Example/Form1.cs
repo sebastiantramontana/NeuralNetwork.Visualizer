@@ -100,14 +100,14 @@ namespace WindowsFormsApp1
              () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) }
          );
 
-         NeuralNetworkVisualizerControl1.Preferences.Edges.ValueFormatter = new ByValueSignFormatter<TextPreference>(
+         NeuralNetworkVisualizerControl1.Preferences.Edges.WeightFormatter = new ByValueSignFormatter<TextPreference>(
              () => new TextPreference { Brush = new SolidBrushPreference(Color.Red) },
              () => new TextPreference { Brush = new SolidBrushPreference(Color.Gray) },
              () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) },
              () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) }
          );
 
-         NeuralNetworkVisualizerControl1.Preferences.Edges.Connector = new CustomFormatter<Pen>((v) => v == 0.0 ? new Pen(Color.LightGray) : new Pen(Color.Black));
+         NeuralNetworkVisualizerControl1.Preferences.Edges.ConnectorFormatter = new CustomFormatter<Pen>((v) => v == 0.0 ? new Pen(Color.LightGray) : new Pen(Color.Black));
 
          //default is true
          NeuralNetworkVisualizerControl1.Preferences.AsyncRedrawOnResize = true;
