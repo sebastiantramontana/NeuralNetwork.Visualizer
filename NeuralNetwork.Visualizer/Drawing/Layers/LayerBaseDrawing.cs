@@ -6,6 +6,7 @@ using NeuralNetwork.Visualizer.Drawing.Nodes;
 using NeuralNetwork.Visualizer.Preferences;
 using NeuralNetwork.Visualizer.Preferences.Brushes;
 using NeuralNetwork.Visualizer.Selection;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -70,7 +71,8 @@ namespace NeuralNetwork.Visualizer.Drawing.Layers
 
       private void DrawNodes(ICanvas canvas)
       {
-         int y = _cache.StartingY + (_cache.TotalNodesHeight - _cache.NodeHeight * this.Element.GetAllNodes().Count()) / 2;
+         int centeredY = _cache.StartingY + (_cache.TotalNodesHeight - _cache.NodeHeight * this.Element.GetAllNodes().Count()) / 2;
+         centeredY = Math.Max(centeredY, _cache.StartingY);
 
          if (this.Element.Bias != null)
          {
@@ -88,8 +90,8 @@ namespace NeuralNetwork.Visualizer.Drawing.Layers
          {
             _nodesDrawing.Add(nodeDrawing);
 
-            DrawNode(nodeDrawing, canvas, y);
-            y += _cache.NodeHeight;
+            DrawNode(nodeDrawing, canvas, centeredY);
+            centeredY += _cache.NodeHeight;
          }
       }
 
