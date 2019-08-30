@@ -20,7 +20,7 @@ namespace NeuralNetwork.Visualizer.Preferences.Text
          }
       }
 
-      private readonly StringFormat defualtFormat = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center, Trimming = StringTrimming.Character };
+      private readonly StringFormat defaultFormat = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center, Trimming = StringTrimming.Character };
 
       private string _fontFamily;
       public string FontFamily
@@ -41,7 +41,7 @@ namespace NeuralNetwork.Visualizer.Preferences.Text
       private StringFormat _format;
       public StringFormat Format
       {
-         get => _format?.Clone() as StringFormat ?? (_format = defualtFormat.Clone() as StringFormat);
+         get => _format?.Clone() as StringFormat ?? (_format = defaultFormat.Clone() as StringFormat);
          set => _format = value;
       }
 

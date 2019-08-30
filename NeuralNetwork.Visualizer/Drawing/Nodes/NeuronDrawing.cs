@@ -4,6 +4,7 @@ using NeuralNetwork.Visualizer.Drawing.Cache;
 using NeuralNetwork.Visualizer.Drawing.Canvas;
 using NeuralNetwork.Visualizer.Preferences;
 using NeuralNetwork.Visualizer.Preferences.Brushes;
+using NeuralNetwork.Visualizer.Preferences.Text;
 using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,12 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          _edgesCache = edgesCache;
          _selectionChecker = selectionChecker;
          _selectableElementRegister = selectableElementRegister;
+      }
+
+      public override void Draw(ICanvas canvas)
+      {
+         base.Draw(canvas);
+         DrawLabel(canvas);
       }
 
       protected override void DrawContent(ICanvas canvas, Rectangle rect)
@@ -59,6 +66,27 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          }
 
          DrawEdges(sizesPositions.InputPosition, canvas, sizesPositions.OutputRectangle.Height);
+      }
+
+      private void DrawLabel(ICanvas canvas)
+      {
+         if (this.Element.Layer.Next != null || _preferences.OutputFontLabel == OutputFontLabel.Null || !_cache.EllipseRectangle.HasValue)
+            return;
+
+         var fontLabel = _preferences.OutputFontLabel;
+
+         if (!_cache.OutputLabelRectangle.HasValue)
+         {
+            var rect = _cache.EllipseRectangle.Value;
+            var labelWidth = canvas.MaxWidth - (rect.X + rect.Width + _preferences.NodeMargins);
+            var labelHeight = fontLabel.Size;
+            _cache.OutputLabelRectangle = new Rectangle(rect.X + rect.Width + _preferences.NodeMargins, (rect.Height - labelHeight) / 2, labelWidth, labelHeight);
+         }
+
+         var label = this.Element.Id;
+
+         var fontInfo = new FontInfo(fontLabel.Family, fontLabel.Style);
+         canvas.DrawText(label, fontInfo, _cache.OutputLabelRectangle.Value, new SolidBrushPreference(fontLabel.Color), fontLabel.Format);
       }
 
       private void DrawEdges(Point inputPosition, ICanvas canvas, int textEdgeHeight)

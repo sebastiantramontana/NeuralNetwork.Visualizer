@@ -3,6 +3,7 @@ using NeuralNetwork.Visualizer.Preferences.Brushes;
 using NeuralNetwork.Visualizer.Preferences.Pens;
 using NeuralNetwork.Visualizer.Preferences.Text;
 using System;
+using System.Drawing;
 using Draw = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Preferences
@@ -22,6 +23,20 @@ namespace NeuralNetwork.Visualizer.Preferences
       private NeuronPreference _neurons;
       private NodePreference _biases;
       private EdgePreference _edges;
+
+      private InputFontLabel _inputFontLabel = InputFontLabel.Null;
+      public InputFontLabel InputFontLabel
+      {
+         get => _inputFontLabel ?? InputFontLabel.Null;
+         set => _inputFontLabel = value;
+      }
+
+      private OutputFontLabel _outputFontLabel = OutputFontLabel.Null;
+      public OutputFontLabel OutputFontLabel
+      {
+         get => _outputFontLabel ?? OutputFontLabel.Null;
+         set => _outputFontLabel = value;
+      }
 
       public LayerPreference Layers
       {
@@ -78,6 +93,8 @@ namespace NeuralNetwork.Visualizer.Preferences
 
       public void Dispose()
       {
+         Destroy.Disposable(ref _inputFontLabel);
+         Destroy.Disposable(ref _outputFontLabel);
          Destroy.Disposable(ref _layers);
          Destroy.Disposable(ref _inputs);
          Destroy.Disposable(ref _neurons);

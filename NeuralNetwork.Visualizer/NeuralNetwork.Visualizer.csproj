@@ -105,6 +105,9 @@
     <Compile Include="Preferences\LayerPreference.cs" />
     <Compile Include="Preferences\NodePreference.cs" />
     <Compile Include="Preferences\Preference.cs" />
+    <Compile Include="Preferences\Text\FontLabel.cs" />
+    <Compile Include="Preferences\Text\OutputFontLabel.cs" />
+    <Compile Include="Preferences\Text\InputFontLabel.cs" />
     <Compile Include="Preferences\Text\TextPreference.cs" />
     <Compile Include="Preferences\LayerTitlePreference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

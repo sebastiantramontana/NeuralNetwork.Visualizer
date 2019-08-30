@@ -124,7 +124,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          var inputLayer = this.ControlCanvas.Control.InputLayer;
          var preferences = this.ControlCanvas.Control.Preferences;
 
-         SimpleNodeSizesPreCalc simpleNodesCache = new SimpleNodeSizesPreCalc();
+         SimpleNodeSizesPreCalc simpleNodeSizesCache = new SimpleNodeSizesPreCalc();
          NeuronSizesPreCalc neuronCache = new NeuronSizesPreCalc(preferences);
          EdgeSizesPreCalc edgesCache = new EdgeSizesPreCalc();
 
@@ -134,11 +134,11 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
 
             if (layer == inputLayer)
             {
-               layerDrawing = new InputLayerDrawing(layer as InputLayer, preferences, layersDrawingSize, simpleNodesCache, _selectionChecker, _selectableElementRegister);
+               layerDrawing = new InputLayerDrawing(layer as InputLayer, preferences, layersDrawingSize, simpleNodeSizesCache, _selectionChecker, _selectableElementRegister);
             }
             else
             {
-               layerDrawing = new NeuronLayerDrawing(layer as NeuronLayer, previousNodesDic, graphCanvas, preferences, layersDrawingSize, neuronCache, simpleNodesCache, edgesCache, _selectionChecker, _selectableElementRegister);
+               layerDrawing = new NeuronLayerDrawing(layer as NeuronLayer, previousNodesDic, graphCanvas, preferences, layersDrawingSize, neuronCache, simpleNodeSizesCache, edgesCache, _selectionChecker, _selectableElementRegister);
             }
 
             var canvasRect = new Rectangle(x, 0, layersDrawingSize.Width, layersDrawingSize.Height);
