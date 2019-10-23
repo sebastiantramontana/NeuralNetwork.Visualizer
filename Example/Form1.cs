@@ -112,7 +112,7 @@ namespace WindowsFormsApp1
          NeuralNetworkVisualizerControl1.Preferences.Edges.ConnectorFormatter = new CustomFormatter<Pen>((v) => v == 0.0 ? new Pen(Color.LightGray) : new Pen(Color.Black));
 
          //default is true
-         NeuralNetworkVisualizerControl1.Preferences.AsyncRedrawOnResize = true;
+         NeuralNetworkVisualizerControl1.Preferences.AsyncRedrawOnResize = chAsyncRedrawOnResize.Checked;
 
          //To remove layer's titles
          NeuralNetworkVisualizerControl1.Preferences.Layers.Title = null;
@@ -240,6 +240,11 @@ namespace WindowsFormsApp1
       private void chSelectable_CheckedChanged(object sender, EventArgs e)
       {
          NeuralNetworkVisualizerControl1.Selectable = chSelectable.Checked;
+      }
+
+      private void chAsyncRedrawOnResize_CheckedChanged(object sender, EventArgs e)
+      {
+         NeuralNetworkVisualizerControl1.Preferences.AsyncRedrawOnResize = chAsyncRedrawOnResize.Checked;
       }
    }
 }

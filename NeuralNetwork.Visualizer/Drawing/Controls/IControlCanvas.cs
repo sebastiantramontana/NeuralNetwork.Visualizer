@@ -13,8 +13,5 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
 
       void SetBlank();
       (Graphics Graph, Image Image, LayerSizesPreCalc LayerSizes) GetGraphics();
-
-      void SafeInvoke(Action action);
-      T SafeInvoke<T>(Func<T> action);
    }
 }

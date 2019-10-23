@@ -1,4 +1,5 @@
-﻿using NeuralNetwork.Visualizer.Drawing.Cache;
+﻿using NeuralNetwork.Infrastructure.Winform;
+using NeuralNetwork.Visualizer.Drawing.Cache;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -11,11 +12,13 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
    {
       private readonly PictureBox _pictureBox;
       private readonly NeuralNetworkVisualizerControl _control;
+      private readonly IInvoker _invoker;
 
-      internal ControlCanvas(PictureBox pictureBox, NeuralNetworkVisualizerControl control)
+      internal ControlCanvas(PictureBox pictureBox, NeuralNetworkVisualizerControl control, IInvoker invoker)
       {
          _pictureBox = pictureBox;
          _control = control;
+         _invoker = invoker;
       }
 
       public NeuralNetworkVisualizerControl Control => _control;
@@ -28,28 +31,11 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
 
       public Image Image
       {
-         get { return SafeInvoke(() => _pictureBox.Image?.Clone() as Image ?? new Bitmap(_control.ClientSize.Width, _control.ClientSize.Height)); } //Clone for safe handling
+         get { return _invoker.SafeInvoke(() => _pictureBox.Image?.Clone() as Image ?? new Bitmap(_control.ClientSize.Width, _control.ClientSize.Height)); } //Clone for safe handling
          set => _pictureBox.Image = value;
       }
 
       public bool IsReady => _control.IsHandleCreated;
-
-      public void SafeInvoke(Action action)
-      {
-         if (_control.InvokeRequired)
-         {
-            _control.Invoke(action);
-         }
-         else
-         {
-            action();
-         }
-      }
-
-      public T SafeInvoke<T>(Func<T> action)
-      {
-         return (_control.InvokeRequired ? (T)_control.Invoke(action) : action());
-      }
 
       public void SetBlank()
       {

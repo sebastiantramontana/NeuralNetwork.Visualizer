@@ -1,15 +1,17 @@
-﻿using NeuralNetwork.Model;
-using NeuralNetwork.Model.Layers;
-using NeuralNetwork.Model.Nodes;
-using NeuralNetwork.Visualizer.Drawing.Controls;
-using NeuralNetwork.Visualizer.Preferences;
-using NeuralNetwork.Visualizer.Selection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NeuralNetwork.Infrastructure;
+using NeuralNetwork.Infrastructure.Winform;
+using NeuralNetwork.Model;
+using NeuralNetwork.Model.Layers;
+using NeuralNetwork.Model.Nodes;
+using NeuralNetwork.Visualizer.Drawing.Controls;
+using NeuralNetwork.Visualizer.Preferences;
+using NeuralNetwork.Visualizer.Selection;
 
 namespace NeuralNetwork.Visualizer
 {
@@ -19,8 +21,10 @@ namespace NeuralNetwork.Visualizer
 
       private readonly IControlDrawing _controlDrawing;
       private readonly IElementSelector _selector;
+      private readonly Invoker _visualizerInvoker;
       private readonly ISelectionEventFiring _selectionEventFiring;
       private readonly IToolTipFiring _toolTipFiring;
+      private readonly IAsync _async;
 
       public event EventHandler<SelectionEventArgs<InputLayer>> SelectInputLayer;
       public event EventHandler<SelectionEventArgs<NeuronLayer>> SelectNeuronLayer;
@@ -36,8 +40,11 @@ namespace NeuralNetwork.Visualizer
          var selectableElementRegisterResolver = new SelectableElementRegister();
          _selector = new ElementSelector(selectableElementRegisterResolver);
 
-         _controlDrawing = new ControlDrawing(new ControlCanvas(this.picCanvas, this), _selector, selectableElementRegisterResolver, selectableElementRegisterResolver);
-         _toolTipFiring = new ToolTipFiring(this, picCanvas, selectableElementRegisterResolver);
+         _visualizerInvoker = new Invoker(this);
+         _async = new Async();
+
+         _controlDrawing = new ControlDrawing(new ControlCanvas(this.picCanvas, this, _visualizerInvoker), _selector, selectableElementRegisterResolver, selectableElementRegisterResolver, _visualizerInvoker);
+         _toolTipFiring = new ToolTipFiring(this, picCanvas, selectableElementRegisterResolver, _visualizerInvoker);
          _selectionEventFiring = new SelectionEventFiring(this, _selector,
                                     () => this.SelectInputLayer,
                                     () => this.SelectNeuronLayer,
@@ -140,8 +147,12 @@ namespace NeuralNetwork.Visualizer
 
       public async Task RedrawAsync()
       {
-         await RedrawAsyncInternal();
+         _async.SuspendContext();
+
+         await RedrawInternalAsync();
          FinishRedrawFromOuter();
+
+         _async.RestoreContext();
       }
 
       private bool _isAutoRedrawSuspended = false;
@@ -160,19 +171,27 @@ namespace NeuralNetwork.Visualizer
       /// </summary>
       public async Task ResumeAutoRedraw()
       {
+         _async.SuspendContext();
+
          _isAutoRedrawSuspended = false;
          await AutoRedraw();
+
+         _async.RestoreContext();
       }
 
       private async void _InputLayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
       {
+         _async.SuspendContext();
+
          await AutoRedraw();
          _selector.MarkToBeRefreshed(_InputLayer);
+
+         _async.RestoreContext();
       }
 
       private async Task AutoRedraw()
       {
-         if(_isAutoRedrawSuspended)
+         if (_isAutoRedrawSuspended)
          {
             return;
          }
@@ -201,7 +220,7 @@ namespace NeuralNetwork.Visualizer
          _controlDrawing?.Redraw();
       }
 
-      private async Task RedrawAsyncInternal()
+      private async Task RedrawInternalAsync()
       {
          await _controlDrawing?.RedrawAsync();
       }
@@ -219,7 +238,9 @@ namespace NeuralNetwork.Visualizer
                {
                   if (_redrawWhenPropertyChange)
                   {
-                     await RedrawAsyncInternal();
+                     _async.SuspendContext();
+                     await RedrawInternalAsync();
+                     _async.RestoreContext();
                   }
                }
                else
@@ -232,7 +253,7 @@ namespace NeuralNetwork.Visualizer
             }
          }
 
-         base.OnSizeChanged(e);
+         _visualizerInvoker?.SafeInvoke(() => base.OnSizeChanged(e));
       }
 
       private void PicCanvas_MouseDown(object sender, MouseEventArgs e)

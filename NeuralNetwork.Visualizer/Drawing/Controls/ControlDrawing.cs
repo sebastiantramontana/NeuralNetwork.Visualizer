@@ -1,4 +1,6 @@
-﻿using NeuralNetwork.Model.Layers;
+﻿using NeuralNetwork.Infrastructure;
+using NeuralNetwork.Infrastructure.Winform;
+using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
 using NeuralNetwork.Visualizer.Drawing.Cache;
 using NeuralNetwork.Visualizer.Drawing.Canvas;
@@ -18,13 +20,15 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
       private readonly IElementSelectionChecker _selectionChecker;
       private readonly ISelectableElementRegister _selectableElementRegister;
       private readonly ISelectionResolver _selectionResolver;
+      private readonly IInvoker _invoker;
 
-      public ControlDrawing(IControlCanvas controlCanvas, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister, ISelectionResolver selectionResolver)
+      public ControlDrawing(IControlCanvas controlCanvas, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister, ISelectionResolver selectionResolver, IInvoker invoker)
       {
          this.ControlCanvas = controlCanvas;
          _selectionChecker = selectionChecker;
          _selectableElementRegister = selectableElementRegister;
          _selectionResolver = selectionResolver;
+         _invoker = invoker;
       }
 
       public IControlCanvas ControlCanvas { get; }
@@ -53,7 +57,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          }
 
          _isDrawing = true;
-         await this.ControlCanvas.SafeInvoke(async () =>
+         await _invoker.SafeInvoke(async () =>
          {
             await RedrawInternalAsync(async (graph, layersSize) => await DrawLayersAsync(graph, layersSize));
          });
@@ -102,14 +106,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
 
       private async Task DrawLayersAsync(Graphics graph, LayerSizesPreCalc layerSizesPreCalc)
       {
-         await DrawLayersGeneral(graph, layerSizesPreCalc, async (layerDrawing, layerCanvas) =>
-         {
-            await Task.Factory.StartNew((obj) =>
-               {
-                  var layerAndCanvas = obj as Tuple<ILayerDrawing, ICanvas>;
-                  layerAndCanvas.Item1.Draw(layerAndCanvas.Item2);
-               }, new Tuple<ILayerDrawing, ICanvas>(layerDrawing, layerCanvas));
-         });
+         await DrawLayersGeneral(graph, layerSizesPreCalc, async (layerDrawing, layerCanvas) => await Task.Run(() => { layerDrawing.Draw(layerCanvas); }));
       }
 
       private async Task DrawLayersGeneral(Graphics graph, LayerSizesPreCalc layersDrawingSize, Func<ILayerDrawing, ICanvas, Task> drawLayerAction)
