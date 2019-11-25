@@ -24,7 +24,6 @@ namespace NeuralNetwork.Visualizer
       private readonly Invoker _visualizerInvoker;
       private readonly ISelectionEventFiring _selectionEventFiring;
       private readonly IToolTipFiring _toolTipFiring;
-      private readonly IAsync _async;
 
       public event EventHandler<SelectionEventArgs<InputLayer>> SelectInputLayer;
       public event EventHandler<SelectionEventArgs<NeuronLayer>> SelectNeuronLayer;
@@ -41,7 +40,6 @@ namespace NeuralNetwork.Visualizer
          _selector = new ElementSelector(selectableElementRegisterResolver);
 
          _visualizerInvoker = new Invoker(this);
-         _async = new Async();
 
          _controlDrawing = new ControlDrawing(new ControlCanvas(this.picCanvas, this, _visualizerInvoker), _selector, selectableElementRegisterResolver, selectableElementRegisterResolver, _visualizerInvoker);
          _toolTipFiring = new ToolTipFiring(this, picCanvas, selectableElementRegisterResolver, _visualizerInvoker);
@@ -147,12 +145,8 @@ namespace NeuralNetwork.Visualizer
 
       public async Task RedrawAsync()
       {
-         _async.SuspendContext();
-
          await RedrawInternalAsync();
          FinishRedrawFromOuter();
-
-         _async.RestoreContext();
       }
 
       private bool _isAutoRedrawSuspended = false;
@@ -171,22 +165,14 @@ namespace NeuralNetwork.Visualizer
       /// </summary>
       public async Task ResumeAutoRedraw()
       {
-         _async.SuspendContext();
-
          _isAutoRedrawSuspended = false;
          await AutoRedraw();
-
-         _async.RestoreContext();
       }
 
       private async void _InputLayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
       {
-         _async.SuspendContext();
-
          await AutoRedraw();
          _selector.MarkToBeRefreshed(_InputLayer);
-
-         _async.RestoreContext();
       }
 
       private async Task AutoRedraw()
@@ -238,9 +224,7 @@ namespace NeuralNetwork.Visualizer
                {
                   if (_redrawWhenPropertyChange)
                   {
-                     _async.SuspendContext();
                      await RedrawInternalAsync();
-                     _async.RestoreContext();
                   }
                }
                else
