@@ -79,7 +79,7 @@ namespace NeuralNetwork.Visualizer
             _InputLayer = value;
 
             if (_InputLayer != null)
-               _InputLayer.PropertyChanged += _InputLayer_PropertyChanged;
+               _InputLayer.PropertyChanged += InputLayer_PropertyChanged;
 
             _zoom = 1f; //restart zoom
             _selector.UnselectAll();
@@ -169,7 +169,7 @@ namespace NeuralNetwork.Visualizer
          await AutoRedraw();
       }
 
-      private async void _InputLayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+      private async void InputLayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
       {
          await AutoRedraw();
          _selector.MarkToBeRefreshed(_InputLayer);
