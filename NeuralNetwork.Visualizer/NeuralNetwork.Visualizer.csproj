@@ -93,6 +93,9 @@
     <Compile Include="Preferences\Brushes\GradientBrushPreference.cs" />
     <Compile Include="Preferences\Brushes\IBrush.cs" />
     <Compile Include="Preferences\Brushes\SolidBrushPreference.cs" />
+    <Compile Include="Preferences\Core\Color.cs" />
+    <Compile Include="Preferences\Core\TextAlignment.cs" />
+    <Compile Include="Preferences\Core\TextTrimming.cs" />
     <Compile Include="Preferences\Formatting\BasicFormatter.cs" />
     <Compile Include="Preferences\Formatting\ByValueSignFormatter.cs" />
     <Compile Include="Preferences\Formatting\CustomFormatter.cs" />
@@ -106,6 +109,7 @@
     <Compile Include="Preferences\NodePreference.cs" />
     <Compile Include="Preferences\Preference.cs" />
     <Compile Include="Preferences\Text\FontLabel.cs" />
+    <Compile Include="Preferences\Core\FontStyle.cs" />
     <Compile Include="Preferences\Text\OutputFontLabel.cs" />
     <Compile Include="Preferences\Text\InputFontLabel.cs" />
     <Compile Include="Preferences\Text\TextPreference.cs" />
@@ -138,6 +142,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
