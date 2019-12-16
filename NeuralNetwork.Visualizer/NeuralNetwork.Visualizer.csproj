@@ -37,6 +37,10 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NeuralNetwork.Infraestructure.Winform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Binaries\NeuralNetwork.Infraestructure.Winform.dll</HintPath>
+    </Reference>
     <Reference Include="NeuralNetwork.Model">
       <HintPath>Binaries\NeuralNetwork.Model.dll</HintPath>
     </Reference>
@@ -144,12 +148,6 @@
     <Content Include="Binaries\NeuralNetwork.Infraestructure.Winform.dll" />
     <Content Include="Binaries\NeuralNetwork.Infrastructure.dll" />
     <Content Include="Binaries\NeuralNetwork.Model.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\NeuralNetwork.Infrastructure\NeuralNetwork.Infraestructure.Winform\NeuralNetwork.Infraestructure.Winform.csproj">
-      <Project>{E9715583-00F7-46B1-AB2E-F25CA51B1C69}</Project>
-      <Name>NeuralNetwork.Infraestructure.Winform</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
