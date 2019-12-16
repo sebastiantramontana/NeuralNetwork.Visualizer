@@ -14,14 +14,6 @@ namespace NeuralNetwork.Visualizer.Preferences.Core
       public static readonly Color LightGreen = new Color(0x90, 0xEE, 0x90, 255);
       public static readonly Color LightPink = new Color(0xFF, 0xB6, 0xC1, 255);
 
-      public Color(int rgb)
-      {
-         this.R = (byte)(rgb >> 8);
-         this.G = (byte)(rgb >> 16);
-         this.B = (byte)(rgb >> 32);
-         this.A = 255;
-      }
-
       public Color(byte r, byte g, byte b, byte a)
       {
          this.R = r;
