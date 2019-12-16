@@ -2,24 +2,26 @@
 using NeuralNetwork.Visualizer.Drawing.Cache;
 using NeuralNetwork.Visualizer.Drawing.Canvas;
 using NeuralNetwork.Visualizer.Preferences;
+using NeuralNetwork.Visualizer.Preferences.Core;
+using NeuralNetwork.Visualizer.Preferences.Pens;
 using NeuralNetwork.Visualizer.Selection;
 using System;
-using System.Drawing;
 using System.Drawing.Drawing2D;
+using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
    internal class EdgeDrawing : DrawingBase<Edge>
    {
       private readonly EdgePreference _preferences;
-      private readonly Point _fromPosition;
-      private readonly Point _toPosition;
+      private readonly Position _fromPosition;
+      private readonly Position _toPosition;
       private readonly int _textHeight;
       private readonly EdgeSizesPreCalc _cache;
       private readonly ISelectableElementRegister _selectableElementRegister;
       private readonly IElementSelectionChecker _selectionChecker;
 
-      internal EdgeDrawing(Edge element, EdgePreference preferences, Point fromPosition, Point toPosition, int textHeight, EdgeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker) : base(element)
+      internal EdgeDrawing(Edge element, EdgePreference preferences, Position fromPosition, Position toPosition, int textHeight, EdgeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker) : base(element)
       {
          _preferences = preferences;
          _fromPosition = fromPosition;
@@ -34,10 +36,8 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
       {
          RegisterSelectableConnectorLine(canvas);
 
-         using (var pen = GetPen(_selectionChecker.IsSelected(this.Element)))
-         {
-            canvas.DrawLine(_fromPosition, _toPosition, pen);
-         }
+         var pen = GetPen(_selectionChecker.IsSelected(this.Element));
+         canvas.DrawLine(_fromPosition, _toPosition, pen);
 
          DrawWeight(canvas);
       }
@@ -47,15 +47,15 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          var gp = new GraphicsPath();
          gp.AddPolygon(new[]
          {
-                new Point(_fromPosition.X - 4 , _fromPosition.Y - 4),
-                new Point(_fromPosition.X + 4 , _fromPosition.Y + 4),
-                new Point(_toPosition.X + 4 , _toPosition.Y + 4),
-                new Point(_toPosition.X - 4 , _toPosition.Y - 4),
+                new Gdi.Point(_fromPosition.X - 4 , _fromPosition.Y - 4),
+                new Gdi.Point(_fromPosition.X + 4 , _fromPosition.Y + 4),
+                new Gdi.Point(_toPosition.X + 4 , _toPosition.Y + 4),
+                new Gdi.Point(_toPosition.X - 4 , _toPosition.Y - 4),
             });
 
          gp.CloseFigure();
 
-         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Region(gp), 3));
+         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Gdi.Region(gp), 3));
       }
 
       private Pen GetPen(bool isSelected)
@@ -72,11 +72,9 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
 
          var weightValue = Math.Round(this.Element.Weight.Value, _preferences.RoundingDigits).ToString();
          var sizesPositions = GetSizesPositions();
+         var fontLabel = _preferences.WeightFormatter.GetFormat(this.Element.Weight.Value);
 
-         using (var valueFormat = _preferences.WeightFormatter.GetFormat(this.Element.Weight.Value))
-         {
-            canvas.DrawText(weightValue, valueFormat.CreateFontInfo(), sizesPositions.TextRectangle, valueFormat.Brush, valueFormat.Format, sizesPositions.Angle);
-         }
+         canvas.DrawText(weightValue, fontLabel, sizesPositions.TextRectangle, sizesPositions.Angle);
       }
 
       private (Rectangle TextRectangle, float Angle) GetSizesPositions()
@@ -100,7 +98,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
             x = sizePosValues.FarX;
          }
 
-         return (new Rectangle(x, y, sizePosValues.TextWidth, _textHeight), angle);
+         return (new Rectangle(new Position(x, y), new Size(sizePosValues.TextWidth, _textHeight)), angle);
       }
    }
 }

@@ -1,10 +1,10 @@
-﻿using System.Drawing;
+﻿using NeuralNetwork.Visualizer.Preferences.Core;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
     internal interface IToolTipFiring
     {
-        void Show(Point location);
+        void Show(Position position);
         void Hide();
     }
 }

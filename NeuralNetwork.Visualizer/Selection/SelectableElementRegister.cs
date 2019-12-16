@@ -1,8 +1,9 @@
 ﻿using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Visualizer.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
+using NeuralNetwork.Visualizer.Preferences.Core;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace NeuralNetwork.Visualizer.Selection
@@ -17,7 +18,7 @@ namespace NeuralNetwork.Visualizer.Selection
          _registeredElements = new Dictionary<Element, RegistrationInfo>();
       }
 
-      public Element GetElementFromLocation(Point location)
+      public Element GetElementFromLocation(Position position)
       {
          RefreshSelection();
 
@@ -25,7 +26,8 @@ namespace NeuralNetwork.Visualizer.Selection
              .Values
              .Where(ri => ri.Region
                  .IsVisible(_currentRootCanvas
-                     .Translate(location, ri.Canvas)))
+                     .Translate(position, ri.Canvas)
+                     .ToGdi()))
              .OrderByDescending(ri => ri.ZIndex)
              .FirstOrDefault()?
              .Element;

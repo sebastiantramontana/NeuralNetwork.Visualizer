@@ -9,9 +9,10 @@ using NeuralNetwork.Visualizer.Drawing.Nodes;
 using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using Gdi = System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using NeuralNetwork.Visualizer.Preferences.Core;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
@@ -33,7 +34,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
 
       public IControlCanvas ControlCanvas { get; }
 
-      public Image GetImage()
+      public Gdi.Image GetImage()
       {
          return this.ControlCanvas.Image;
       }
@@ -65,7 +66,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          _isDrawing = false;
       }
 
-      private async Task RedrawInternalAsync(Func<Graphics, LayerSizesPreCalc, Task> drawLayersAction)
+      private async Task RedrawInternalAsync(Func<Gdi.Graphics, LayerSizesPreCalc, Task> drawLayersAction)
       {
          if (!ValidateInputLayer())
          {
@@ -95,7 +96,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          return false;
       }
 
-      private void DrawLayers(Graphics graph, LayerSizesPreCalc layerSizesPreCalc)
+      private void DrawLayers(Gdi.Graphics graph, LayerSizesPreCalc layerSizesPreCalc)
       {
          DrawLayersGeneral(graph, layerSizesPreCalc, (layerDrawing, layerCanvas) =>
           {
@@ -104,14 +105,14 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
           }).Wait();
       }
 
-      private async Task DrawLayersAsync(Graphics graph, LayerSizesPreCalc layerSizesPreCalc)
+      private async Task DrawLayersAsync(Gdi.Graphics graph, LayerSizesPreCalc layerSizesPreCalc)
       {
          await DrawLayersGeneral(graph, layerSizesPreCalc, async (layerDrawing, layerCanvas) => await Task.Run(() => { layerDrawing.Draw(layerCanvas); }));
       }
 
-      private async Task DrawLayersGeneral(Graphics graph, LayerSizesPreCalc layersDrawingSize, Func<ILayerDrawing, ICanvas, Task> drawLayerAction)
+      private async Task DrawLayersGeneral(Gdi.Graphics graph, LayerSizesPreCalc layersDrawingSize, Func<ILayerDrawing, ICanvas, Task> drawLayerAction)
       {
-         var graphCanvas = new GraphicsCanvas(graph, this.ControlCanvas.Size.Width, this.ControlCanvas.Size.Height);
+         var graphCanvas = new GraphicsCanvas(graph, this.ControlCanvas.Size);
          int x = 0;
 
          _selectionResolver.SetCurrentRootCanvas(graphCanvas);
@@ -138,7 +139,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
                layerDrawing = new NeuronLayerDrawing(layer as NeuronLayer, previousNodesDic, graphCanvas, preferences, layersDrawingSize, neuronCache, simpleNodeSizesCache, edgesCache, _selectionChecker, _selectableElementRegister);
             }
 
-            var canvasRect = new Rectangle(x, 0, layersDrawingSize.Width, layersDrawingSize.Height);
+            var canvasRect = new Rectangle(new Position(x, 0), new Size(layersDrawingSize.Width, layersDrawingSize.Height));
             var layerCanvas = new NestedCanvas(canvasRect, graphCanvas);
 
             await drawLayerAction(layerDrawing, layerCanvas);

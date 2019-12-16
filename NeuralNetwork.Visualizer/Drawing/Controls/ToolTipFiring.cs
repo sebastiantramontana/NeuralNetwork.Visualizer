@@ -7,6 +7,7 @@ using NeuralNetwork.Infrastructure.Winform;
 using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
+using NeuralNetwork.Visualizer.Preferences.Core;
 using NeuralNetwork.Visualizer.Selection;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
@@ -19,7 +20,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
       private readonly IInvoker _invoker;
       private System.Timers.Timer timeout = null;
       private ToolTip tipInfo = null;
-      private Point lastToolTipLocation;
+      private Position lastToolTipLocation;
 
       internal ToolTipFiring(NeuralNetworkVisualizerControl control, Control controlToToolTip, ISelectionResolver selectionResolver, IInvoker invoker)
       {
@@ -27,11 +28,12 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          _controlToToolTip = controlToToolTip;
          _selectionResolver = selectionResolver;
          _invoker = invoker;
+         lastToolTipLocation = new Position(0, 0);
       }
 
-      public void Show(Point location)
+      public void Show(Position position)
       {
-         if (!Validate(location))
+         if (!Validate(position))
             return;
 
          Destroy.Disposable(ref timeout);
@@ -49,7 +51,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
             Destroy.Disposable(ref timeout);
             Destroy.Disposable(ref tipInfo);
 
-            var elem = _selectionResolver.GetElementFromLocation(location);
+            var elem = _selectionResolver.GetElementFromLocation(position);
 
             if (elem != null)
             {
@@ -68,7 +70,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
                string text = GetElementText(elem);
                _invoker.SafeInvoke(() => tipInfo?.Show(text, _controlToToolTip));
 
-               lastToolTipLocation = location;
+               lastToolTipLocation = position;
             }
          };
 
@@ -183,14 +185,14 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          builder.AppendLine("Object: " + strobj);
       }
 
-      private bool Validate(Point location)
+      private bool Validate(Position position)
       {
-         return _controlToToolTip.IsHandleCreated && _control.InputLayer != null && ValidateLocation(location);
+         return _controlToToolTip.IsHandleCreated && _control.InputLayer != null && ValidateLocation(position);
       }
 
-      private bool ValidateLocation(Point location)
+      private bool ValidateLocation(Position position)
       {
-         return Math.Abs(location.X - lastToolTipLocation.X) > 5 || Math.Abs(location.Y - lastToolTipLocation.Y) > 5;
+         return Math.Abs(position.X - lastToolTipLocation.X) > 5 || Math.Abs(position.Y - lastToolTipLocation.Y) > 5;
       }
    }
 }

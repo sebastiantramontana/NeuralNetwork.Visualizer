@@ -1,10 +1,12 @@
 ﻿using NeuralNetwork.Infrastructure.Winform;
 using NeuralNetwork.Visualizer.Drawing.Cache;
 using System;
-using System.Drawing;
+using Gdi = System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
+using NeuralNetwork.Visualizer.Preferences.Core;
+using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
@@ -25,13 +27,13 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
 
       public Size Size
       {
-         get => _pictureBox.ClientSize;
-         set => _pictureBox.ClientSize = value;
+         get => _pictureBox.ClientSize.ToVisualizer();
+         set => _pictureBox.ClientSize = value.ToGdi();
       }
 
-      public Image Image
+      public Gdi.Image Image
       {
-         get { return _invoker.SafeInvoke(() => _pictureBox.Image?.Clone() as Image ?? new Bitmap(_control.ClientSize.Width, _control.ClientSize.Height)); } //Clone for safe handling
+         get { return _invoker.SafeInvoke(() => _pictureBox.Image?.Clone() as Gdi.Image ?? new Gdi.Bitmap(_control.ClientSize.Width, _control.ClientSize.Height)); } //Clone for safe handling
          set => _pictureBox.Image = value;
       }
 
@@ -45,14 +47,14 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          _pictureBox.BackColor = _control.BackColor;
       }
 
-      public (Graphics Graph, Image Image, LayerSizesPreCalc LayerSizes) GetGraphics()
+      public (Gdi.Graphics Graph, Gdi.Image Image, LayerSizesPreCalc LayerSizes) GetGraphics()
       {
-         var imgSize = GetImageSize(_control.Size);
+         var imgSize = GetImageSize(_control.Size.ToVisualizer());
          var sizes = GetDrawingSizes(imgSize);
 
-         _pictureBox.ClientSize = sizes.CanvasSize;
-         Bitmap bmp = new Bitmap(sizes.CanvasSize.Width, sizes.CanvasSize.Height);
-         Graphics graph = Graphics.FromImage(bmp);
+         _pictureBox.ClientSize = sizes.CanvasSize.ToGdi();
+         Gdi.Bitmap bmp = new Gdi.Bitmap(sizes.CanvasSize.Width, sizes.CanvasSize.Height);
+         Gdi.Graphics graph = Gdi.Graphics.FromImage(bmp);
 
          SetQuality(graph);
 
@@ -86,7 +88,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          }
       }
 
-      private void SetQuality(Graphics graphics)
+      private void SetQuality(Gdi.Graphics graphics)
       {
          switch (_control.Preferences.Quality)
          {

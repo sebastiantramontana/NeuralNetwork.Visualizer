@@ -1,5 +1,6 @@
 ﻿using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
+using NeuralNetwork.Visualizer.Preferences.Core;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -9,9 +10,9 @@ namespace NeuralNetwork.Visualizer.Selection
    {
       IEnumerable<Element> SelectedElements { get; }
 
-      Element SelectOnly(Point location);
-      Element AddToSelection(Point location);
-      Element Unselect(Point location);
+      Element SelectOnly(Position position);
+      Element AddToSelection(Position position);
+      Element Unselect(Position position);
       void MarkToBeRefreshed(InputLayer inputLayer);
       void UnselectAll();
    }

@@ -1,29 +1,31 @@
-﻿using NeuralNetwork.Visualizer.Preferences.Formatting;
+﻿using NeuralNetwork.Visualizer.Preferences.Brushes;
+using NeuralNetwork.Visualizer.Preferences.Core;
+using NeuralNetwork.Visualizer.Preferences.Formatting;
+using NeuralNetwork.Visualizer.Preferences.Pens;
 using NeuralNetwork.Visualizer.Preferences.Text;
-using System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Preferences
 {
    public class EdgePreference
    {
-      private IFormatter<TextPreference> _weightFormatter;
-      public IFormatter<TextPreference> WeightFormatter
+      private IFormatter<FontLabel> _weightFormatter;
+      public IFormatter<FontLabel> WeightFormatter
       {
-         get => _weightFormatter ?? (_weightFormatter = new BasicFormatter<TextPreference>(() => new TextPreference()));
+         get => _weightFormatter ?? (_weightFormatter = new NullFormatter<FontLabel>(FontLabel.Default));
          set => _weightFormatter = value;
       }
 
-      private IFormatter<Pen> _connectorFormatter = new BasicFormatter<Pen>(() => new Pen(Color.Black));
+      private IFormatter<Pen> _connectorFormatter = new NullFormatter<Pen>(Pen.BasicFromColor(Color.Black));
       public IFormatter<Pen> ConnectorFormatter
       {
-         get => _connectorFormatter ?? (_connectorFormatter = new BasicFormatter<Pen>(() => new Pen(Color.Transparent)));
+         get => _connectorFormatter ?? (_connectorFormatter = new NullFormatter<Pen>(Pen.Null));
          set => _connectorFormatter = value;
       }
 
-      private IFormatter<Pen> _connectorSelectedFormatter = new BasicFormatter<Pen>(() => new Pen(Color.Orange));
+      private IFormatter<Pen> _connectorSelectedFormatter = new NullFormatter<Pen>(Pen.BasicFromColor(Color.Orange));
       public IFormatter<Pen> ConnectorSelectedFormatter
       {
-         get => _connectorSelectedFormatter ?? (_connectorSelectedFormatter = new BasicFormatter<Pen>(() => new Pen(Color.Transparent)));
+         get => _connectorSelectedFormatter ?? (_connectorSelectedFormatter = new NullFormatter<Pen>(Pen.Null));
          set => _connectorSelectedFormatter = value;
       }
 

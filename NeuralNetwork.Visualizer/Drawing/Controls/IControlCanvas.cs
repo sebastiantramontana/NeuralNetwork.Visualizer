@@ -1,17 +1,18 @@
 ﻿using NeuralNetwork.Visualizer.Drawing.Cache;
+using NeuralNetwork.Visualizer.Preferences.Core;
 using System;
-using System.Drawing;
+using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
    internal interface IControlCanvas
    {
       Size Size { get; set; }
-      Image Image { get; set; }
+      Gdi.Image Image { get; set; }
       NeuralNetworkVisualizerControl Control { get; }
       bool IsReady { get; }
 
       void SetBlank();
-      (Graphics Graph, Image Image, LayerSizesPreCalc LayerSizes) GetGraphics();
+      (Gdi.Graphics Graph, Gdi.Image Image, LayerSizesPreCalc LayerSizes) GetGraphics();
    }
 }

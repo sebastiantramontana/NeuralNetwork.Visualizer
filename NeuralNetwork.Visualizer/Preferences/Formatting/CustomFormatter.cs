@@ -2,16 +2,18 @@
 
 namespace NeuralNetwork.Visualizer.Preferences.Formatting
 {
-    /// <summary>
-    /// Build a NEW custom formatter by passed value.
-    /// </summary>
-    public class CustomFormatter<T> : FormatterBase<T>
-    {
-        public CustomFormatter(Func<double?, T> formaterFunc) : base(formaterFunc)
-        {
-            this.FormaterFunc = formaterFunc;
-        }
+   public class CustomFormatter<T> : IFormatter<T>
+   {
+      public CustomFormatter(Func<double?, T> formaterFunc)
+      {
+         this.FormaterFunc = formaterFunc;
+      }
 
-        public Func<double?, T> FormaterFunc { get; private set; }
-    }
+      public Func<double?, T> FormaterFunc { get; }
+
+      public T GetFormat(double? value)
+      {
+         return FormaterFunc(value);
+      }
+   }
 }

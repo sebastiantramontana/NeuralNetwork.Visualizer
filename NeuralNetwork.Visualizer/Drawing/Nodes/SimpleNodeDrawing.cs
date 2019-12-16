@@ -2,9 +2,9 @@
 using NeuralNetwork.Visualizer.Drawing.Cache;
 using NeuralNetwork.Visualizer.Drawing.Canvas;
 using NeuralNetwork.Visualizer.Preferences;
+using NeuralNetwork.Visualizer.Preferences.Core;
 using NeuralNetwork.Visualizer.Selection;
 using System;
-using System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
@@ -25,26 +25,23 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
             return;
 
          var outputRectangle = GetOutputRectangle(rect);
+         var font = _preferences.OutputValueFormatter.GetFormat(this.Element.OutputValue.Value);
 
-         using (var valueFormat = _preferences.OutputValueFormatter.GetFormat(this.Element.OutputValue.Value))
-         {
-            var fontBrush = valueFormat.Brush;
-            canvas.DrawText(Math.Round(this.Element.OutputValue.Value, _preferences.RoundingDigits).ToString(), valueFormat.CreateFontInfo(), outputRectangle, fontBrush, valueFormat.Format);
-         }
+         canvas.DrawText(Math.Round(this.Element.OutputValue.Value, _preferences.RoundingDigits).ToString(), font, outputRectangle);
       }
 
       private Rectangle GetOutputRectangle(Rectangle rect)
       {
-         if (_cache.OutputSize == null)
+         if (_cache.OutputSize is null)
          {
-            var side = rect.Width;
+            var side = rect.Size.Width;
             var div3 = side / 3d;
 
             _cache.YCenteringOffeset = side / 2 - div3 / 2;
             _cache.OutputSize = new Size(side, (int)div3);
          }
 
-         var outputRectangle = new Rectangle(new Point(rect.X, rect.Y + (int)_cache.YCenteringOffeset), _cache.OutputSize.Value);
+         var outputRectangle = new Rectangle(new Position(rect.Position.X, rect.Position.Y + (int)_cache.YCenteringOffeset), _cache.OutputSize);
 
          return outputRectangle;
       }

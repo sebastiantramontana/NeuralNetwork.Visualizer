@@ -1,6 +1,6 @@
 ﻿namespace NeuralNetwork.Visualizer.Preferences.Core
 {
-   public enum TextAlignment
+   public enum HorizontalAlignment
    {
       Left,
       Center,

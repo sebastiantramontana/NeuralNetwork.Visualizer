@@ -1,5 +1,6 @@
 ﻿using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
+using NeuralNetwork.Visualizer.Preferences.Core;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -32,11 +33,11 @@ namespace NeuralNetwork.Visualizer.Selection
          return _selectedElements.Contains(element);
       }
 
-      public Element AddToSelection(Point location)
+      public Element AddToSelection(Position position)
       {
          RefreshSelection();
 
-         var elem = _selectionResolver.GetElementFromLocation(location);
+         var elem = _selectionResolver.GetElementFromLocation(position);
 
          if (elem != null && !_selectedElements.Contains(elem))
          {
@@ -46,19 +47,19 @@ namespace NeuralNetwork.Visualizer.Selection
          return elem;
       }
 
-      public Element SelectOnly(Point location)
+      public Element SelectOnly(Position position)
       {
          _needToBeRefreshed = false;
          _selectedElements.Clear();
 
-         return AddToSelection(location);
+         return AddToSelection(position);
       }
 
-      public Element Unselect(Point location)
+      public Element Unselect(Position position)
       {
          RefreshSelection();
 
-         var elem = _selectionResolver.GetElementFromLocation(location);
+         var elem = _selectionResolver.GetElementFromLocation(position);
 
          if (elem == null || !_selectedElements.Contains(elem))
          {

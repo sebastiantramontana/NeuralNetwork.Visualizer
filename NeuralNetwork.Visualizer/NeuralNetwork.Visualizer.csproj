@@ -37,6 +37,10 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NeuralNetwork.Infraestructure.Winform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Binaries\NeuralNetwork.Infraestructure.Winform.dll</HintPath>
+    </Reference>
     <Reference Include="NeuralNetwork.Model">
       <HintPath>Binaries\NeuralNetwork.Model.dll</HintPath>
     </Reference>
@@ -53,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Destroy.cs" />
+    <Compile Include="Drawing\Canvas\GdiMapping\GdiExtensions.cs" />
     <Compile Include="Drawing\Controls\ControlCanvas.cs" />
     <Compile Include="Drawing\Controls\ControlDrawing.cs" />
     <Compile Include="Drawing\Controls\IControlCanvas.cs" />
@@ -73,7 +78,6 @@
     <Compile Include="Drawing\Canvas\NestedCanvas.cs" />
     <Compile Include="Drawing\Canvas\GraphicsCanvas.cs" />
     <Compile Include="Drawing\DrawingBase.cs" />
-    <Compile Include="Drawing\FontInfo.cs" />
     <Compile Include="Drawing\Layers\NeuronLayerDrawing.cs" />
     <Compile Include="Drawing\Layers\InputLayerDrawing.cs" />
     <Compile Include="Drawing\Layers\LayerBaseDrawing.cs" />
@@ -90,29 +94,32 @@
     <Compile Include="NeuralNetworkVisualizerControl.Designer.cs">
       <DependentUpon>NeuralNetworkVisualizerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Preferences\Brushes\GradientBrushPreference.cs" />
+    <Compile Include="Preferences\Brushes\BrushBase.cs" />
+    <Compile Include="Preferences\Brushes\GradientBrush.cs" />
     <Compile Include="Preferences\Brushes\IBrush.cs" />
-    <Compile Include="Preferences\Brushes\SolidBrushPreference.cs" />
+    <Compile Include="Preferences\Brushes\SolidBrush.cs" />
     <Compile Include="Preferences\Core\Color.cs" />
-    <Compile Include="Preferences\Core\TextAlignment.cs" />
-    <Compile Include="Preferences\Core\TextTrimming.cs" />
-    <Compile Include="Preferences\Formatting\BasicFormatter.cs" />
+    <Compile Include="Preferences\Core\Position.cs" />
+    <Compile Include="Preferences\Core\Rectangle.cs" />
+    <Compile Include="Preferences\Core\Size.cs" />
+    <Compile Include="Preferences\Core\HorizontalAlignment.cs" />
+    <Compile Include="Preferences\Text\TextFormat.cs" />
+    <Compile Include="Preferences\Text\TextTrimming.cs" />
+    <Compile Include="Preferences\Core\VerticalAligment.cs" />
+    <Compile Include="Preferences\Formatting\NullFormatter.cs" />
     <Compile Include="Preferences\Formatting\ByValueSignFormatter.cs" />
     <Compile Include="Preferences\Formatting\CustomFormatter.cs" />
-    <Compile Include="Preferences\Formatting\FormatterBase.cs" />
     <Compile Include="Preferences\Formatting\IFormatter.cs" />
-    <Compile Include="Preferences\Pens\IPen.cs" />
-    <Compile Include="Preferences\Pens\SimplePen.cs" />
+    <Compile Include="Preferences\Pens\Cap.cs" />
+    <Compile Include="Preferences\Pens\Pen.cs" />
     <Compile Include="Preferences\NeuronPreference.cs" />
     <Compile Include="Preferences\EdgePreference.cs" />
     <Compile Include="Preferences\LayerPreference.cs" />
     <Compile Include="Preferences\NodePreference.cs" />
+    <Compile Include="Preferences\Pens\LineStyle.cs" />
     <Compile Include="Preferences\Preference.cs" />
     <Compile Include="Preferences\Text\FontLabel.cs" />
-    <Compile Include="Preferences\Core\FontStyle.cs" />
-    <Compile Include="Preferences\Text\OutputFontLabel.cs" />
-    <Compile Include="Preferences\Text\InputFontLabel.cs" />
-    <Compile Include="Preferences\Text\TextPreference.cs" />
+    <Compile Include="Preferences\Text\FontStyle.cs" />
     <Compile Include="Preferences\LayerTitlePreference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -149,12 +156,6 @@
     <Content Include="Binaries\NeuralNetwork.Infraestructure.Winform.dll" />
     <Content Include="Binaries\NeuralNetwork.Infrastructure.dll" />
     <Content Include="Binaries\NeuralNetwork.Model.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\NeuralNetwork.Infrastructure\NeuralNetwork.Infraestructure.Winform\NeuralNetwork.Infraestructure.Winform.csproj">
-      <Project>{E9715583-00F7-46B1-AB2E-F25CA51B1C69}</Project>
-      <Name>NeuralNetwork.Infraestructure.Winform</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

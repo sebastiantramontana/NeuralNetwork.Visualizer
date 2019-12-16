@@ -1,21 +1,22 @@
 ﻿using NeuralNetwork.Visualizer.Preferences.Brushes;
-using System.Drawing;
+using NeuralNetwork.Visualizer.Preferences.Core;
+using NeuralNetwork.Visualizer.Preferences.Pens;
+using NeuralNetwork.Visualizer.Preferences.Text;
+using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Drawing.Canvas
 {
-    internal interface ICanvas
-    {
-        int MaxWidth { get; }
-        int MaxHeight { get; }
+   internal interface ICanvas
+   {
+      Size Size { get; }
 
-        Point Translate(Point point, ICanvas destination);
-        void DrawEllipse(Rectangle rect, Pen pen, IBrush brush);
-        void DrawLine(Point p1, Point p2, Pen pen);
-        void DrawRectangle(Rectangle rect, Pen pen, IBrush brush);
-        void DrawText(string text, Font font, Point position, IBrush brush, StringFormat format);
-        void DrawText(string text, FontInfo font, Rectangle rect, IBrush brush, StringFormat format);
-        void DrawText(string text, FontInfo font, Rectangle rect, IBrush brush, StringFormat format, float angle);
-        void DrawImage(Image image, Point position, Size size);
-        Size MeasureText(string text, Font font, Point position, StringFormat format);
-    }
+      Position Translate(Position point, ICanvas destination);
+      void DrawEllipse(Rectangle rect, Pen pen, IBrush brush);
+      void DrawLine(Position p1, Position p2, Pen pen);
+      void DrawRectangle(Rectangle rect, Pen pen, IBrush brush);
+      void DrawText(string text, FontLabel font, Position position);
+      void DrawText(string text, FontLabel font, Rectangle rect);
+      void DrawText(string text, FontLabel font, Rectangle rect, float angle);
+      Size MeasureText(string text, FontLabel font, Position position);
+   }
 }

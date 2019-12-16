@@ -3,9 +3,9 @@ using NeuralNetwork.Visualizer.Drawing.Cache;
 using NeuralNetwork.Visualizer.Drawing.Canvas;
 using NeuralNetwork.Visualizer.Preferences;
 using NeuralNetwork.Visualizer.Preferences.Brushes;
+using NeuralNetwork.Visualizer.Preferences.Core;
 using NeuralNetwork.Visualizer.Preferences.Text;
 using NeuralNetwork.Visualizer.Selection;
-using System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
@@ -28,26 +28,23 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
 
       private void DrawLabel(ICanvas canvas)
       {
-         if (_preferences.InputFontLabel == InputFontLabel.Null || !_cache.EllipseRectangle.HasValue)
+         if (_preferences.InputFontLabel == FontLabel.Null || _cache.EllipseRectangle is null)
             return;
 
          var fontLabel = _preferences.InputFontLabel;
 
-         if (!_cache.InputLabelRectangle.HasValue)
+         if (_cache.InputLabelRectangle is null)
          {
-            var rect = _cache.EllipseRectangle.Value;
-            var labelWidth = rect.X - _preferences.NodeMargins;
+            var rect = _cache.EllipseRectangle;
+            var labelWidth = rect.Position.X - _preferences.NodeMargins;
             var labelHeight = fontLabel.Size;
-            _cache.InputLabelRectangle = new Rectangle(0, (rect.Height - labelHeight) / 2, labelWidth, labelHeight);
+            _cache.InputLabelRectangle = new Rectangle(new Position(0, (rect.Size.Height - labelHeight) / 2), new Size(labelWidth, labelHeight));
          }
 
          var label = this.Element.Id;
 
-         var fontInfo = new FontInfo(fontLabel.Family, fontLabel.Style);
-         canvas.DrawText(label, fontInfo, _cache.InputLabelRectangle.Value, new SolidBrushPreference(fontLabel.Color), fontLabel.Format);
+         canvas.DrawText(label, fontLabel, _cache.InputLabelRectangle);
       }
-
-
    }
 }
 

@@ -5,11 +5,14 @@ using NeuralNetwork.Visualizer.Drawing.Canvas;
 using NeuralNetwork.Visualizer.Drawing.Nodes;
 using NeuralNetwork.Visualizer.Preferences;
 using NeuralNetwork.Visualizer.Preferences.Brushes;
+using NeuralNetwork.Visualizer.Preferences.Core;
+using NeuralNetwork.Visualizer.Preferences.Pens;
 using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using Gdi = System.Drawing;
 using System.Linq;
+using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
 
 namespace NeuralNetwork.Visualizer.Drawing.Layers
 {
@@ -38,16 +41,14 @@ namespace NeuralNetwork.Visualizer.Drawing.Layers
 
       public override void Draw(ICanvas canvas)
       {
-         var rect = new Rectangle(0, 0, canvas.MaxWidth, canvas.MaxHeight);
-         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Region(rect), 1));
+         var rect = new Rectangle(new Position(0, 0), canvas.Size);
+         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Gdi.Region(rect.ToGdi()), 1));
 
          var isSelected = _selectionChecker.IsSelected(this.Element);
          var brush = GetBrush(isSelected);
 
-         using (var pen = GetPen(isSelected))
-         {
-            canvas.DrawRectangle(rect, pen, brush);
-         }
+         var pen = GetPen(isSelected);
+         canvas.DrawRectangle(rect, pen, brush);
 
          DrawTitle(canvas);
          DrawNodes(canvas);
@@ -56,8 +57,8 @@ namespace NeuralNetwork.Visualizer.Drawing.Layers
       private Pen GetPen(bool isSelected)
       {
          return (isSelected)
-             ? _preferences.Layers.BorderSelected.CreatePen()
-             : _preferences.Layers.Border.CreatePen();
+             ? _preferences.Layers.BorderSelected
+             : _preferences.Layers.Border;
       }
 
       private IBrush GetBrush(bool isSelected)
@@ -97,7 +98,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Layers
 
       private void DrawNode(INodeDrawing nodeDrawing, ICanvas parentCanvas, int y)
       {
-         var newCanvas = new NestedCanvas(new Rectangle(_preferences.NodeMargins, y, _cache.NodeWidth, _cache.NodeEllipseHeight), parentCanvas);
+         var newCanvas = new NestedCanvas(new Rectangle(new Position(_preferences.NodeMargins, y), new Size(_cache.NodeWidth, _cache.NodeEllipseHeight)), parentCanvas);
          nodeDrawing.Draw(newCanvas);
       }
 
@@ -108,11 +109,10 @@ namespace NeuralNetwork.Visualizer.Drawing.Layers
             return;
          }
 
-         var rectTitle = new Rectangle(0, 0, canvas.MaxWidth, _preferences.Layers.Title.Height);
-         canvas.DrawRectangle(rectTitle, null, _preferences.Layers.Title.Background);
+         var rectTitle = new Rectangle(new Position(0, 0), new Size(canvas.Size.Width, _preferences.Layers.Title.Height));
 
-         var brush = _preferences.Layers.Title.Font.Brush;
-         canvas.DrawText(this.Element.Id, _preferences.Layers.Title.Font.CreateFontInfo(), rectTitle, brush, _preferences.Layers.Title.Font.Format);
+         canvas.DrawRectangle(rectTitle, null, _preferences.Layers.Title.Background);
+         canvas.DrawText(this.Element.Id, _preferences.Layers.Title.Font, rectTitle);
       }
 
       protected abstract INodeDrawing CreateDrawingNode(TNode node);

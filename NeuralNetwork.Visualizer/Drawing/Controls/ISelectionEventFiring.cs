@@ -1,9 +1,9 @@
-﻿using System.Drawing;
+﻿using NeuralNetwork.Visualizer.Preferences.Core;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
-    internal interface ISelectionEventFiring
-    {
-        void FireSelectionEvent(Point location);
-    }
+   internal interface ISelectionEventFiring
+   {
+      void FireSelectionEvent(Position position);
+   }
 }

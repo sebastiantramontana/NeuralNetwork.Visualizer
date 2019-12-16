@@ -1,6 +1,6 @@
 ﻿using NeuralNetwork.Visualizer.Preferences;
+using NeuralNetwork.Visualizer.Preferences.Core;
 using System;
-using System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Cache
 {
@@ -16,11 +16,9 @@ namespace NeuralNetwork.Visualizer.Drawing.Cache
          var doubleNodeMargin = preferences.NodeMargins * 2;
          float maxBorder;
 
-         using (var inputPen = preferences.Inputs.Border.CreatePen())
-         using (var neuronPen = preferences.Neurons.Border.CreatePen())
-         {
-            maxBorder = Math.Max(inputPen.Width, neuronPen.Width);
-         }
+         var inputPen = preferences.Inputs.Border;
+         var neuronPen = preferences.Neurons.Border;
+         maxBorder = Math.Max(inputPen.Width, neuronPen.Width);
 
          var initialTotalNodesHeight = currentHeight - (preferences.Layers.Title.Height + doubleNodeMargin);
          var initialNodeHeight = initialTotalNodesHeight / maxNodes;

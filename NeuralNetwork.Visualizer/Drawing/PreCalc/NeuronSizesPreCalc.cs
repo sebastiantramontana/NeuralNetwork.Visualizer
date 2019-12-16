@@ -1,5 +1,5 @@
 ﻿using NeuralNetwork.Visualizer.Preferences;
-using System.Drawing;
+using NeuralNetwork.Visualizer.Preferences.Core;
 
 namespace NeuralNetwork.Visualizer.Drawing.Cache
 {
@@ -12,34 +12,34 @@ namespace NeuralNetwork.Visualizer.Drawing.Cache
             _preferences = preferences;
         }
 
-        private Size? _sumSize = null;
+        private Size _sumSize = null;
         internal Size SumSize
         {
             get
             {
-                if (!_sumSize.HasValue)
+                if (_sumSize is null)
                 {
                     var valuesHeight = this.Div3 / 2 - _preferences.NodeMargins;
                     var valuesWidth = valuesHeight * 5.23; //buena proporción
                     _sumSize = new Size((int)valuesWidth, (int)valuesHeight);
                 }
 
-                return _sumSize.Value;
+                return _sumSize;
             }
         }
 
-        private Size? _activationFunctionSize = null;
+        private Size _activationFunctionSize = null;
         internal Size ActivationFunctionSize
         {
             get
             {
-                if (!_activationFunctionSize.HasValue)
+                if (_activationFunctionSize is null)
                 {
                     var div_3 = (int)this.Div3;
                     _activationFunctionSize = new Size(div_3, div_3);
                 }
 
-                return _activationFunctionSize.Value;
+                return _activationFunctionSize;
             }
         }
 
@@ -49,7 +49,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Cache
         {
             if (!_ellipseHeightDiv2.HasValue)
             {
-                _ellipseHeightDiv2 = this.EllipseRectangle.Value.Height / 2;
+                _ellipseHeightDiv2 = this.EllipseRectangle.Size.Height / 2;
             }
 
             return (int)(fromY + _ellipseHeightDiv2.Value);
@@ -62,16 +62,16 @@ namespace NeuralNetwork.Visualizer.Drawing.Cache
             {
                 if (!_div3.HasValue)
                 {
-                    _div3 = this.EllipseRectangle.Value.Height / 3;
+                    _div3 = this.EllipseRectangle.Size.Height / 3;
                 }
 
                 return _div3.Value;
             }
         }
 
-        internal Point GetActivationFunctionPosition(Rectangle origin)
+        internal Position GetActivationFunctionPosition(Rectangle origin)
         {
-            return new Point((int)(origin.X + this.Div3), (int)(origin.Y + this.Div3));
+            return new Position((int)(origin.Position.X + this.Div3), (int)(origin.Position.Y + this.Div3));
         }
 
         private double? _ouputPositionYOffset = null;

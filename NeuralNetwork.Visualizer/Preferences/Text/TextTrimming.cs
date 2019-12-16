@@ -1,4 +1,4 @@
-﻿namespace NeuralNetwork.Visualizer.Preferences.Core
+﻿namespace NeuralNetwork.Visualizer.Preferences.Text
 {
    public enum TextTrimming
    {

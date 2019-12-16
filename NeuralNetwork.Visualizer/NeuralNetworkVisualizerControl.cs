@@ -1,17 +1,17 @@
-﻿using System;
+﻿using NeuralNetwork.Infrastructure.Winform;
+using NeuralNetwork.Model;
+using NeuralNetwork.Model.Layers;
+using NeuralNetwork.Model.Nodes;
+using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
+using NeuralNetwork.Visualizer.Drawing.Controls;
+using NeuralNetwork.Visualizer.Preferences;
+using NeuralNetwork.Visualizer.Selection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using NeuralNetwork.Infrastructure;
-using NeuralNetwork.Infrastructure.Winform;
-using NeuralNetwork.Model;
-using NeuralNetwork.Model.Layers;
-using NeuralNetwork.Model.Nodes;
-using NeuralNetwork.Visualizer.Drawing.Controls;
-using NeuralNetwork.Visualizer.Preferences;
-using NeuralNetwork.Visualizer.Selection;
 
 namespace NeuralNetwork.Visualizer
 {
@@ -59,12 +59,8 @@ namespace NeuralNetwork.Visualizer
          picCanvas.MouseLeave += PicCanvas_MouseLeave;
       }
 
-      private Preference _preferences = new Preference();
       [Browsable(false)]
-      public Preference Preferences
-      {
-         get { return _preferences; }
-      }
+      public Preference Preferences { get; } = new Preference();
 
       private InputLayer _InputLayer = null;
       [Browsable(false)]
@@ -182,7 +178,7 @@ namespace NeuralNetwork.Visualizer
             return;
          }
 
-         switch (_preferences.AutoRedrawMode)
+         switch (Preferences.AutoRedrawMode)
          {
             case Drawing.AutoRedrawMode.AutoRedrawSync:
                Redraw();
@@ -220,7 +216,7 @@ namespace NeuralNetwork.Visualizer
          {
             if (!_previousSize.IsEmpty)
             {
-               if (_preferences.AsyncRedrawOnResize)
+               if (Preferences.AsyncRedrawOnResize)
                {
                   if (_redrawWhenPropertyChange)
                   {
@@ -245,7 +241,7 @@ namespace NeuralNetwork.Visualizer
          if (!_redrawWhenPropertyChange)
             return;
 
-         _selectionEventFiring.FireSelectionEvent(e.Location);
+         _selectionEventFiring.FireSelectionEvent(e.Location.ToVisualizer());
       }
 
       private void PicCanvas_MouseLeave(object sender, EventArgs e)
@@ -261,7 +257,7 @@ namespace NeuralNetwork.Visualizer
          if (!_redrawWhenPropertyChange)
             return;
 
-         _toolTipFiring.Show(e.Location);
+         _toolTipFiring.Show(e.Location.ToVisualizer());
       }
 
       private T Constrain<T>(T low, T value, T max) where T : IComparable<T>
@@ -271,8 +267,6 @@ namespace NeuralNetwork.Visualizer
 
       protected override void Dispose(bool disposing)
       {
-         Destroy.Disposable(ref _preferences);
-
          if (disposing && (components != null))
          {
             components.Dispose();
