@@ -8,7 +8,7 @@ namespace NeuralNetwork.Visualizer.Preferences
       private IFormatter<FontLabel> _sumValueFormatter;
       public IFormatter<FontLabel> SumValueFormatter
       {
-         get => _sumValueFormatter ?? (_sumValueFormatter = new NullFormatter<FontLabel>(FontLabel.Null));
+         get => _sumValueFormatter ?? (_sumValueFormatter = new NullFormatter<FontLabel>(FontLabel.Default));
          set => _sumValueFormatter = value;
       }
    }

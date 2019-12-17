@@ -22,14 +22,14 @@ namespace NeuralNetwork.Visualizer.Preferences
       private NodePreference _biases;
       private EdgePreference _edges;
 
-      private FontLabel _inputFontLabel = FontLabel.Null;
+      private FontLabel _inputFontLabel = FontLabel.Default;
       public FontLabel InputFontLabel
       {
          get => _inputFontLabel ?? FontLabel.Null;
          set => _inputFontLabel = value;
       }
 
-      private FontLabel _outputFontLabel = FontLabel.Null;
+      private FontLabel _outputFontLabel = FontLabel.Default;
       public FontLabel OutputFontLabel
       {
          get => _outputFontLabel ?? FontLabel.Null;
@@ -48,8 +48,8 @@ namespace NeuralNetwork.Visualizer.Preferences
          {
             Background = new SolidBrush(new Color(240, 255, 240, 255)),
             BackgroundSelected = new SolidBrush(new Color(200, 215, 200, 255)),
-            Border = new Pen(new SolidBrush(new Color(216, 230, 173, 255)), LineStyle.Solid, 3, Cap.None, Cap.None),
-            BorderSelected = new Pen(new SolidBrush(new Color(166, 180, 123, 255)), LineStyle.Solid, 3, Cap.None, Cap.None)
+            Border = new Pen(new SolidBrush(new Color(216, 230, 173, 255)), LineStyle.Solid, 1, Cap.None, Cap.None),
+            BorderSelected = new Pen(new SolidBrush(new Color(166, 180, 123, 255)), LineStyle.Solid, 1, Cap.None, Cap.None)
          });
          set => _inputs = value;
       }
@@ -60,8 +60,8 @@ namespace NeuralNetwork.Visualizer.Preferences
          {
             Background = new SolidBrush(new Color(0xF0, 0xFF, 0xFF, 0xFF)),
             BackgroundSelected = new SolidBrush(new Color(0xB0, 0xC4, 0xDE, 0xFF)),
-            Border = new Pen(new SolidBrush(new Color(0xAD, 0xD8, 0xE6, 0xFF)), LineStyle.Solid, 3, Cap.None, Cap.None),
-            BorderSelected = new Pen(new SolidBrush(new Color(0x00, 0xBF, 0xFF, 0xFF)), LineStyle.Solid, 3, Cap.None, Cap.None)
+            Border = new Pen(new SolidBrush(new Color(0xAD, 0xD8, 0xE6, 0xFF)), LineStyle.Solid, 1, Cap.None, Cap.None),
+            BorderSelected = new Pen(new SolidBrush(new Color(0x00, 0xBF, 0xFF, 0xFF)), LineStyle.Solid, 1, Cap.None, Cap.None)
          });
          set => _neurons = value;
       }
@@ -72,8 +72,8 @@ namespace NeuralNetwork.Visualizer.Preferences
          {
             Background = new SolidBrush(new Color(255, 240, 255, 255)),
             BackgroundSelected = new SolidBrush(new Color(215, 200, 215, 255)),
-            Border = new Pen(new SolidBrush(new Color(0xFF, 0xB6, 0xC1, 0xFF)), LineStyle.Solid, 3, Cap.None, Cap.None),
-            BorderSelected = new Pen(new SolidBrush(new Color(0xFF, 0xC0, 0xCB, 0xFF)), LineStyle.Solid, 3, Cap.None, Cap.None)
+            Border = new Pen(new SolidBrush(new Color(0xFF, 0xB6, 0xC1, 0xFF)), LineStyle.Solid, 1, Cap.None, Cap.None),
+            BorderSelected = new Pen(new SolidBrush(new Color(0xFF, 0xC0, 0xCB, 0xFF)), LineStyle.Solid, 1, Cap.None, Cap.None)
          });
          set => _biases = value;
       }
