@@ -43,7 +43,7 @@ namespace NeuralNetwork.Visualizer.Preferences
          set => ChangeNotificationProperty(ref _inputFontLabel, value);
       }
 
-      private FontLabel _outputFontLabel = FontLabel.Default;
+      private FontLabel _outputFontLabel = new FontLabel(FontLabel.Default, new TextFormat(HorizontalAlignment.Left, VerticalAlignment.Middle, TextTrimming.Character));
       public FontLabel OutputFontLabel
       {
          get => _outputFontLabel ?? FontLabel.Null;
