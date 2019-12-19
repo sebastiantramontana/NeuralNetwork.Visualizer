@@ -63,7 +63,9 @@
     <Compile Include="Drawing\Controls\ControlCanvas.cs" />
     <Compile Include="Drawing\Controls\ControlDrawing.cs" />
     <Compile Include="Drawing\Controls\IControlCanvas.cs" />
-    <Compile Include="Drawing\Controls\SelectionEventFiring.cs" />
+    <Compile Include="Drawing\Controls\IControlDrawing.cs" />
+    <Compile Include="Selection\ISelectionEventFiring.cs" />
+    <Compile Include="Selection\SelectionEventFiring.cs" />
     <Compile Include="Drawing\Controls\ToolTipFiring.cs" />
     <Compile Include="Drawing\Canvas\NestedCanvas.cs" />
     <Compile Include="Drawing\Canvas\GraphicsCanvas.cs" />

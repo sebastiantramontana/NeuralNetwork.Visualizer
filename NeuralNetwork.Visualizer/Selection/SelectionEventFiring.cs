@@ -1,5 +1,4 @@
 ﻿using NeuralNetwork.Model;
-using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Selection;
 using System;
@@ -11,7 +10,7 @@ using SelectInputLayer = System.Func<System.EventHandler<NeuralNetwork.Visualize
 using SelectNeuron = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Neuron>>>;
 using SelectNeuronLayer = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Layers.NeuronLayer>>>;
 
-namespace NeuralNetwork.Visualizer.Drawing.Controls
+namespace NeuralNetwork.Visualizer.Selection
 {
    internal class SelectionEventFiring : ISelectionEventFiring
    {

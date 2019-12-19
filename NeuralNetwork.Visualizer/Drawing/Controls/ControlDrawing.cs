@@ -2,7 +2,6 @@
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
 using NeuralNetwork.Visualizer.Calcs;
-using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Selection;

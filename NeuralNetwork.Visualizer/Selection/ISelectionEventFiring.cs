@@ -1,6 +1,6 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 
-namespace NeuralNetwork.Visualizer.Contracts.Controls
+namespace NeuralNetwork.Visualizer.Selection
 {
    public interface ISelectionEventFiring
    {

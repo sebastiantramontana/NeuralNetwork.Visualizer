@@ -1,7 +1,7 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using System.Threading.Tasks;
 
-namespace NeuralNetwork.Visualizer.Contracts.Controls
+namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
    public interface IControlDrawing
    {
