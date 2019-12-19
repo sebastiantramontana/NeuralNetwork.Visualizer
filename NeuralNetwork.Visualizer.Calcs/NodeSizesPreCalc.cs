@@ -4,8 +4,8 @@ namespace NeuralNetwork.Visualizer.Calcs
 {
    public abstract class NodeSizesPreCalc
    {
-      internal Rectangle OutputLabelRectangle { get; set; }
-      internal Rectangle EllipseRectangle { get; set; }
-      internal Size OutputSize { get; set; }
+      public Rectangle OutputLabelRectangle { get; set; }
+      public Rectangle EllipseRectangle { get; set; }
+      public Size OutputSize { get; set; }
    }
 }

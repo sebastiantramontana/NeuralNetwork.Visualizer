@@ -1,6 +1,6 @@
 ﻿namespace NeuralNetwork.Visualizer.Contracts.Selection
 {
-    internal interface ISelectableElementRegister
+   public interface ISelectableElementRegister
     {
         void Register(RegistrationInfo info);
     }

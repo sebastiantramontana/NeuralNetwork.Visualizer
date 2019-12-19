@@ -68,6 +68,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Contracts\NeuralNetwork.Visualizer.Contracts.csproj">
+      <Project>{813BB79A-D4A7-4483-93A9-B257EB87B7BA}</Project>
+      <Name>NeuralNetwork.Visualizer.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Preferences\NeuralNetwork.Visualizer.Preferences.csproj">
+      <Project>{B8B0BB00-0D6E-4B03-AAD8-5DD59214ED49}</Project>
+      <Name>NeuralNetwork.Visualizer.Preferences</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NeuralNetwork.Visualizer\NeuralNetwork.Visualizer.csproj">
       <Project>{a16491c6-9e57-4439-8bd7-74ff39e89055}</Project>
       <Name>NeuralNetwork.Visualizer</Name>

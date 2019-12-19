@@ -1,33 +1,27 @@
 ﻿using NeuralNetwork.Model.Nodes;
-using NeuralNetwork.Visualizer.Drawing.Cache;
-using NeuralNetwork.Visualizer.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Calcs;
+using NeuralNetwork.Visualizer.Contracts.Drawing;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Preferences;
+using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
-using NeuralNetwork.Visualizer.Preferences;
-using NeuralNetwork.Visualizer.Preferences.Brushes;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using NeuralNetwork.Visualizer.Preferences.Pens;
 using NeuralNetwork.Visualizer.Selection;
 using System;
-using Gdi = System.Drawing;
 using System.Drawing.Drawing2D;
+using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
-   internal interface INodeDrawing : IDrawing
-   {
-      ICanvas Canvas { get; }
-      Position EdgeStartPosition { get; }
-      NodeBase Node { get; }
-   }
-
    internal abstract class NodeBaseDrawing<TNode> : DrawingBase<TNode>, INodeDrawing where TNode : NodeBase
    {
-      private readonly NodePreference _preferences;
+      private readonly INodePreference _preferences;
       private readonly NodeSizesPreCalc _cache;
       private readonly ISelectableElementRegister _selectableElementRegister;
       private readonly IElementSelectionChecker _selectionChecker;
 
-      internal NodeBaseDrawing(TNode element, NodePreference preferences, NodeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker) : base(element)
+      internal NodeBaseDrawing(TNode element, INodePreference preferences, NodeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker) : base(element)
       {
          _preferences = preferences;
          _cache = cache;
@@ -69,7 +63,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          var gp = new GraphicsPath();
          gp.AddEllipse(_cache.EllipseRectangle.ToGdi());
 
-         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Gdi.Region(gp), 2));
+         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Region(new Gdi.Region(gp)), 2));
       }
 
       private Pen GetPen(bool isSelected)

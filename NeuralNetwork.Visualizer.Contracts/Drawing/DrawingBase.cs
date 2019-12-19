@@ -2,14 +2,14 @@
 
 namespace NeuralNetwork.Visualizer.Contracts.Drawing
 {
-   internal abstract class DrawingBase<TElement> : IDrawing where TElement : Element
+   public abstract class DrawingBase<TElement> : IDrawing where TElement : Element
    {
-      internal DrawingBase(TElement element)
+      public DrawingBase(TElement element)
       {
          this.Element = element;
       }
 
-      internal TElement Element { get; private set; }
+      public TElement Element { get; private set; }
       public abstract void Draw(ICanvas canvas);
    }
 }

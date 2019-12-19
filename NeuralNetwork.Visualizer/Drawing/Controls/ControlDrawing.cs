@@ -1,18 +1,19 @@
-﻿using NeuralNetwork.Infrastructure;
-using NeuralNetwork.Infrastructure.Winform;
+﻿using NeuralNetwork.Infrastructure.Winform;
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetwork.Visualizer.Drawing.Cache;
+using NeuralNetwork.Visualizer.Calcs;
+using NeuralNetwork.Visualizer.Contracts.Controls;
+using NeuralNetwork.Visualizer.Contracts.Drawing;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
 using NeuralNetwork.Visualizer.Drawing.Layers;
-using NeuralNetwork.Visualizer.Drawing.Nodes;
-using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Collections.Generic;
-using Gdi = System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using NeuralNetwork.Visualizer.Preferences.Core;
+using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
@@ -34,9 +35,9 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
 
       public IControlCanvas ControlCanvas { get; }
 
-      public Gdi.Image GetImage()
+      public async Task<Image> GetImage()
       {
-         return this.ControlCanvas.Image;
+         return await Task.Run(() => this.ControlCanvas.Image.ToVisualizer());
       }
 
       public void Redraw()

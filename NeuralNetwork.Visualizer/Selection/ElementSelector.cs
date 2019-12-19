@@ -1,8 +1,8 @@
 ﻿using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
-using NeuralNetwork.Visualizer.Preferences.Core;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Selection;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace NeuralNetwork.Visualizer.Selection

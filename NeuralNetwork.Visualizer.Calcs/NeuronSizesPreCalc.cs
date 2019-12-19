@@ -13,7 +13,7 @@ namespace NeuralNetwork.Visualizer.Calcs
       }
 
       private Size _sumSize = null;
-      internal Size SumSize
+      public Size SumSize
       {
          get
          {
@@ -29,7 +29,7 @@ namespace NeuralNetwork.Visualizer.Calcs
       }
 
       private Size _activationFunctionSize = null;
-      internal Size ActivationFunctionSize
+      public Size ActivationFunctionSize
       {
          get
          {
@@ -45,7 +45,7 @@ namespace NeuralNetwork.Visualizer.Calcs
 
 
       private double? _ellipseHeightDiv2 = null;
-      internal int GetInputPositionY(int fromY)
+      public int GetInputPositionY(int fromY)
       {
          if (!_ellipseHeightDiv2.HasValue)
          {
@@ -69,13 +69,13 @@ namespace NeuralNetwork.Visualizer.Calcs
          }
       }
 
-      internal Position GetActivationFunctionPosition(Rectangle origin)
+      public Position GetActivationFunctionPosition(Rectangle origin)
       {
          return new Position((int)(origin.Position.X + this.Div3), (int)(origin.Position.Y + this.Div3));
       }
 
       private double? _ouputPositionYOffset = null;
-      internal int GetOutputPositionY(int fromY)
+      public int GetOutputPositionY(int fromY)
       {
          if (!_ouputPositionYOffset.HasValue)
          {

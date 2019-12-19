@@ -37,12 +37,14 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NeuralNetwork.Infraestructure.Winform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\NeuralNetwork.Infraestructure.Winform.dll</HintPath>
+    <Reference Include="NeuralNetwork.Infraestructure.Winform">
+      <HintPath>..\Dependencies\NeuralNetwork.Infraestructure.Winform.dll</HintPath>
+    </Reference>
+    <Reference Include="NeuralNetwork.Infrastructure">
+      <HintPath>..\Dependencies\NeuralNetwork.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="NeuralNetwork.Model">
-      <HintPath>Binaries\NeuralNetwork.Model.dll</HintPath>
+      <HintPath>..\Dependencies\NeuralNetwork.Model.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,23 +63,10 @@
     <Compile Include="Drawing\Controls\ControlCanvas.cs" />
     <Compile Include="Drawing\Controls\ControlDrawing.cs" />
     <Compile Include="Drawing\Controls\IControlCanvas.cs" />
-    <Compile Include="Drawing\Controls\IControlDrawing.cs" />
-    <Compile Include="Drawing\Controls\ISelectionEventFiring.cs" />
-    <Compile Include="Drawing\Controls\IToolTipFiring.cs" />
     <Compile Include="Drawing\Controls\SelectionEventFiring.cs" />
     <Compile Include="Drawing\Controls\ToolTipFiring.cs" />
-    <Compile Include="Drawing\AutoRedrawMode.cs" />
-    <Compile Include="Drawing\IDrawing.cs" />
-    <Compile Include="Drawing\Layers\ILayerDrawing.cs" />
-    <Compile Include="Drawing\PreCalc\EdgeSizesPreCalc.cs" />
-    <Compile Include="Drawing\PreCalc\LayerSizesPreCalc.cs" />
-    <Compile Include="Drawing\PreCalc\NodeSizesPreCalc.cs" />
-    <Compile Include="Drawing\PreCalc\NeuronSizesPreCalc.cs" />
-    <Compile Include="Drawing\PreCalc\SimpleNodeSizesPreCalc.cs" />
-    <Compile Include="Drawing\Canvas\ICanvas.cs" />
     <Compile Include="Drawing\Canvas\NestedCanvas.cs" />
     <Compile Include="Drawing\Canvas\GraphicsCanvas.cs" />
-    <Compile Include="Drawing\DrawingBase.cs" />
     <Compile Include="Drawing\Layers\NeuronLayerDrawing.cs" />
     <Compile Include="Drawing\Layers\InputLayerDrawing.cs" />
     <Compile Include="Drawing\Layers\LayerBaseDrawing.cs" />
@@ -87,54 +76,21 @@
     <Compile Include="Drawing\Nodes\NodeBaseDrawing.cs" />
     <Compile Include="Drawing\Nodes\NeuronDrawing.cs" />
     <Compile Include="Drawing\Nodes\SimpleNodeDrawing.cs" />
-    <Compile Include="Drawing\RenderQuality.cs" />
     <Compile Include="NeuralNetworkVisualizerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="NeuralNetworkVisualizerControl.Designer.cs">
       <DependentUpon>NeuralNetworkVisualizerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Preferences\Brushes\BrushBase.cs" />
-    <Compile Include="Preferences\Brushes\GradientBrush.cs" />
-    <Compile Include="Preferences\Brushes\IBrush.cs" />
-    <Compile Include="Preferences\Brushes\SolidBrush.cs" />
-    <Compile Include="Preferences\Core\Color.cs" />
-    <Compile Include="Preferences\Core\Position.cs" />
-    <Compile Include="Preferences\Core\Rectangle.cs" />
-    <Compile Include="Preferences\Core\Size.cs" />
-    <Compile Include="Preferences\Core\HorizontalAlignment.cs" />
-    <Compile Include="Preferences\Text\TextFormat.cs" />
-    <Compile Include="Preferences\Text\TextTrimming.cs" />
-    <Compile Include="Preferences\Core\VerticalAligment.cs" />
-    <Compile Include="Preferences\Formatting\NullFormatter.cs" />
-    <Compile Include="Preferences\Formatting\ByValueSignFormatter.cs" />
-    <Compile Include="Preferences\Formatting\CustomFormatter.cs" />
-    <Compile Include="Preferences\Formatting\IFormatter.cs" />
-    <Compile Include="Preferences\Pens\Cap.cs" />
-    <Compile Include="Preferences\Pens\Pen.cs" />
-    <Compile Include="Preferences\NeuronPreference.cs" />
-    <Compile Include="Preferences\EdgePreference.cs" />
-    <Compile Include="Preferences\LayerPreference.cs" />
-    <Compile Include="Preferences\NodePreference.cs" />
-    <Compile Include="Preferences\Pens\LineStyle.cs" />
-    <Compile Include="Preferences\Preference.cs" />
-    <Compile Include="Preferences\Text\FontLabel.cs" />
-    <Compile Include="Preferences\Text\FontStyle.cs" />
-    <Compile Include="Preferences\LayerTitlePreference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Selection\IElementSelectionChecker.cs" />
-    <Compile Include="Selection\ISelectableElementRegister.cs" />
-    <Compile Include="Selection\IElementSelector.cs" />
-    <Compile Include="Selection\ISelectionResolver.cs" />
+    <Compile Include="Selection\Region.cs" />
     <Compile Include="Selection\SelectableElementRegister.cs" />
-    <Compile Include="Selection\SelectionEventArgs.cs" />
     <Compile Include="Selection\ElementSelector.cs" />
-    <Compile Include="Selection\RegistrationInfo.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
@@ -153,9 +109,18 @@
     <None Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Binaries\NeuralNetwork.Infraestructure.Winform.dll" />
-    <Content Include="Binaries\NeuralNetwork.Infrastructure.dll" />
-    <Content Include="Binaries\NeuralNetwork.Model.dll" />
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Calcs\NeuralNetwork.Visualizer.Calcs.csproj">
+      <Project>{7ac23430-3800-4d8d-8adb-2edc97aea478}</Project>
+      <Name>NeuralNetwork.Visualizer.Calcs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Contracts\NeuralNetwork.Visualizer.Contracts.csproj">
+      <Project>{813bb79a-d4a7-4483-93a9-b257eb87b7ba}</Project>
+      <Name>NeuralNetwork.Visualizer.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Preferences\NeuralNetwork.Visualizer.Preferences.csproj">
+      <Project>{B8B0BB00-0D6E-4B03-AAD8-5DD59214ED49}</Project>
+      <Name>NeuralNetwork.Visualizer.Preferences</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

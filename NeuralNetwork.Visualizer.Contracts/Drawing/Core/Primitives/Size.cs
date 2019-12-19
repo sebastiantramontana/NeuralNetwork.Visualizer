@@ -4,6 +4,8 @@ namespace NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives
 {
    public class Size : IEquatable<Size>
    {
+      public static readonly Size Null = new Size(0, 0);
+
       public Size(int width, int height)
       {
          this.Width = width;
@@ -12,6 +14,7 @@ namespace NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives
 
       public int Width { get; }
       public int Height { get; }
+      public bool IsNull => this == Size.Null;
 
       public override bool Equals(object obj)
       {

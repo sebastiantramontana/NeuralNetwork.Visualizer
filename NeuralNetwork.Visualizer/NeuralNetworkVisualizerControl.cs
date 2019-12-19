@@ -2,6 +2,11 @@
 using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
+using NeuralNetwork.Visualizer.Contracts;
+using NeuralNetwork.Visualizer.Contracts.Controls;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Preferences;
+using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
 using NeuralNetwork.Visualizer.Drawing.Controls;
 using NeuralNetwork.Visualizer.Preferences;
@@ -9,13 +14,12 @@ using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NeuralNetwork.Visualizer
 {
-   public partial class NeuralNetworkVisualizerControl : UserControl
+   public partial class NeuralNetworkVisualizerControl : UserControl, INeuralNetworkVisualizerControl
    {
       private bool _redrawWhenPropertyChange = false;
 
@@ -52,7 +56,7 @@ namespace NeuralNetwork.Visualizer
                                     () => this.SelectEdge);
 
          Control.CheckForIllegalCrossThreadCalls = true;
-         this.BackColor = Color.White;
+         this.BackColor = Color.White.ToGdi();
 
          picCanvas.MouseDown += PicCanvas_MouseDown;
          picCanvas.MouseMove += PicCanvas_MouseMove;
@@ -60,7 +64,7 @@ namespace NeuralNetwork.Visualizer
       }
 
       [Browsable(false)]
-      public Preference Preferences { get; } = new Preference();
+      public IPreference Preferences { get; } = Preference.Create();
 
       private InputLayer _InputLayer = null;
       [Browsable(false)]
@@ -130,8 +134,10 @@ namespace NeuralNetwork.Visualizer
          }
       }
 
-      [Browsable(false)]
-      public Image Image => _controlDrawing.GetImage();
+      public Task<Image> ExportToImage()
+      {
+         return _controlDrawing.GetImage();
+      }
 
       public void Redraw()
       {
@@ -180,13 +186,13 @@ namespace NeuralNetwork.Visualizer
 
          switch (Preferences.AutoRedrawMode)
          {
-            case Drawing.AutoRedrawMode.AutoRedrawSync:
+            case AutoRedrawMode.AutoRedrawSync:
                Redraw();
                break;
-            case Drawing.AutoRedrawMode.AutoRedrawAsync:
+            case AutoRedrawMode.AutoRedrawAsync:
                await RedrawAsync();
                break;
-            case Drawing.AutoRedrawMode.NoAutoRedraw:
+            case AutoRedrawMode.NoAutoRedraw:
             default:
                break;
          }
@@ -207,14 +213,14 @@ namespace NeuralNetwork.Visualizer
          await _controlDrawing?.RedrawAsync();
       }
 
-      private Size _previousSize = Size.Empty;
+      private Size _previousSize = Contracts.Drawing.Core.Primitives.Size.Null;
       protected override async void OnSizeChanged(EventArgs e)
       {
-         _previousSize = this.ClientSize;
+         _previousSize = this.ClientSize.ToVisualizer();
 
          if (!this.ClientSize.IsEmpty)
          {
-            if (!_previousSize.IsEmpty)
+            if (!_previousSize.IsNull)
             {
                if (Preferences.AsyncRedrawOnResize)
                {

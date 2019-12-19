@@ -1,14 +1,14 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using NeuralNetwork.Infrastructure.Winform;
+﻿using NeuralNetwork.Infrastructure.Winform;
 using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using NeuralNetwork.Visualizer.Selection;
+using NeuralNetwork.Visualizer.Contracts.Controls;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Selection;
+using System;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
 {

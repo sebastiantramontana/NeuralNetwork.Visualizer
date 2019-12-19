@@ -2,7 +2,7 @@
 
 namespace NeuralNetwork.Visualizer.Contracts.Controls
 {
-   internal interface IToolTipFiring
+   public interface IToolTipFiring
    {
       void Show(Position position);
       void Hide();

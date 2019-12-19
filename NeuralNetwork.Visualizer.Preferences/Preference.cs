@@ -8,6 +8,13 @@ namespace NeuralNetwork.Visualizer.Preferences
 {
    public class Preference : IPreference
    {
+      public static IPreference Create()
+      {
+         return new Preference();
+      }
+
+      private Preference() { }
+
       private ILayerPreference _layers = new LayerPreference
       {
          Background = SolidBrush.White,

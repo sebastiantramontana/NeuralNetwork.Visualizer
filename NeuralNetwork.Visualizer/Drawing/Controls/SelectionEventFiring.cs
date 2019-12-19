@@ -1,15 +1,15 @@
 ﻿using NeuralNetwork.Model;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using NeuralNetwork.Visualizer.Selection;
+using NeuralNetwork.Visualizer.Contracts.Controls;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Selection;
 using System;
 using System.Windows.Forms;
-using SelectBias = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Bias>>>;
-using SelectEdge = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Edge>>>;
-using SelectInput = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Input>>>;
-using SelectInputLayer = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Layers.InputLayer>>>;
-using SelectNeuron = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Neuron>>>;
-using SelectNeuronLayer = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Selection.SelectionEventArgs<NeuralNetwork.Model.Layers.NeuronLayer>>>;
-
+using SelectBias = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Bias>>>;
+using SelectEdge = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Edge>>>;
+using SelectInput = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Input>>>;
+using SelectInputLayer = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Layers.InputLayer>>>;
+using SelectNeuron = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Neuron>>>;
+using SelectNeuronLayer = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Layers.NeuronLayer>>>;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
 {

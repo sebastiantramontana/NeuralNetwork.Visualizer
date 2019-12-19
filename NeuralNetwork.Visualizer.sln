@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork.Visualizer.Co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{49C9D943-2EE8-479F-9871-F26F7649029A}"
 	ProjectSection(SolutionItems) = preProject
+		Dependencies\NeuralNetwork.Infraestructure.Winform.dll = Dependencies\NeuralNetwork.Infraestructure.Winform.dll
+		Dependencies\NeuralNetwork.Infrastructure.dll = Dependencies\NeuralNetwork.Infrastructure.dll
 		Dependencies\NeuralNetwork.Model.dll = Dependencies\NeuralNetwork.Model.dll
 	EndProjectSection
 EndProject

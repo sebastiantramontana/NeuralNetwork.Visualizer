@@ -2,7 +2,7 @@
 
 namespace NeuralNetwork.Visualizer.Contracts.Controls
 {
-   internal interface ISelectionEventFiring
+   public interface ISelectionEventFiring
    {
       void FireSelectionEvent(Position position);
    }

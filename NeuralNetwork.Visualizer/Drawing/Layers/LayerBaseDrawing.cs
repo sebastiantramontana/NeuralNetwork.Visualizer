@@ -1,18 +1,20 @@
 ﻿using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetwork.Visualizer.Drawing.Cache;
+using NeuralNetwork.Visualizer.Calcs;
+using NeuralNetwork.Visualizer.Contracts.Drawing;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Preferences;
+using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
 using NeuralNetwork.Visualizer.Drawing.Nodes;
-using NeuralNetwork.Visualizer.Preferences;
-using NeuralNetwork.Visualizer.Preferences.Brushes;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using NeuralNetwork.Visualizer.Preferences.Pens;
 using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Collections.Generic;
-using Gdi = System.Drawing;
 using System.Linq;
-using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
+using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Layers
 {
@@ -20,14 +22,14 @@ namespace NeuralNetwork.Visualizer.Drawing.Layers
         where TLayer : LayerBase<TNode>
         where TNode : NodeBase
    {
-      private readonly Preference _preferences;
+      private readonly IPreference _preferences;
       private readonly LayerSizesPreCalc _cache;
       private readonly SimpleNodeSizesPreCalc _biasCache;
       private readonly IElementSelectionChecker _selectionChecker;
       private readonly ISelectableElementRegister _selectableElementRegister;
       private readonly IList<INodeDrawing> _nodesDrawing;
 
-      internal LayerBaseDrawing(TLayer layer, Preference preferences, LayerSizesPreCalc cache, SimpleNodeSizesPreCalc biasCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(layer)
+      internal LayerBaseDrawing(TLayer layer, IPreference preferences, LayerSizesPreCalc cache, SimpleNodeSizesPreCalc biasCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(layer)
       {
          _preferences = preferences;
          _cache = cache;
@@ -42,7 +44,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Layers
       public override void Draw(ICanvas canvas)
       {
          var rect = new Rectangle(new Position(0, 0), canvas.Size);
-         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Gdi.Region(rect.ToGdi()), 1));
+         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Region(new Gdi.Region(rect.ToGdi())), 1));
 
          var isSelected = _selectionChecker.IsSelected(this.Element);
          var brush = GetBrush(isSelected);

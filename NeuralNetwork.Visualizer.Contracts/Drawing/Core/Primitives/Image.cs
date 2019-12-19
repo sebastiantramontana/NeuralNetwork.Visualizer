@@ -5,7 +5,13 @@ namespace NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives
 
    public class Image
    {
+      public Image(Size size, string base64Bytes)
+      {
+         this.Size = size;
+         this.Base64Bytes = base64Bytes;
+      }
+
       public Size Size { get; }
-      public Base64 Bytes { get; }
+      public Base64 Base64Bytes { get; }
    }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace NeuralNetwork.Visualizer.Contracts.Selection
 {
-   internal interface IElementSelector : IElementSelectionChecker
+   public interface IElementSelector : IElementSelectionChecker
    {
       IEnumerable<Element> SelectedElements { get; }
 

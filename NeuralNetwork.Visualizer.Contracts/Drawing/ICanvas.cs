@@ -5,7 +5,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 
 namespace NeuralNetwork.Visualizer.Contracts.Drawing
 {
-   internal interface ICanvas
+   public interface ICanvas
    {
       Size Size { get; }
 

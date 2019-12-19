@@ -5,7 +5,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 
 namespace NeuralNetwork.Visualizer.Contracts.Selection
 {
-   internal interface ISelectionResolver
+   public interface ISelectionResolver
    {
       Element GetElementFromLocation(Position location);
       void SetCurrentRootCanvas(ICanvas currentRootCanvas);

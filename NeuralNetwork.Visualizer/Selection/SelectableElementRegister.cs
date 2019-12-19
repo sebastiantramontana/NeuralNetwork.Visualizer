@@ -1,8 +1,8 @@
 ﻿using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
-using NeuralNetwork.Visualizer.Drawing.Canvas;
-using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
-using NeuralNetwork.Visualizer.Preferences.Core;
+using NeuralNetwork.Visualizer.Contracts.Drawing;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Selection;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,8 +26,7 @@ namespace NeuralNetwork.Visualizer.Selection
              .Values
              .Where(ri => ri.Region
                  .IsVisible(_currentRootCanvas
-                     .Translate(position, ri.Canvas)
-                     .ToGdi()))
+                     .Translate(position, ri.Canvas)))
              .OrderByDescending(ri => ri.ZIndex)
              .FirstOrDefault()?
              .Element;

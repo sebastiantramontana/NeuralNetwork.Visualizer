@@ -1,19 +1,19 @@
 ﻿using NeuralNetwork.Model.Nodes;
-using NeuralNetwork.Visualizer.Drawing.Cache;
-using NeuralNetwork.Visualizer.Drawing.Canvas;
-using NeuralNetwork.Visualizer.Preferences;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using NeuralNetwork.Visualizer.Selection;
+using NeuralNetwork.Visualizer.Calcs;
+using NeuralNetwork.Visualizer.Contracts.Drawing;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Preferences;
+using NeuralNetwork.Visualizer.Contracts.Selection;
 using System;
 
 namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
    internal abstract class SimpleNodeDrawing<TNode> : NodeBaseDrawing<TNode> where TNode : NodeBase
    {
-      private readonly NodePreference _preferences;
+      private readonly INodePreference _preferences;
       private readonly SimpleNodeSizesPreCalc _cache;
 
-      internal SimpleNodeDrawing(TNode element, NodePreference preferences, SimpleNodeSizesPreCalc cache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(element, preferences, cache, selectableElementRegister, selectionChecker)
+      internal SimpleNodeDrawing(TNode element, INodePreference preferences, SimpleNodeSizesPreCalc cache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(element, preferences, cache, selectableElementRegister, selectionChecker)
       {
          _preferences = preferences;
          _cache = cache;

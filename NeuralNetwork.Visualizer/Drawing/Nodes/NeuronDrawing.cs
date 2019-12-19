@@ -1,13 +1,13 @@
 ﻿using NeuralNetwork.Model;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetwork.Visualizer.Drawing.Cache;
-using NeuralNetwork.Visualizer.Drawing.Canvas;
-using NeuralNetwork.Visualizer.Preferences;
-using NeuralNetwork.Visualizer.Preferences.Brushes;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using NeuralNetwork.Visualizer.Preferences.Pens;
-using NeuralNetwork.Visualizer.Preferences.Text;
-using NeuralNetwork.Visualizer.Selection;
+using NeuralNetwork.Visualizer.Calcs;
+using NeuralNetwork.Visualizer.Contracts.Drawing;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
+using NeuralNetwork.Visualizer.Contracts.Preferences;
+using NeuralNetwork.Visualizer.Contracts.Selection;
 using System;
 using System.Collections.Generic;
 
@@ -17,13 +17,13 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
    {
       private readonly IDictionary<NodeBase, INodeDrawing> _previousNodes;
       private readonly ICanvas _edgesCanvas;
-      private readonly Preference _preferences;
+      private readonly IPreference _preferences;
       private readonly NeuronSizesPreCalc _cache;
       private readonly EdgeSizesPreCalc _edgesCache;
       private readonly IElementSelectionChecker _selectionChecker;
       private readonly ISelectableElementRegister _selectableElementRegister;
 
-      internal NeuronDrawing(Neuron element, IDictionary<NodeBase, INodeDrawing> previousNodes, ICanvas edgesCanvas, Preference preferences, NeuronSizesPreCalc cache, EdgeSizesPreCalc edgesCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(element, preferences.Neurons, cache, selectableElementRegister, selectionChecker)
+      internal NeuronDrawing(Neuron element, IDictionary<NodeBase, INodeDrawing> previousNodes, ICanvas edgesCanvas, IPreference preferences, NeuronSizesPreCalc cache, EdgeSizesPreCalc edgesCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(element, preferences.Neurons, cache, selectableElementRegister, selectionChecker)
       {
          _previousNodes = previousNodes;
          _edgesCanvas = edgesCanvas;

@@ -8,7 +8,7 @@ namespace NeuralNetwork.Visualizer.Calcs
    {
       private const int MAX_NODE_SIDE = 40;
 
-      internal LayerSizesPreCalc(Size currentCanvasSize, int layersCount, int maxNodes, IPreference preferences)
+      public LayerSizesPreCalc(Size currentCanvasSize, int layersCount, int maxNodes, IPreference preferences)
       {
          var initialLayerWidth = currentCanvasSize.Width / layersCount;
          var currentHeight = currentCanvasSize.Height;
@@ -41,14 +41,14 @@ namespace NeuralNetwork.Visualizer.Calcs
          this.Width = initialLayerWidth;
       }
 
-      internal int Width { get; }
-      internal int Height { get; private set; }
+      public int Width { get; }
+      public int Height { get; private set; }
 
-      internal int NodeWidth { get; }
-      internal int NodeHeight { get; }
-      internal int NodeEllipseHeight { get; }
-      internal int TotalNodesHeight { get; private set; }
-      internal int StartingY { get; }
+      public int NodeWidth { get; }
+      public int NodeHeight { get; }
+      public int NodeEllipseHeight { get; }
+      public int TotalNodesHeight { get; private set; }
+      public int StartingY { get; }
 
       private void SetNormalHeight(int currentHeight, int initialTotalNodesHeight)
       {

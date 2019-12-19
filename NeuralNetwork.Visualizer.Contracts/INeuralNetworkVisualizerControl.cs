@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace NeuralNetwork.Visualizer
+namespace NeuralNetwork.Visualizer.Contracts
 {
    public interface INeuralNetworkVisualizerControl
    {

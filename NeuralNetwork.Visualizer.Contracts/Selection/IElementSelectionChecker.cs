@@ -2,8 +2,8 @@
 
 namespace NeuralNetwork.Visualizer.Contracts.Selection
 {
-    internal interface IElementSelectionChecker
-    {
-        bool IsSelected(Element element);
-    }
+   public interface IElementSelectionChecker
+   {
+      bool IsSelected(Element element);
+   }
 }

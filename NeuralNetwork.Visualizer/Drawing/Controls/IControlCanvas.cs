@@ -1,6 +1,5 @@
-﻿using NeuralNetwork.Visualizer.Drawing.Cache;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using System;
+﻿using NeuralNetwork.Visualizer.Calcs;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls

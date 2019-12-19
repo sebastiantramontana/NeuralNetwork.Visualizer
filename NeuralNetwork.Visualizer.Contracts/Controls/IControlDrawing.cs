@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Contracts.Controls
 {
-   internal interface IControlDrawing
+   public interface IControlDrawing
    {
       Task RedrawAsync();
       void Redraw();
-      Image GetImage();
+      Task<Image> GetImage();
    }
 }

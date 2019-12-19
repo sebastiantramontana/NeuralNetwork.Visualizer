@@ -1,7 +1,8 @@
-﻿using NeuralNetwork.Visualizer.Preferences.Brushes;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using NeuralNetwork.Visualizer.Preferences.Pens;
-using NeuralNetwork.Visualizer.Preferences.Text;
+﻿using NeuralNetwork.Visualizer.Contracts.Drawing;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 
 namespace NeuralNetwork.Visualizer.Drawing.Canvas
 {

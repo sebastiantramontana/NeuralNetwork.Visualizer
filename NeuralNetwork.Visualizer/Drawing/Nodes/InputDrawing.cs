@@ -1,20 +1,19 @@
 ﻿using NeuralNetwork.Model.Nodes;
-using NeuralNetwork.Visualizer.Drawing.Cache;
-using NeuralNetwork.Visualizer.Drawing.Canvas;
-using NeuralNetwork.Visualizer.Preferences;
-using NeuralNetwork.Visualizer.Preferences.Brushes;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using NeuralNetwork.Visualizer.Preferences.Text;
-using NeuralNetwork.Visualizer.Selection;
+using NeuralNetwork.Visualizer.Calcs;
+using NeuralNetwork.Visualizer.Contracts.Drawing;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
+using NeuralNetwork.Visualizer.Contracts.Preferences;
+using NeuralNetwork.Visualizer.Contracts.Selection;
 
 namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
    internal class InputDrawing : SimpleNodeDrawing<Input>
    {
-      private readonly Preference _preferences;
+      private readonly IPreference _preferences;
       private readonly SimpleNodeSizesPreCalc _cache;
 
-      internal InputDrawing(Input element, Preference preferences, SimpleNodeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker) : base(element, preferences.Inputs, cache, selectionChecker, selectableElementRegister)
+      internal InputDrawing(Input element, IPreference preferences, SimpleNodeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker) : base(element, preferences.Inputs, cache, selectionChecker, selectableElementRegister)
       {
          _preferences = preferences;
          _cache = cache;

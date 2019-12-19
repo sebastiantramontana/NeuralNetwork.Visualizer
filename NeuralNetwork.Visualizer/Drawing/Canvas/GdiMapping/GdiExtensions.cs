@@ -1,8 +1,9 @@
-﻿using NeuralNetwork.Visualizer.Preferences.Brushes;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using NeuralNetwork.Visualizer.Preferences.Pens;
-using NeuralNetwork.Visualizer.Preferences.Text;
+﻿using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 using System;
+using System.IO;
 using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping
@@ -161,6 +162,24 @@ namespace NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping
          }
 
          throw new NotImplementedException($"Font style {style} is not implemented");
+      }
+
+      public static Gdi.Image ToGdi(this Image image)
+      {
+         var bytes = Convert.FromBase64String(image.Base64Bytes);
+         using var stream = new MemoryStream(bytes);
+
+         return new Gdi.Bitmap(stream);
+      }
+
+      public static Image ToVisualizer(this Gdi.Image image)
+      {
+         using var stream = new MemoryStream();
+         image.Save(stream, Gdi.Imaging.ImageFormat.Png);
+
+         var base64Bytes = Convert.ToBase64String(stream.ToArray());
+
+         return new Image(new Size(image.Width, image.Height), base64Bytes);
       }
    }
 }

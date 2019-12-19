@@ -1,29 +1,29 @@
 ﻿using NeuralNetwork.Infrastructure.Winform;
-using NeuralNetwork.Visualizer.Drawing.Cache;
+using NeuralNetwork.Visualizer.Calcs;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Preferences;
+using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
 using System;
-using Gdi = System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using NeuralNetwork.Visualizer.Drawing.Canvas.GdiMapping;
+using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
    internal class ControlCanvas : IControlCanvas
    {
       private readonly PictureBox _pictureBox;
-      private readonly NeuralNetworkVisualizerControl _control;
       private readonly IInvoker _invoker;
 
       internal ControlCanvas(PictureBox pictureBox, NeuralNetworkVisualizerControl control, IInvoker invoker)
       {
          _pictureBox = pictureBox;
-         _control = control;
+         Control = control;
          _invoker = invoker;
       }
 
-      public NeuralNetworkVisualizerControl Control => _control;
+      public NeuralNetworkVisualizerControl Control { get; }
 
       public Size Size
       {
@@ -33,23 +33,23 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
 
       public Gdi.Image Image
       {
-         get { return _invoker.SafeInvoke(() => _pictureBox.Image?.Clone() as Gdi.Image ?? new Gdi.Bitmap(_control.ClientSize.Width, _control.ClientSize.Height)); } //Clone for safe handling
+         get { return _invoker.SafeInvoke(() => _pictureBox.Image?.Clone() as Gdi.Image ?? new Gdi.Bitmap(Control.ClientSize.Width, Control.ClientSize.Height)); } //Clone for safe handling
          set => _pictureBox.Image = value;
       }
 
-      public bool IsReady => _control.IsHandleCreated;
+      public bool IsReady => Control.IsHandleCreated;
 
       public void SetBlank()
       {
          DestroyImageCanvas();
 
-         _pictureBox.ClientSize = _control.ClientSize;
-         _pictureBox.BackColor = _control.BackColor;
+         _pictureBox.ClientSize = Control.ClientSize;
+         _pictureBox.BackColor = Control.BackColor;
       }
 
       public (Gdi.Graphics Graph, Gdi.Image Image, LayerSizesPreCalc LayerSizes) GetGraphics()
       {
-         var imgSize = GetImageSize(_control.Size.ToVisualizer());
+         var imgSize = GetImageSize(Control.Size.ToVisualizer());
          var sizes = GetDrawingSizes(imgSize);
 
          _pictureBox.ClientSize = sizes.CanvasSize.ToGdi();
@@ -63,15 +63,15 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
 
       private Size GetImageSize(Size canvasSize)
       {
-         var size = new Size((int)(_control.Zoom * canvasSize.Width), (int)(_control.Zoom * canvasSize.Height));
+         var size = new Size((int)(Control.Zoom * canvasSize.Width), (int)(Control.Zoom * canvasSize.Height));
          return size;
       }
 
       private (LayerSizesPreCalc LayerSize, Size CanvasSize) GetDrawingSizes(Size initialSize)
       {
-         var layersCount = _control.InputLayer.CountLayers();
-         var maxNodes = _control.InputLayer.GetMaxNodeCountInLayer();
-         var preferences = _control.Preferences;
+         var layersCount = Control.InputLayer.CountLayers();
+         var maxNodes = Control.InputLayer.GetMaxNodeCountInLayer();
+         var preferences = Control.Preferences;
 
          var layerSize = new LayerSizesPreCalc(initialSize, layersCount, maxNodes, preferences);
          var canvasSize = new Size(initialSize.Width, layerSize.Height);
@@ -90,7 +90,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
 
       private void SetQuality(Gdi.Graphics graphics)
       {
-         switch (_control.Preferences.Quality)
+         switch (Control.Preferences.Quality)
          {
             case RenderQuality.Low:
                graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
@@ -114,7 +114,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
                graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                break;
             default:
-               throw new InvalidOperationException($"Quality not implemented: {_control.Preferences.Quality}");
+               throw new InvalidOperationException($"Quality not implemented: {Control.Preferences.Quality}");
          }
       }
    }

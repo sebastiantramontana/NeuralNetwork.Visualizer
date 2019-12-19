@@ -3,7 +3,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing;
 
 namespace NeuralNetwork.Visualizer.Contracts.Selection
 {
-   internal class RegistrationInfo
+   public class RegistrationInfo
    {
       public RegistrationInfo(Element element, ICanvas canvas, IRegion region, int zIndex)
       {

@@ -1,9 +1,10 @@
 ﻿using NeuralNetwork.Model.Nodes;
-using NeuralNetwork.Visualizer.Drawing.Cache;
-using NeuralNetwork.Visualizer.Drawing.Canvas;
-using NeuralNetwork.Visualizer.Preferences;
-using NeuralNetwork.Visualizer.Preferences.Core;
-using NeuralNetwork.Visualizer.Preferences.Pens;
+using NeuralNetwork.Visualizer.Calcs;
+using NeuralNetwork.Visualizer.Contracts.Drawing;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Preferences;
+using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Selection;
 using System;
 using System.Drawing.Drawing2D;
@@ -13,7 +14,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
    internal class EdgeDrawing : DrawingBase<Edge>
    {
-      private readonly EdgePreference _preferences;
+      private readonly IEdgePreference _preferences;
       private readonly Position _fromPosition;
       private readonly Position _toPosition;
       private readonly int _textHeight;
@@ -21,7 +22,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
       private readonly ISelectableElementRegister _selectableElementRegister;
       private readonly IElementSelectionChecker _selectionChecker;
 
-      internal EdgeDrawing(Edge element, EdgePreference preferences, Position fromPosition, Position toPosition, int textHeight, EdgeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker) : base(element)
+      internal EdgeDrawing(Edge element, IEdgePreference preferences, Position fromPosition, Position toPosition, int textHeight, EdgeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker) : base(element)
       {
          _preferences = preferences;
          _fromPosition = fromPosition;
@@ -55,7 +56,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
 
          gp.CloseFigure();
 
-         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Gdi.Region(gp), 3));
+         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Region(new Gdi.Region(gp)), 3));
       }
 
       private Pen GetPen(bool isSelected)

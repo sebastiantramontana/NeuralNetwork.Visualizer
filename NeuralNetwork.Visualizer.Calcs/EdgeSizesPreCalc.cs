@@ -1,55 +1,55 @@
 ﻿namespace NeuralNetwork.Visualizer.Calcs
 {
-    public class EdgeSizesPreCalc
-    {
-        private int _xPositionFromPrevious = -1;
-        private EdgeSizesPreCalcValues previousValues;
+   public class EdgeSizesPreCalc
+   {
+      private int _xPositionFromPrevious = -1;
+      private EdgeSizesPreCalcValues previousValues;
 
-        internal EdgeSizesPreCalcValues GetValues(int xPositionFrom, int xPositionTo)
-        {
-            if (xPositionFrom == _xPositionFromPrevious)
-                return previousValues;
-
-            previousValues = PreCalc(xPositionFrom, xPositionTo);
-            _xPositionFromPrevious = xPositionFrom;
-
+      public EdgeSizesPreCalcValues GetValues(int xPositionFrom, int xPositionTo)
+      {
+         if (xPositionFrom == _xPositionFromPrevious)
             return previousValues;
-        }
 
-        private EdgeSizesPreCalcValues PreCalc(int xPositionFrom, int xPositionTo)
-        {
-            var totalWidth = xPositionTo - xPositionFrom;
-            var textWidth = (int)(totalWidth / 4.0);
+         previousValues = PreCalc(xPositionFrom, xPositionTo);
+         _xPositionFromPrevious = xPositionFrom;
 
-            double xOffsetFar = totalWidth - totalWidth / 3;
-            var widthPortionFar = xOffsetFar / totalWidth;
-            var farX = xPositionTo - totalWidth / 3;
+         return previousValues;
+      }
 
-            double xOffsetNear = totalWidth / 4.0;
-            var widthPortionNear = xOffsetNear / totalWidth;
-            var nearX = (int)(xPositionFrom + xOffsetNear);
+      private EdgeSizesPreCalcValues PreCalc(int xPositionFrom, int xPositionTo)
+      {
+         var totalWidth = xPositionTo - xPositionFrom;
+         var textWidth = (int)(totalWidth / 4.0);
 
-            return new EdgeSizesPreCalcValues(totalWidth, widthPortionNear, widthPortionFar, nearX, farX, textWidth);
-        }
+         double xOffsetFar = totalWidth - totalWidth / 3;
+         var widthPortionFar = xOffsetFar / totalWidth;
+         var farX = xPositionTo - totalWidth / 3;
 
-        internal class EdgeSizesPreCalcValues
-        {
-            internal EdgeSizesPreCalcValues(int totalWidth, double widthPortionNear, double widthPortionFar, int nearX, int farX, int textWidth)
-            {
-                this.TotalWidth = totalWidth;
-                this.WidthPortionNear = widthPortionNear;
-                this.WidthPortionFar = widthPortionFar;
-                this.NearX = nearX;
-                this.FarX = farX;
-                this.TextWidth = textWidth;
-            }
+         double xOffsetNear = totalWidth / 4.0;
+         var widthPortionNear = xOffsetNear / totalWidth;
+         var nearX = (int)(xPositionFrom + xOffsetNear);
 
-            internal int TotalWidth { get; private set; }
-            internal double WidthPortionNear { get; private set; }
-            internal double WidthPortionFar { get; private set; }
-            internal int NearX { get; private set; }
-            internal int FarX { get; private set; }
-            internal int TextWidth { get; private set; }
-        }
-    }
+         return new EdgeSizesPreCalcValues(totalWidth, widthPortionNear, widthPortionFar, nearX, farX, textWidth);
+      }
+
+      public class EdgeSizesPreCalcValues
+      {
+         internal EdgeSizesPreCalcValues(int totalWidth, double widthPortionNear, double widthPortionFar, int nearX, int farX, int textWidth)
+         {
+            this.TotalWidth = totalWidth;
+            this.WidthPortionNear = widthPortionNear;
+            this.WidthPortionFar = widthPortionFar;
+            this.NearX = nearX;
+            this.FarX = farX;
+            this.TextWidth = textWidth;
+         }
+
+         public int TotalWidth { get; private set; }
+         public double WidthPortionNear { get; private set; }
+         public double WidthPortionFar { get; private set; }
+         public int NearX { get; private set; }
+         public int FarX { get; private set; }
+         public int TextWidth { get; private set; }
+      }
+   }
 }
