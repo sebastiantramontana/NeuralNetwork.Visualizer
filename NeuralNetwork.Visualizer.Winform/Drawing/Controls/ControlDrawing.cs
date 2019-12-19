@@ -8,7 +8,6 @@ using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using NeuralNetwork.Visualizer.Winform.Drawing.Layers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,15 +20,15 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
       private readonly IElementSelectionChecker _selectionChecker;
       private readonly ISelectableElementRegister _selectableElementRegister;
       private readonly ISelectionResolver _selectionResolver;
-      private readonly IInvoker _invoker;
+      private readonly IInvoker _winformInvoker;
 
-      public ControlDrawing(IControlCanvas controlCanvas, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister, ISelectionResolver selectionResolver, IInvoker invoker)
+      public ControlDrawing(IControlCanvas controlCanvas, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister, ISelectionResolver selectionResolver, IInvoker winformInvoker)
       {
          this.ControlCanvas = controlCanvas;
          _selectionChecker = selectionChecker;
          _selectableElementRegister = selectableElementRegister;
          _selectionResolver = selectionResolver;
-         _invoker = invoker;
+         _winformInvoker = winformInvoker;
       }
 
       public IControlCanvas ControlCanvas { get; }
@@ -37,16 +36,6 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
       public async Task<Image> GetImage()
       {
          return await Task.Run(() => this.ControlCanvas.Image.ToVisualizer());
-      }
-
-      public void Redraw()
-      {
-         if (!this.ControlCanvas.IsReady)
-         {
-            return;
-         }
-
-         RedrawInternalAsync((graph, layersSize) => { DrawLayers(graph, layersSize); return Task.CompletedTask; }).Wait();
       }
 
       private bool _isDrawing = false; //flag to avoid multiple parallel drawing
@@ -58,15 +47,15 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
          }
 
          _isDrawing = true;
-         await _invoker.SafeInvoke(async () =>
+         await _winformInvoker.SafeInvoke(async () =>
          {
-            await RedrawInternalAsync(async (graph, layersSize) => await DrawLayersAsync(graph, layersSize));
+            await RedrawInternalAsync();
          });
 
          _isDrawing = false;
       }
 
-      private async Task RedrawInternalAsync(Func<Gdi.Graphics, LayerSizesPreCalc, Task> drawLayersAction)
+      private async Task RedrawInternalAsync()
       {
          if (!ValidateInputLayer())
          {
@@ -76,7 +65,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
          {
             var graphAndImage = this.ControlCanvas.GetGraphics();
 
-            await drawLayersAction(graphAndImage.Graph, graphAndImage.LayerSizes);
+            await DrawLayersAsync(graphAndImage.Graph, graphAndImage.LayerSizes);
             this.ControlCanvas.Image = graphAndImage.Image;
 
             Destroy.Disposable(ref graphAndImage.Graph);
@@ -96,21 +85,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
          return false;
       }
 
-      private void DrawLayers(Gdi.Graphics graph, LayerSizesPreCalc layerSizesPreCalc)
-      {
-         DrawLayersGeneral(graph, layerSizesPreCalc, (layerDrawing, layerCanvas) =>
-          {
-             layerDrawing.Draw(layerCanvas);
-             return Task.CompletedTask;
-          }).Wait();
-      }
-
       private async Task DrawLayersAsync(Gdi.Graphics graph, LayerSizesPreCalc layerSizesPreCalc)
-      {
-         await DrawLayersGeneral(graph, layerSizesPreCalc, async (layerDrawing, layerCanvas) => await Task.Run(() => { layerDrawing.Draw(layerCanvas); }));
-      }
-
-      private async Task DrawLayersGeneral(Gdi.Graphics graph, LayerSizesPreCalc layersDrawingSize, Func<ILayerDrawing, ICanvas, Task> drawLayerAction)
       {
          var graphCanvas = new GraphicsCanvas(graph, this.ControlCanvas.Size);
          int x = 0;
@@ -128,25 +103,17 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
 
          for (LayerBase layer = inputLayer; layer != null; layer = layer.Next)
          {
-            ILayerDrawing layerDrawing = null;
+            ILayerDrawing layerDrawing = (layer == inputLayer)
+               ? new InputLayerDrawing(layer as InputLayer, preferences, layerSizesPreCalc, simpleNodeSizesCache, _selectionChecker, _selectableElementRegister) as ILayerDrawing
+               : new NeuronLayerDrawing(layer as NeuronLayer, previousNodesDic, graphCanvas, preferences, layerSizesPreCalc, neuronCache, simpleNodeSizesCache, edgesCache, _selectionChecker, _selectableElementRegister);
 
-            if (layer == inputLayer)
-            {
-               layerDrawing = new InputLayerDrawing(layer as InputLayer, preferences, layersDrawingSize, simpleNodeSizesCache, _selectionChecker, _selectableElementRegister);
-            }
-            else
-            {
-               layerDrawing = new NeuronLayerDrawing(layer as NeuronLayer, previousNodesDic, graphCanvas, preferences, layersDrawingSize, neuronCache, simpleNodeSizesCache, edgesCache, _selectionChecker, _selectableElementRegister);
-            }
-
-            var canvasRect = new Rectangle(new Position(x, 0), new Size(layersDrawingSize.Width, layersDrawingSize.Height));
+            var canvasRect = new Rectangle(new Position(x, 0), new Size(layerSizesPreCalc.Width, layerSizesPreCalc.Height));
             var layerCanvas = new NestedCanvas(canvasRect, graphCanvas);
 
-            await drawLayerAction(layerDrawing, layerCanvas);
+            await Task.Run(() => layerDrawing.Draw(layerCanvas));
 
             previousNodesDic = layerDrawing.NodesDrawing.ToDictionary(n => n.Node, n => n);
-
-            x += layersDrawingSize.Width;
+            x += layerSizesPreCalc.Width;
          }
       }
    }

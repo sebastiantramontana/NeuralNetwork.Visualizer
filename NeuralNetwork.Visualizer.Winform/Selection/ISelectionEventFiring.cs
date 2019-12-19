@@ -1,9 +1,10 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Winform.Selection
 {
    public interface ISelectionEventFiring
    {
-      void FireSelectionEvent(Position position);
+      Task FireSelectionEvent(Position position);
    }
 }
