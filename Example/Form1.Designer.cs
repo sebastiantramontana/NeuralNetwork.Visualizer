@@ -35,7 +35,7 @@
          this.btnClear = new System.Windows.Forms.Button();
          this.cboQuality = new System.Windows.Forms.ComboBox();
          this.label2 = new System.Windows.Forms.Label();
-         this.NeuralNetworkVisualizerControl1 = new NeuralNetwork.Visualizer.NeuralNetworkVisualizerControl();
+         this.NeuralNetworkVisualizerControl1 = new NeuralNetwork.Visualizer.Winform.NeuralNetworkVisualizerControl();
          this.btnChangeValue = new System.Windows.Forms.Button();
          this.chSelectable = new System.Windows.Forms.CheckBox();
          this.txtSelectedElements = new System.Windows.Forms.TextBox();
@@ -139,7 +139,6 @@
          this.NeuralNetworkVisualizerControl1.Location = new System.Drawing.Point(12, 12);
          this.NeuralNetworkVisualizerControl1.Margin = new System.Windows.Forms.Padding(0);
          this.NeuralNetworkVisualizerControl1.Name = "NeuralNetworkVisualizerControl1";
-         this.NeuralNetworkVisualizerControl1.Selectable = false;
          this.NeuralNetworkVisualizerControl1.Size = new System.Drawing.Size(1346, 544);
          this.NeuralNetworkVisualizerControl1.TabIndex = 10;
          this.NeuralNetworkVisualizerControl1.Zoom = 1F;
@@ -160,6 +159,8 @@
          // 
          this.chSelectable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
          this.chSelectable.AutoSize = true;
+         this.chSelectable.Checked = true;
+         this.chSelectable.CheckState = System.Windows.Forms.CheckState.Checked;
          this.chSelectable.Location = new System.Drawing.Point(745, 568);
          this.chSelectable.Name = "chSelectable";
          this.chSelectable.Size = new System.Drawing.Size(98, 17);
@@ -235,7 +236,7 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.ComboBox cboQuality;
         private System.Windows.Forms.Label label2;
-        private NeuralNetwork.Visualizer.NeuralNetworkVisualizerControl NeuralNetworkVisualizerControl1;
+        private NeuralNetwork.Visualizer.Winform.NeuralNetworkVisualizerControl NeuralNetworkVisualizerControl1;
         private System.Windows.Forms.Button btnChangeValue;
         private System.Windows.Forms.CheckBox chSelectable;
         private System.Windows.Forms.TextBox txtSelectedElements;

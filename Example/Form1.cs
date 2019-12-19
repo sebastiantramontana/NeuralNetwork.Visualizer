@@ -1,13 +1,15 @@
 ﻿using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
-using NeuralNetwork.Visualizer.Drawing;
-using NeuralNetwork.Visualizer.Preferences.Brushes;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
+using NeuralNetwork.Visualizer.Contracts.Preferences;
+using NeuralNetwork.Visualizer.Contracts.Selection;
+using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using NeuralNetwork.Visualizer.Preferences.Formatting;
-using NeuralNetwork.Visualizer.Preferences.Text;
-using NeuralNetwork.Visualizer.Selection;
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -71,7 +73,7 @@ namespace WindowsFormsApp1
 
       private void ShowLastSelection(string text, bool isSelected)
       {
-         txtLastSelected.BackColor = isSelected ? Color.LightGreen : Color.LightPink;
+         txtLastSelected.BackColor = isSelected ? Color.LightGreen.ToGdi() : Color.LightPink.ToGdi();
          txtLastSelected.Text = text;
       }
 
@@ -79,37 +81,35 @@ namespace WindowsFormsApp1
       {
          NeuralNetworkVisualizerControl1.Preferences.AutoRedrawMode = AutoRedrawMode.AutoRedrawAsync;
          NeuralNetworkVisualizerControl1.Preferences.Quality = RenderQuality.High;
-         NeuralNetworkVisualizerControl1.Preferences.InputFontLabel = InputFontLabel.Default;
-         NeuralNetworkVisualizerControl1.Preferences.OutputFontLabel = OutputFontLabel.Default;
-
+         
          cboQuality.Items.Add(RenderQuality.Low);
          cboQuality.Items.Add(RenderQuality.Medium);
          cboQuality.Items.Add(RenderQuality.High);
 
          cboQuality.SelectedItem = NeuralNetworkVisualizerControl1.Preferences.Quality;
 
-         NeuralNetworkVisualizerControl1.Preferences.Inputs.OutputValueFormatter = new ByValueSignFormatter<TextPreference>(
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Red) },
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Gray) },
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) },
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) }
+         NeuralNetworkVisualizerControl1.Preferences.Inputs.OutputValueFormatter = new ByValueSignFormatter<FontLabel>(
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Red)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Gray)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black))
          );
 
-         NeuralNetworkVisualizerControl1.Preferences.Neurons.OutputValueFormatter = new ByValueSignFormatter<TextPreference>(
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Red) },
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Gray) },
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) },
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) }
+         NeuralNetworkVisualizerControl1.Preferences.Neurons.OutputValueFormatter = new ByValueSignFormatter<FontLabel>(
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Red)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Gray)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black))
          );
 
-         NeuralNetworkVisualizerControl1.Preferences.Edges.WeightFormatter = new ByValueSignFormatter<TextPreference>(
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Red) },
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Gray) },
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) },
-             () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) }
+         NeuralNetworkVisualizerControl1.Preferences.Edges.WeightFormatter = new ByValueSignFormatter<FontLabel>(
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Red)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Gray)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black))
          );
 
-         NeuralNetworkVisualizerControl1.Preferences.Edges.ConnectorFormatter = new CustomFormatter<Pen>((v) => v == 0.0 ? new Pen(Color.LightGray) : new Pen(Color.Black));
+         NeuralNetworkVisualizerControl1.Preferences.Edges.ConnectorFormatter = new CustomFormatter<Pen>((v) => v == 0.0 ? Pen.BasicFromColor(Color.LightGray) : Pen.BasicFromColor(Color.Black));
 
          //default is true
          NeuralNetworkVisualizerControl1.Preferences.AsyncRedrawOnResize = chAsyncRedrawOnResize.Checked;
@@ -239,7 +239,7 @@ namespace WindowsFormsApp1
 
       private void chSelectable_CheckedChanged(object sender, EventArgs e)
       {
-         NeuralNetworkVisualizerControl1.Selectable = chSelectable.Checked;
+         NeuralNetworkVisualizerControl1.Preferences.Selectable = chSelectable.Checked;
       }
 
       private void chAsyncRedrawOnResize_CheckedChanged(object sender, EventArgs e)
