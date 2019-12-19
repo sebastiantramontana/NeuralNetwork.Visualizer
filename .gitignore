@@ -70,3 +70,17 @@
 /NeuralNetwork.Visualizer.Preferences/obj/Debug/netstandard2.0/*.txt
 /NeuralNetwork.Visualizer.Preferences/obj/Debug/netstandard2.0/*.dll
 /NeuralNetwork.Visualizer.Preferences/obj/Debug/netstandard2.0/*.pdb
+/NeuralNetwork.Visualizer.Winform/.vs/NeuralNetwork.Visualizer/v15/*.suo
+/NeuralNetwork.Visualizer.Winform/.vs/NeuralNetwork.Visualizer/v15/Server/sqlite3/*.lock
+/NeuralNetwork.Visualizer.Winform/.vs/NeuralNetwork.Visualizer/v15/Server/sqlite3/*.ide
+/NeuralNetwork.Visualizer.Winform/.vs/NeuralNetwork.Visualizer/v15/Server/sqlite3/*.ide-shm
+/NeuralNetwork.Visualizer.Winform/.vs/NeuralNetwork.Visualizer/v15/Server/sqlite3/*.ide-wal
+/NeuralNetwork.Visualizer.Winform/bin/Debug/*.dll
+/NeuralNetwork.Visualizer.Winform/bin/Debug/*.pdb
+/NeuralNetwork.Visualizer.Winform/obj/Debug/*.cache
+/NeuralNetwork.Visualizer.Winform/obj/Debug/*.resources
+/NeuralNetwork.Visualizer.Winform/obj/Debug/*.CopyComplete
+/NeuralNetwork.Visualizer.Winform/obj/Debug/*.txt
+/NeuralNetwork.Visualizer.Winform/obj/Debug/*.dll
+/NeuralNetwork.Visualizer.Winform/obj/Debug/*.pdb
+/NeuralNetwork.Visualizer.Winform/obj/Debug/TempPE/*.dll

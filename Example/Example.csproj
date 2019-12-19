@@ -76,9 +76,9 @@
       <Project>{B8B0BB00-0D6E-4B03-AAD8-5DD59214ED49}</Project>
       <Name>NeuralNetwork.Visualizer.Preferences</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NeuralNetwork.Visualizer\NeuralNetwork.Visualizer.csproj">
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Winform\NeuralNetwork.Visualizer.Winform.csproj">
       <Project>{a16491c6-9e57-4439-8bd7-74ff39e89055}</Project>
-      <Name>NeuralNetwork.Visualizer</Name>
+      <Name>NeuralNetwork.Visualizer.Winform</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
