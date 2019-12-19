@@ -1,8 +1,9 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
+using System.ComponentModel;
 
 namespace NeuralNetwork.Visualizer.Contracts.Preferences
 {
-   public interface IPreference
+   public interface IPreference : INotifyPropertyChanged
    {
       bool AsyncRedrawOnResize { get; set; }
       AutoRedrawMode AutoRedrawMode { get; set; }

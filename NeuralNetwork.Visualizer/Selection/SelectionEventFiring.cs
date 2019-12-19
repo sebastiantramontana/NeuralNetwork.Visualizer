@@ -45,7 +45,7 @@ namespace NeuralNetwork.Visualizer.Selection
 
       public void FireSelectionEvent(Position position)
       {
-         if (!_control.Selectable)
+         if (!_control.Preferences.Selectable)
             return;
 
          Func<Position, Element> selectFunc;

@@ -21,7 +21,7 @@ namespace NeuralNetwork.Visualizer
 {
    public partial class NeuralNetworkVisualizerControl : UserControl, INeuralNetworkVisualizerControl
    {
-      private bool _redrawWhenPropertyChange = false;
+      private bool _readyToRedrawWhenPropertyChange = false;
 
       private readonly IControlDrawing _controlDrawing;
       private readonly IElementSelector _selector;
@@ -63,8 +63,9 @@ namespace NeuralNetwork.Visualizer
          picCanvas.MouseLeave += PicCanvas_MouseLeave;
       }
 
+      private IPreference _preferences = null;
       [Browsable(false)]
-      public IPreference Preferences { get; } = Preference.Create();
+      public IPreference Preferences => _preferences ?? (_preferences = Preference.Create(Preferences_PropertyChanged));
 
       private InputLayer _InputLayer = null;
       [Browsable(false)]
@@ -84,7 +85,7 @@ namespace NeuralNetwork.Visualizer
             _zoom = 1f; //restart zoom
             _selector.UnselectAll();
 
-            if (_redrawWhenPropertyChange)
+            if (_readyToRedrawWhenPropertyChange)
             {
                RedrawInternal();
             }
@@ -92,26 +93,6 @@ namespace NeuralNetwork.Visualizer
       }
 
       public IEnumerable<Element> SelectedElements => _selector.SelectedElements;
-
-      private bool _selectable = false;
-      public bool Selectable
-      {
-         get => _selectable;
-         set
-         {
-            _selectable = value;
-
-            if (!_selectable)
-            {
-               _selector.UnselectAll();
-
-               if (_redrawWhenPropertyChange)
-               {
-                  RedrawInternal();
-               }
-            }
-         }
-      }
 
       private float _zoom = 1f;
       [Browsable(false)]
@@ -127,7 +108,7 @@ namespace NeuralNetwork.Visualizer
 
             _zoom = Constrain(0.1f, value, 10.0f); //limit the zoom value: Graphics will throw exception if not.
 
-            if (_redrawWhenPropertyChange)
+            if (_readyToRedrawWhenPropertyChange)
             {
                RedrawInternal();
             }
@@ -177,9 +158,27 @@ namespace NeuralNetwork.Visualizer
          _selector.MarkToBeRefreshed(_InputLayer);
       }
 
+      private async void Preferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
+      {
+         if (e.PropertyName == "Selectable")
+         {
+            CheckSelectionPreferenceChanged();
+         }
+
+         await AutoRedraw();
+      }
+
+      private void CheckSelectionPreferenceChanged()
+      {
+         if (!this.Preferences.Selectable)
+         {
+            _selector.UnselectAll();
+         }
+      }
+
       private async Task AutoRedraw()
       {
-         if (_isAutoRedrawSuspended)
+         if (_isAutoRedrawSuspended || !_readyToRedrawWhenPropertyChange)
          {
             return;
          }
@@ -200,7 +199,7 @@ namespace NeuralNetwork.Visualizer
 
       private void FinishRedrawFromOuter()
       {
-         _redrawWhenPropertyChange = true;
+         _readyToRedrawWhenPropertyChange = true;
       }
 
       private void RedrawInternal()
@@ -224,14 +223,14 @@ namespace NeuralNetwork.Visualizer
             {
                if (Preferences.AsyncRedrawOnResize)
                {
-                  if (_redrawWhenPropertyChange)
+                  if (_readyToRedrawWhenPropertyChange)
                   {
                      await RedrawInternalAsync();
                   }
                }
                else
                {
-                  if (_redrawWhenPropertyChange)
+                  if (_readyToRedrawWhenPropertyChange)
                   {
                      RedrawInternal();
                   }
@@ -244,7 +243,7 @@ namespace NeuralNetwork.Visualizer
 
       private void PicCanvas_MouseDown(object sender, MouseEventArgs e)
       {
-         if (!_redrawWhenPropertyChange)
+         if (!_readyToRedrawWhenPropertyChange)
             return;
 
          _selectionEventFiring.FireSelectionEvent(e.Location.ToVisualizer());
@@ -252,7 +251,7 @@ namespace NeuralNetwork.Visualizer
 
       private void PicCanvas_MouseLeave(object sender, EventArgs e)
       {
-         if (!_redrawWhenPropertyChange)
+         if (!_readyToRedrawWhenPropertyChange)
             return;
 
          _toolTipFiring.Hide();
@@ -260,7 +259,7 @@ namespace NeuralNetwork.Visualizer
 
       private void PicCanvas_MouseMove(object sender, MouseEventArgs e)
       {
-         if (!_redrawWhenPropertyChange)
+         if (!_readyToRedrawWhenPropertyChange)
             return;
 
          _toolTipFiring.Show(e.Location.ToVisualizer());

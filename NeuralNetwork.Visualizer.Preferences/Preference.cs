@@ -3,14 +3,21 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace NeuralNetwork.Visualizer.Preferences
 {
    public class Preference : IPreference
    {
-      public static IPreference Create()
+      public event PropertyChangedEventHandler PropertyChanged = delegate { };
+
+      public static IPreference Create(PropertyChangedEventHandler propertyChangedEventHandler)
       {
-         return new Preference();
+         var preferences = new Preference();
+         preferences.PropertyChanged += propertyChangedEventHandler;
+
+         return preferences;
       }
 
       private Preference() { }
@@ -33,20 +40,20 @@ namespace NeuralNetwork.Visualizer.Preferences
       public FontLabel InputFontLabel
       {
          get => _inputFontLabel ?? FontLabel.Null;
-         set => _inputFontLabel = value;
+         set => ChangeNotificationProperty(ref _inputFontLabel, value);
       }
 
       private FontLabel _outputFontLabel = FontLabel.Default;
       public FontLabel OutputFontLabel
       {
          get => _outputFontLabel ?? FontLabel.Null;
-         set => _outputFontLabel = value;
+         set => ChangeNotificationProperty(ref _outputFontLabel, value);
       }
 
       public ILayerPreference Layers
       {
          get => _layers ?? (_layers = new LayerPreference());
-         set => _layers = value;
+         set => ChangeNotificationProperty(ref _layers, value);
       }
 
       public INodePreference Inputs
@@ -58,7 +65,7 @@ namespace NeuralNetwork.Visualizer.Preferences
             Border = new Pen(new SolidBrush(new Color(216, 230, 173, 255)), LineStyle.Solid, 1, Cap.None, Cap.None),
             BorderSelected = new Pen(new SolidBrush(new Color(166, 180, 123, 255)), LineStyle.Solid, 1, Cap.None, Cap.None)
          });
-         set => _inputs = value;
+         set => ChangeNotificationProperty(ref _inputs, value);
       }
 
       public INeuronPreference Neurons
@@ -70,7 +77,7 @@ namespace NeuralNetwork.Visualizer.Preferences
             Border = new Pen(new SolidBrush(new Color(0xAD, 0xD8, 0xE6, 0xFF)), LineStyle.Solid, 1, Cap.None, Cap.None),
             BorderSelected = new Pen(new SolidBrush(new Color(0x00, 0xBF, 0xFF, 0xFF)), LineStyle.Solid, 1, Cap.None, Cap.None)
          });
-         set => _neurons = value;
+         set => ChangeNotificationProperty(ref _neurons, value);
       }
 
       public INodePreference Biases
@@ -82,20 +89,55 @@ namespace NeuralNetwork.Visualizer.Preferences
             Border = new Pen(new SolidBrush(new Color(0xFF, 0xB6, 0xC1, 0xFF)), LineStyle.Solid, 1, Cap.None, Cap.None),
             BorderSelected = new Pen(new SolidBrush(new Color(0xFF, 0xC0, 0xCB, 0xFF)), LineStyle.Solid, 1, Cap.None, Cap.None)
          });
-         set => _biases = value;
+         set => ChangeNotificationProperty(ref _biases, value);
       }
 
       public IEdgePreference Edges
       {
          get => _edges ?? (_edges = new EdgePreference());
-         set => _edges = value;
+         set => ChangeNotificationProperty(ref _edges, value);
       }
 
-      public byte NodeMargins { get; set; } = 5;
-      public RenderQuality Quality { get; set; } = RenderQuality.Medium;
-      public bool AsyncRedrawOnResize { get; set; } = false;
-      public AutoRedrawMode AutoRedrawMode { get; set; } = AutoRedrawMode.NoAutoRedraw;
-      public bool Selectable { get; set; }
+      private byte _nodeMargins = 5;
+      public byte NodeMargins
+      {
+         get => _nodeMargins;
+         set => ChangeNotificationProperty(ref _nodeMargins, value);
+      }
+
+      private RenderQuality _quality = RenderQuality.Medium;
+      public RenderQuality Quality
+      {
+         get => _quality;
+         set => ChangeNotificationProperty(ref _quality, value);
+      }
+
+      private bool _asyncRedrawOnResize = false;
+      public bool AsyncRedrawOnResize
+      {
+         get => _asyncRedrawOnResize;
+         set => ChangeNotificationProperty(ref _asyncRedrawOnResize, value);
+      }
+
+      private AutoRedrawMode _autoRedrawMode = AutoRedrawMode.NoAutoRedraw;
+      public AutoRedrawMode AutoRedrawMode
+      {
+         get => _autoRedrawMode;
+         set => ChangeNotificationProperty(ref _autoRedrawMode, value);
+      }
+
+      public bool _selectable = true;
+      public bool Selectable
+      {
+         get => _selectable;
+         set => ChangeNotificationProperty(ref _selectable, value);
+      }
+
+      private void ChangeNotificationProperty<T>(ref T member, T value, [CallerMemberName] string caller = null)
+      {
+         member = value;
+         PropertyChanged.Invoke(this, new PropertyChangedEventArgs(caller));
+      }
    }
 }
 

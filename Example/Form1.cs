@@ -241,7 +241,7 @@ namespace WindowsFormsApp1
 
       private void chSelectable_CheckedChanged(object sender, EventArgs e)
       {
-         NeuralNetworkVisualizerControl1.Selectable = chSelectable.Checked;
+         NeuralNetworkVisualizerControl1.Preferences.Selectable = chSelectable.Checked;
       }
 
       private void chAsyncRedrawOnResize_CheckedChanged(object sender, EventArgs e)
