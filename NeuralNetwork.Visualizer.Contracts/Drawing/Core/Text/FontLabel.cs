@@ -17,6 +17,10 @@ namespace NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text
       {
       }
 
+      public FontLabel(FontLabel copyFrom, TextFormat textFormat) : this(copyFrom.Family, copyFrom.Style, copyFrom.Size, copyFrom.Brush, textFormat)
+      {
+      }
+
       public FontLabel(string family, FontStyle style, int size, IBrush brush, TextFormat textFormat)
       {
          this.Family = family;

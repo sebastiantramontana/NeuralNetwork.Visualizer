@@ -36,7 +36,7 @@ namespace NeuralNetwork.Visualizer.Preferences
       private INodePreference _biases;
       private IEdgePreference _edges;
 
-      private FontLabel _inputFontLabel = FontLabel.Default;
+      private FontLabel _inputFontLabel = new FontLabel(FontLabel.Default, new TextFormat(HorizontalAlignment.Right, VerticalAlignment.Middle, TextTrimming.Character));
       public FontLabel InputFontLabel
       {
          get => _inputFontLabel ?? FontLabel.Null;

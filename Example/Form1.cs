@@ -81,9 +81,7 @@ namespace WindowsFormsApp1
       {
          NeuralNetworkVisualizerControl1.Preferences.AutoRedrawMode = AutoRedrawMode.AutoRedrawAsync;
          NeuralNetworkVisualizerControl1.Preferences.Quality = RenderQuality.High;
-         NeuralNetworkVisualizerControl1.Preferences.InputFontLabel = FontLabel.Default;
-         NeuralNetworkVisualizerControl1.Preferences.OutputFontLabel = FontLabel.Default;
-
+         
          cboQuality.Items.Add(RenderQuality.Low);
          cboQuality.Items.Add(RenderQuality.Medium);
          cboQuality.Items.Add(RenderQuality.High);
