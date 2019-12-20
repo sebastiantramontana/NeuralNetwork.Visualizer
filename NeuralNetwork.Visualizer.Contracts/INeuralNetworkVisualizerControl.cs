@@ -24,7 +24,6 @@ namespace NeuralNetwork.Visualizer.Contracts
       IEnumerable<Element> SelectedElements { get; }
       float Zoom { get; set; }
 
-      void Redraw();
       Task RedrawAsync();
       Task ResumeAutoRedraw();
       void SuspendAutoRedraw();

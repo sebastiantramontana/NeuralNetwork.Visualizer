@@ -119,11 +119,11 @@ namespace NeuralNetwork.Visualizer.Preferences
          set => ChangeNotificationProperty(ref _asyncRedrawOnResize, value);
       }
 
-      private AutoRedrawMode _autoRedrawMode = AutoRedrawMode.NoAutoRedraw;
-      public AutoRedrawMode AutoRedrawMode
+      private bool _autoRedrawOnChanges = false;
+      public bool AutoRedrawOnChanges
       {
-         get => _autoRedrawMode;
-         set => ChangeNotificationProperty(ref _autoRedrawMode, value);
+         get => _autoRedrawOnChanges;
+         set => ChangeNotificationProperty(ref _autoRedrawOnChanges, value);
       }
 
       public bool _selectable = true;

@@ -7,8 +7,8 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
-using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using NeuralNetwork.Visualizer.Preferences.Formatting;
+using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -79,9 +79,9 @@ namespace WindowsFormsApp1
 
       private void Form1_Load(object sender, EventArgs e)
       {
-         NeuralNetworkVisualizerControl1.Preferences.AutoRedrawMode = AutoRedrawMode.AutoRedrawAsync;
+         NeuralNetworkVisualizerControl1.Preferences.AutoRedrawOnChanges = true;
          NeuralNetworkVisualizerControl1.Preferences.Quality = RenderQuality.High;
-         
+
          cboQuality.Items.Add(RenderQuality.Low);
          cboQuality.Items.Add(RenderQuality.Medium);
          cboQuality.Items.Add(RenderQuality.High);
@@ -110,9 +110,6 @@ namespace WindowsFormsApp1
          );
 
          NeuralNetworkVisualizerControl1.Preferences.Edges.ConnectorFormatter = new CustomFormatter<Pen>((v) => v == 0.0 ? Pen.BasicFromColor(Color.LightGray) : Pen.BasicFromColor(Color.Black));
-
-         //default is true
-         NeuralNetworkVisualizerControl1.Preferences.AsyncRedrawOnResize = chAsyncRedrawOnResize.Checked;
 
          //To remove layer's titles
          NeuralNetworkVisualizerControl1.Preferences.Layers.Title = null;
@@ -231,20 +228,15 @@ namespace WindowsFormsApp1
          btnChangeValue.Enabled = btnAddBias.Enabled = btnClear.Enabled = trackZoom.Enabled = cboQuality.Enabled = false;
       }
 
-      private void cboQuality_SelectedIndexChanged(object sender, EventArgs e)
+      private async void cboQuality_SelectedIndexChanged(object sender, EventArgs e)
       {
          NeuralNetworkVisualizerControl1.Preferences.Quality = (RenderQuality)cboQuality.SelectedItem;
-         NeuralNetworkVisualizerControl1.Redraw();
+         await NeuralNetworkVisualizerControl1.RedrawAsync();
       }
 
       private void chSelectable_CheckedChanged(object sender, EventArgs e)
       {
          NeuralNetworkVisualizerControl1.Preferences.Selectable = chSelectable.Checked;
-      }
-
-      private void chAsyncRedrawOnResize_CheckedChanged(object sender, EventArgs e)
-      {
-         NeuralNetworkVisualizerControl1.Preferences.AsyncRedrawOnResize = chAsyncRedrawOnResize.Checked;
       }
    }
 }

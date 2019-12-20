@@ -7,9 +7,9 @@ using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
+using NeuralNetwork.Visualizer.Preferences;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using NeuralNetwork.Visualizer.Winform.Drawing.Controls;
-using NeuralNetwork.Visualizer.Preferences;
 using NeuralNetwork.Visualizer.Winform.Selection;
 using System;
 using System.Collections.Generic;
@@ -71,27 +71,11 @@ namespace NeuralNetwork.Visualizer.Winform
       [Browsable(false)]
       public InputLayer InputLayer
       {
-         get
-         {
-            return _InputLayer;
-         }
-         set
-         {
-            _InputLayer = value;
-
-            if (_InputLayer != null)
-               _InputLayer.PropertyChanged += InputLayer_PropertyChanged;
-
-            _zoom = 1f; //restart zoom
-            _selector.UnselectAll();
-
-            if (_readyToRedrawWhenPropertyChange)
-            {
-               RedrawInternal();
-            }
-         }
+         get => _InputLayer;
+         set => Task.Run(async () => await SetInputLayer(value));
       }
 
+      [Browsable(false)]
       public IEnumerable<Element> SelectedElements => _selector.SelectedElements;
 
       private float _zoom = 1f;
@@ -99,31 +83,12 @@ namespace NeuralNetwork.Visualizer.Winform
       public float Zoom
       {
          get => _zoom;
-         set
-         {
-            if (_InputLayer == null)
-            {
-               return; //nothing to do
-            }
-
-            _zoom = Constrain(0.1f, value, 10.0f); //limit the zoom value: Graphics will throw exception if not.
-
-            if (_readyToRedrawWhenPropertyChange)
-            {
-               RedrawInternal();
-            }
-         }
+         set => Task.Run(async () => await MakeZoom(value));
       }
 
       public Task<Image> ExportToImage()
       {
          return _controlDrawing.GetImage();
-      }
-
-      public void Redraw()
-      {
-         RedrawInternal();
-         FinishRedrawFromOuter();
       }
 
       public async Task RedrawAsync()
@@ -168,6 +133,37 @@ namespace NeuralNetwork.Visualizer.Winform
          await AutoRedraw();
       }
 
+      private async Task SetInputLayer(InputLayer inputLayer)
+      {
+         _InputLayer = inputLayer;
+
+         if (_InputLayer != null)
+            _InputLayer.PropertyChanged += InputLayer_PropertyChanged;
+
+         _zoom = 1f; //restart zoom
+         _selector.UnselectAll();
+
+         if (_readyToRedrawWhenPropertyChange)
+         {
+            await RedrawInternalAsync();
+         }
+      }
+
+      private async Task MakeZoom(float factor)
+      {
+         if (_InputLayer == null)
+         {
+            return; //nothing to do
+         }
+
+         _zoom = Constrain(0.1f, factor, 10.0f); //limit the zoom value: Graphics will throw exception if not.
+
+         if (_readyToRedrawWhenPropertyChange)
+         {
+            await RedrawAsync();
+         }
+      }
+
       private void CheckSelectionPreferenceChanged()
       {
          if (!this.Preferences.Selectable)
@@ -178,33 +174,15 @@ namespace NeuralNetwork.Visualizer.Winform
 
       private async Task AutoRedraw()
       {
-         if (_isAutoRedrawSuspended || !_readyToRedrawWhenPropertyChange)
+         if (!_isAutoRedrawSuspended && _readyToRedrawWhenPropertyChange && this.Preferences.AutoRedrawOnChanges)
          {
-            return;
-         }
-
-         switch (Preferences.AutoRedrawMode)
-         {
-            case AutoRedrawMode.AutoRedrawSync:
-               Redraw();
-               break;
-            case AutoRedrawMode.AutoRedrawAsync:
-               await RedrawAsync();
-               break;
-            case AutoRedrawMode.NoAutoRedraw:
-            default:
-               break;
+            await RedrawAsync();
          }
       }
 
       private void FinishRedrawFromOuter()
       {
          _readyToRedrawWhenPropertyChange = true;
-      }
-
-      private void RedrawInternal()
-      {
-         _controlDrawing?.Redraw();
       }
 
       private async Task RedrawInternalAsync()
@@ -221,19 +199,9 @@ namespace NeuralNetwork.Visualizer.Winform
          {
             if (!_previousSize.IsNull)
             {
-               if (Preferences.AsyncRedrawOnResize)
+               if (_readyToRedrawWhenPropertyChange)
                {
-                  if (_readyToRedrawWhenPropertyChange)
-                  {
-                     await RedrawInternalAsync();
-                  }
-               }
-               else
-               {
-                  if (_readyToRedrawWhenPropertyChange)
-                  {
-                     RedrawInternal();
-                  }
+                  await RedrawInternalAsync();
                }
             }
          }

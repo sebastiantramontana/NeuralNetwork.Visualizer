@@ -40,7 +40,6 @@
          this.chSelectable = new System.Windows.Forms.CheckBox();
          this.txtSelectedElements = new System.Windows.Forms.TextBox();
          this.txtLastSelected = new System.Windows.Forms.TextBox();
-         this.chAsyncRedrawOnResize = new System.Windows.Forms.CheckBox();
          ((System.ComponentModel.ISupportInitialize)(this.trackZoom)).BeginInit();
          this.SuspendLayout();
          // 
@@ -188,24 +187,11 @@
          this.txtLastSelected.Size = new System.Drawing.Size(98, 20);
          this.txtLastSelected.TabIndex = 14;
          // 
-         // chAsyncRedrawOnResize
-         // 
-         this.chAsyncRedrawOnResize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-         this.chAsyncRedrawOnResize.AutoSize = true;
-         this.chAsyncRedrawOnResize.Location = new System.Drawing.Point(1220, 569);
-         this.chAsyncRedrawOnResize.Name = "chAsyncRedrawOnResize";
-         this.chAsyncRedrawOnResize.Size = new System.Drawing.Size(138, 17);
-         this.chAsyncRedrawOnResize.TabIndex = 15;
-         this.chAsyncRedrawOnResize.Text = "AsyncRedrawOnResize";
-         this.chAsyncRedrawOnResize.UseVisualStyleBackColor = true;
-         this.chAsyncRedrawOnResize.CheckedChanged += new System.EventHandler(this.chAsyncRedrawOnResize_CheckedChanged);
-         // 
          // Form1
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(1370, 595);
-         this.Controls.Add(this.chAsyncRedrawOnResize);
          this.Controls.Add(this.txtLastSelected);
          this.Controls.Add(this.txtSelectedElements);
          this.Controls.Add(this.chSelectable);
@@ -241,7 +227,6 @@
         private System.Windows.Forms.CheckBox chSelectable;
         private System.Windows.Forms.TextBox txtSelectedElements;
         private System.Windows.Forms.TextBox txtLastSelected;
-      private System.Windows.Forms.CheckBox chAsyncRedrawOnResize;
    }
 }
 

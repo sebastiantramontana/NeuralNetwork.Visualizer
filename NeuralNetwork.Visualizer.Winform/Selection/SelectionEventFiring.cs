@@ -2,6 +2,7 @@
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Selection;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using SelectBias = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Bias>>>;
 using SelectEdge = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Edge>>>;
@@ -43,7 +44,7 @@ namespace NeuralNetwork.Visualizer.Winform.Selection
          _selectEdge = selectEdge;
       }
 
-      public void FireSelectionEvent(Position position)
+      public async Task FireSelectionEvent(Position position)
       {
          if (!_control.Preferences.Selectable)
             return;
@@ -75,7 +76,7 @@ namespace NeuralNetwork.Visualizer.Winform.Selection
          }
 
          FireSelectionEvent(element, isSelected);
-         _control.Redraw();
+         await _control.RedrawAsync();
       }
 
       private void FireSelectionEvent(Element element, bool isSelected)
