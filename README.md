@@ -24,64 +24,60 @@ In the following screenshot: Input nodes (dark green), edges connectors (orange)
 
 ```C#
 	    /**************** Using... **********************/
-	    using NeuralNetwork.Model;
-	    using NeuralNetwork.Model.Layers;
-	    using NeuralNetwork.Model.Nodes;
-	    using NeuralNetwork.Visualizer.Preferences.Brushes;
-	    using NeuralNetwork.Visualizer.Preferences.Formatting;
-	    using NeuralNetwork.Visualizer.Preferences.Text;
-	    using NeuralNetwork.Visualizer.Selection;
+	using NeuralNetwork.Model;
+	using NeuralNetwork.Model.Layers;
+	using NeuralNetwork.Model.Nodes;
+	using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
+	using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
+	using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+	using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
+	using NeuralNetwork.Visualizer.Contracts.Preferences;
+	using NeuralNetwork.Visualizer.Contracts.Selection;
+	using NeuralNetwork.Visualizer.Preferences.Formatting;
+	using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 
             /******** Configure Some Preferences: ********/
             
-            //Drawing behavior
-	    NeuralNetworkVisualizerControl1.Preferences.AutoRedrawMode = AutoRedrawMode.AutoRedrawAsync; //set the auto redraw mode: none, sync or async.
-            NeuralNetworkVisualizerControl1.Preferences.AsyncRedrawOnResize = false; //default is true
+        //Drawing behavior
+	NeuralNetworkVisualizerControl1.Preferences.AutoRedrawOnChanges = true;
+	NeuralNetworkVisualizerControl1.Preferences.Quality = RenderQuality.High; //Low, Medium, High. Medium is default
             
             //Font, Colors, etc.
-            NeuralNetworkVisualizerControl1.Preferences.Inputs.OutputValueFormatter = new ByValueSignFormatter<TextPreference>(
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Red) },
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Gray) },
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) },
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) }
-            );
+            NeuralNetworkVisualizerControl1.Preferences.Inputs.OutputValueFormatter = new ByValueSignFormatter<FontLabel>(
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Red)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Gray)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black))
+         );
 
-            NeuralNetworkVisualizerControl1.Preferences.Neurons.OutputValueFormatter = new ByValueSignFormatter<TextPreference>(
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Red) },
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Gray) },
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) },
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) }
-            );
+         NeuralNetworkVisualizerControl1.Preferences.Neurons.OutputValueFormatter = new ByValueSignFormatter<FontLabel>(
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Red)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Gray)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black))
+         );
 
-            NeuralNetworkVisualizerControl1.Preferences.Edges.ValueFormatter = new ByValueSignFormatter<TextPreference>(
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Red) },
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Gray) },
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) },
-                () => new TextPreference { Brush = new SolidBrushPreference(Color.Black) }
-            );
+         NeuralNetworkVisualizerControl1.Preferences.Edges.WeightFormatter = new ByValueSignFormatter<FontLabel>(
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Red)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Gray)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black)),
+             new FontLabel(FontLabel.Default, new SolidBrush(Color.Black))
+         );
 
-            NeuralNetworkVisualizerControl1.Preferences.Edges.Connector = new CustomFormatter<Pen>((v) => v == 0.0 ? new Pen(Color.LightGray) : new Pen(Color.Black));
+         NeuralNetworkVisualizerControl1.Preferences.Edges.ConnectorFormatter = new CustomFormatter<Pen>((v) => v == 0.0 ? Pen.BasicFromColor(Color.LightGray) : Pen.BasicFromColor(Color.Black));
 
-            //Graphics quality
-            NeuralNetworkVisualizerControl1.Preferences.Quality = RenderQuality.High; //Low, Medium, High. Medium is default
+	//To remove layer titles
+	//NeuralNetworkVisualizerControl1.Preferences.Layers = null;
 
-            //To remove layer titles
-            //NeuralNetworkVisualizerControl1.Preferences.Layers = null;
+	    /***** Some Functionalities *****/
 
-            //** NOTE: ** Preferences setting don't redraw the control automatically. If you need to redraw the current rendered NN, call to Redraw() method after all setting 
-            //NeuralNetworkVisualizerControl1.Redraw();
+	NeuralNetworkVisualizerControl1.RedrawAsync(); //Redraw() was removed
+	
+	//Adjust zoom
+	NeuralNetworkVisualizerControl1.Zoom = 2.0f; //1.0 is 'normal' and default, fit the whole drawing to control size
 
-
-            
-            /***** Some Functionalities *****/
-
-            //Adjust zoom
-            NeuralNetworkVisualizerControl1.Zoom = 2.0f; //1.0 is 'normal' and default, fit the whole drawing to control size
-
-            //Get the current rendered NN to save to disk or whatever
-            Image img = NeuralNetworkVisualizerControl1.Image;
-
-
+	//Get the current rendered NN to save to disk or whatever
+	Image img = NeuralNetworkVisualizerControl1.Image.ToGdi();
 
             /*************** Set the NN Model *****************/
 
@@ -135,7 +131,7 @@ In the following screenshot: Input nodes (dark green), edges connectors (orange)
             // Press **SHIFT** key when click for multiple one.
             // Press **CTRL** key when click to unselect an element.
                         
-            NeuralNetworkVisualizerControl1.Selectable = true; //default is false
+            NeuralNetworkVisualizerControl1.Preferences.Selectable = false; //Now, default is true
             
             //Each selectable element has its own typed-safe "Select" event
             NeuralNetworkVisualizerControl1.SelectBias += NeuralNetworkVisualizerControl1_SelectBias;
