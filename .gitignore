@@ -85,3 +85,10 @@
 /NeuralNetwork.Visualizer.Winform/obj/Debug/*.pdb
 /NeuralNetwork.Visualizer.Winform/obj/Debug/TempPE/*.dll
 /NeuralNetwork.Visualizer.Winform/obj/Debug
+/NeuralNetwork.Visualizer.Html5/obj/Debug/*.cache
+/NeuralNetwork.Visualizer.Html5/obj/Debug/*.txt
+/NeuralNetwork.Visualizer.Html5/obj/Debug/*.force
+/NeuralNetwork.Visualizer.Html5/obj/*.cache
+/NeuralNetwork.Visualizer.Html5/obj/*.json
+/NeuralNetwork.Visualizer.Html5/obj/*.props
+/NeuralNetwork.Visualizer.Html5/obj/*.targets
