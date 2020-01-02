@@ -23,6 +23,8 @@ namespace NeuralNetwork.Visualizer.Contracts
       IPreference Preferences { get; }
       IEnumerable<Element> SelectedElements { get; }
       float Zoom { get; set; }
+      Size Size { get; }
+      Size DrawingSize { get; }
 
       Task RedrawAsync();
       Task ResumeAutoRedraw();

@@ -4,7 +4,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 
-namespace NeuralNetwork.Visualizer.Winform.Drawing.Canvas
+namespace NeuralNetwork.Visualizer.Drawing
 {
    internal class NestedCanvas : ICanvas
    {

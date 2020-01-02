@@ -6,7 +6,7 @@ using NeuralNetwork.Visualizer.Contracts.Selection;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NeuralNetwork.Visualizer.Winform.Selection
+namespace NeuralNetwork.Visualizer.Drawing.Selection
 {
    internal class SelectableElementRegister : ISelectableElementRegister, ISelectionResolver
    {

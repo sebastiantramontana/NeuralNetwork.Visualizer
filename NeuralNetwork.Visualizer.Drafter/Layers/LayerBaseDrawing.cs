@@ -2,23 +2,17 @@
 using NeuralNetwork.Model.Nodes;
 using NeuralNetwork.Visualizer.Calcs;
 using NeuralNetwork.Visualizer.Contracts.Drawing;
-using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
-using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
-using NeuralNetwork.Visualizer.Winform.Drawing.Canvas;
-using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
-using NeuralNetwork.Visualizer.Winform.Drawing.Nodes;
-using NeuralNetwork.Visualizer.Winform.Selection;
+using NeuralNetwork.Visualizer.Drawing.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gdi = System.Drawing;
 
-namespace NeuralNetwork.Visualizer.Winform.Drawing.Layers
+namespace NeuralNetwork.Visualizer.Drawing.Layer
 {
-   internal abstract class LayerBaseDrawing<TLayer, TNode> : DrawingBase<TLayer>, ILayerDrawing
+   internal abstract class LayerBaseDrawing<TLayer, TNode> : ElementDrawingBase<TLayer>, ILayerDrawing
         where TLayer : LayerBase<TNode>
         where TNode : NodeBase
    {
@@ -27,15 +21,17 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Layers
       private readonly SimpleNodeSizesPreCalc _biasCache;
       private readonly IElementSelectionChecker _selectionChecker;
       private readonly ISelectableElementRegister _selectableElementRegister;
+      private readonly IRegionBuilder _regionBuilder;
       private readonly IList<INodeDrawing> _nodesDrawing;
 
-      internal LayerBaseDrawing(TLayer layer, IPreference preferences, LayerSizesPreCalc cache, SimpleNodeSizesPreCalc biasCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(layer)
+      internal LayerBaseDrawing(TLayer layer, IPreference preferences, LayerSizesPreCalc cache, SimpleNodeSizesPreCalc biasCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister, IRegionBuilder regionBuilder) : base(layer)
       {
          _preferences = preferences;
          _cache = cache;
          _biasCache = biasCache;
          _selectionChecker = selectionChecker;
          _selectableElementRegister = selectableElementRegister;
+         _regionBuilder = regionBuilder;
          _nodesDrawing = new List<INodeDrawing>(layer.GetAllNodes().Count());
       }
 
@@ -44,32 +40,15 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Layers
       public override void Draw(ICanvas canvas)
       {
          var rect = new Rectangle(new Position(0, 0), canvas.Size);
-         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Region(new Gdi.Region(rect.ToGdi())), 1));
+         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, _regionBuilder.Rectangle(rect), 1));
 
          var isSelected = _selectionChecker.IsSelected(this.Element);
-         var brush = GetBrush(isSelected);
+         var info = _preferences.Layers.GetInfoBySelection(isSelected);
 
-         var pen = GetPen(isSelected);
-         canvas.DrawRectangle(rect, pen, brush);
+         canvas.DrawRectangle(rect, info.Border, info.Background);
 
          DrawTitle(canvas);
          DrawNodes(canvas);
-      }
-
-      private Pen GetPen(bool isSelected)
-      {
-         return (isSelected)
-             ? _preferences.Layers.BorderSelected
-             : _preferences.Layers.Border;
-      }
-
-      private IBrush GetBrush(bool isSelected)
-      {
-         var brush = (isSelected)
-             ? _preferences.Layers.BackgroundSelected
-             : _preferences.Layers.Background;
-
-         return brush;
       }
 
       private void DrawNodes(ICanvas canvas)
@@ -79,7 +58,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Layers
 
          if (this.Element.Bias != null)
          {
-            var biasDrawing = new BiasDrawing(this.Element.Bias, _preferences, _biasCache, _selectableElementRegister, _selectionChecker);
+            var biasDrawing = new BiasDrawing(this.Element.Bias, _preferences, _biasCache, _selectableElementRegister, _selectionChecker, _regionBuilder);
             InternalDrawNode(biasDrawing);
          }
 

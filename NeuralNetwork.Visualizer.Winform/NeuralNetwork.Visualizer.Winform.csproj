@@ -62,23 +62,11 @@
     <Compile Include="Destroy.cs" />
     <Compile Include="Drawing\Canvas\GdiMapping\GdiExtensions.cs" />
     <Compile Include="Drawing\Controls\ControlCanvas.cs" />
-    <Compile Include="Drawing\Controls\ControlDrawing.cs" />
     <Compile Include="Drawing\Controls\IControlCanvas.cs" />
-    <Compile Include="Drawing\Controls\IControlDrawing.cs" />
-    <Compile Include="Selection\ISelectionEventFiring.cs" />
+    <Compile Include="Drawing\Controls\ToolTip.cs" />
+    <Compile Include="Selection\RegionBuilder.cs" />
     <Compile Include="Selection\SelectionEventFiring.cs" />
-    <Compile Include="Drawing\Controls\ToolTipFiring.cs" />
-    <Compile Include="Drawing\Canvas\NestedCanvas.cs" />
     <Compile Include="Drawing\Canvas\GraphicsCanvas.cs" />
-    <Compile Include="Drawing\Layers\NeuronLayerDrawing.cs" />
-    <Compile Include="Drawing\Layers\InputLayerDrawing.cs" />
-    <Compile Include="Drawing\Layers\LayerBaseDrawing.cs" />
-    <Compile Include="Drawing\Nodes\BiasDrawing.cs" />
-    <Compile Include="Drawing\Nodes\EdgeDrawing.cs" />
-    <Compile Include="Drawing\Nodes\InputDrawing.cs" />
-    <Compile Include="Drawing\Nodes\NodeBaseDrawing.cs" />
-    <Compile Include="Drawing\Nodes\NeuronDrawing.cs" />
-    <Compile Include="Drawing\Nodes\SimpleNodeDrawing.cs" />
     <Compile Include="NeuralNetworkVisualizerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -92,8 +80,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Selection\Region.cs" />
-    <Compile Include="Selection\SelectableElementRegister.cs" />
-    <Compile Include="Selection\ElementSelector.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>

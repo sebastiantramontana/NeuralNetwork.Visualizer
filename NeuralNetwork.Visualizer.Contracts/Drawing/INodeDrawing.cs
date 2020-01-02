@@ -3,7 +3,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 
 namespace NeuralNetwork.Visualizer.Contracts.Drawing
 {
-   public interface INodeDrawing : IDrawing
+   public interface INodeDrawing : IElementDrawing
    {
       ICanvas Canvas { get; }
       Position EdgeStartPosition { get; }

@@ -2,7 +2,7 @@
 
 namespace NeuralNetwork.Visualizer.Contracts.Drawing
 {
-   public interface ILayerDrawing : IDrawing
+   public interface ILayerDrawing : IElementDrawing
    {
       IEnumerable<INodeDrawing> NodesDrawing { get; }
    }

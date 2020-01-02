@@ -1,34 +1,32 @@
-﻿using NeuralNetwork.Infrastructure.Winform;
-using NeuralNetwork.Model;
+﻿using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
+using NeuralNetwork.Visualizer.Contracts;
 using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Selection;
 using System;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using System.Timers;
 
-namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
+namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
    internal class ToolTipFiring : IToolTipFiring
    {
-      private readonly NeuralNetworkVisualizerControl _control;
-      private readonly Control _controlToToolTip;
+      private readonly IToolTip _toolTip;
+      private readonly INeuralNetworkVisualizerControl _control;
       private readonly ISelectionResolver _selectionResolver;
-      private readonly IInvoker _invoker;
-      private System.Timers.Timer timeout = null;
-      private ToolTip tipInfo = null;
-      private Position lastToolTipLocation;
 
-      internal ToolTipFiring(NeuralNetworkVisualizerControl control, Control controlToToolTip, ISelectionResolver selectionResolver, IInvoker invoker)
+      private Timer _timeout = null;
+      private Position _lastToolTipLocation = null;
+
+      internal ToolTipFiring(IToolTip toolTip, INeuralNetworkVisualizerControl control, ISelectionResolver selectionResolver)
       {
+         _toolTip = toolTip;
          _control = control;
-         _controlToToolTip = controlToToolTip;
          _selectionResolver = selectionResolver;
-         _invoker = invoker;
-         lastToolTipLocation = new Position(0, 0);
+         _lastToolTipLocation = new Position(0, 0);
       }
 
       public void Show(Position position)
@@ -36,51 +34,51 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
          if (!Validate(position))
             return;
 
-         Destroy.Disposable(ref timeout);
-         Destroy.Disposable(ref tipInfo);
+         DestroyFiring();
 
-         timeout = new System.Timers.Timer
-         {
-            AutoReset = false,
-            Enabled = true,
-            Interval = 500
-         };
+         _timeout = CreateTimer();
 
-         timeout.Elapsed += (s, ev) =>
+         _timeout.Elapsed += (s, ev) =>
          {
-            Destroy.Disposable(ref timeout);
-            Destroy.Disposable(ref tipInfo);
+            DestroyFiring();
 
             var elem = _selectionResolver.GetElementFromLocation(position);
 
             if (elem != null)
             {
-               tipInfo = new ToolTip
-               {
-                  AutomaticDelay = 0,
-                  AutoPopDelay = 0,
-                  InitialDelay = 0,
-                  ReshowDelay = 0,
-                  ToolTipIcon = ToolTipIcon.Info,
-                  UseFading = true,
-
-                  ToolTipTitle = elem.Id
-               };
-
-               string text = GetElementText(elem);
-               _invoker.SafeInvoke(() => tipInfo?.Show(text, _controlToToolTip));
-
-               lastToolTipLocation = position;
+               ShowToolTip(elem);
+               _lastToolTipLocation = position;
             }
          };
 
-         timeout.Start();
+         _timeout.Start();
       }
 
       public void Hide()
       {
-         Destroy.Disposable(ref timeout);
-         Destroy.Disposable(ref tipInfo);
+         DestroyFiring();
+      }
+
+      private void DestroyFiring()
+      {
+         Destroy.Disposable(ref _timeout);
+         _toolTip.Close();
+      }
+
+      private void ShowToolTip(Element element)
+      {
+         string text = GetElementText(element);
+         _toolTip.Show(element.Id, text);
+      }
+
+      private Timer CreateTimer()
+      {
+         return new Timer
+         {
+            AutoReset = false,
+            Enabled = true,
+            Interval = 500
+         };
       }
 
       private string GetElementText(Element element)
@@ -187,12 +185,12 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
 
       private bool Validate(Position position)
       {
-         return _controlToToolTip.IsHandleCreated && _control.InputLayer != null && ValidateLocation(position);
+         return _control.InputLayer != null && ValidateLocation(position);
       }
 
       private bool ValidateLocation(Position position)
       {
-         return Math.Abs(position.X - lastToolTipLocation.X) > 5 || Math.Abs(position.Y - lastToolTipLocation.Y) > 5;
+         return Math.Abs(position.X - _lastToolTipLocation.X) > 5 || Math.Abs(position.Y - _lastToolTipLocation.Y) > 5;
       }
    }
 }

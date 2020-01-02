@@ -118,3 +118,9 @@
 /NeuralNetwork.Visualizer.Preferences/obj/Debug/net48/*.txt
 /NeuralNetwork.Visualizer.Preferences/obj/Debug/net48/*.dll
 /NeuralNetwork.Visualizer.Preferences/obj/Debug/net48/*.pdb
+/NeuralNetwork.Visualizer.Drafter/obj/Debug/netstandard2.0/*.cs
+/NeuralNetwork.Visualizer.Drafter/obj/Debug/netstandard2.0/*.cache
+/NeuralNetwork.Visualizer.Drafter/obj/*.cache
+/NeuralNetwork.Visualizer.Drafter/obj/*.json
+/NeuralNetwork.Visualizer.Drafter/obj/*.props
+/NeuralNetwork.Visualizer.Drafter/obj/*.targets

@@ -30,5 +30,12 @@ namespace NeuralNetwork.Visualizer.Preferences
       }
 
       public byte RoundingDigits { get; set; } = 3;
+
+      public IFormatter<Pen> GetInfoBySelection(bool isSelected)
+      {
+         return (isSelected)
+            ? this.ConnectorSelectedFormatter
+            : this.ConnectorFormatter;
+      }
    }
 }

@@ -6,14 +6,14 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
 
-namespace NeuralNetwork.Visualizer.Winform.Drawing.Nodes
+namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
    internal class InputDrawing : SimpleNodeDrawing<Input>
    {
       private readonly IPreference _preferences;
       private readonly SimpleNodeSizesPreCalc _cache;
 
-      internal InputDrawing(Input element, IPreference preferences, SimpleNodeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker) : base(element, preferences.Inputs, cache, selectionChecker, selectableElementRegister)
+      internal InputDrawing(Input element, IPreference preferences, SimpleNodeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker, IRegionBuilder regionBuilder) : base(element, preferences.Inputs, cache, selectionChecker, selectableElementRegister, regionBuilder)
       {
          _preferences = preferences;
          _cache = cache;

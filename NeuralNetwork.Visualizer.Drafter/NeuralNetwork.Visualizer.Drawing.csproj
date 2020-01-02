@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Calcs\NeuralNetwork.Visualizer.Calcs.csproj" />
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Contracts\NeuralNetwork.Visualizer.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NeuralNetwork.Infrastructure">
+      <HintPath>..\Dependencies\NeuralNetwork.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="NeuralNetwork.Model">
+      <HintPath>..\Dependencies\NeuralNetwork.Model.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -5,14 +5,11 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
-using NeuralNetwork.Visualizer.Winform.Selection;
 using System;
-using System.Drawing.Drawing2D;
-using Gdi = System.Drawing;
 
-namespace NeuralNetwork.Visualizer.Winform.Drawing.Nodes
+namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
-   internal class EdgeDrawing : DrawingBase<Edge>
+   internal class EdgeDrawing : ElementDrawingBase<Edge>
    {
       private readonly IEdgePreference _preferences;
       private readonly Position _fromPosition;
@@ -21,8 +18,9 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Nodes
       private readonly EdgeSizesPreCalc _cache;
       private readonly ISelectableElementRegister _selectableElementRegister;
       private readonly IElementSelectionChecker _selectionChecker;
+      private readonly IRegionBuilder _regionBuilder;
 
-      internal EdgeDrawing(Edge element, IEdgePreference preferences, Position fromPosition, Position toPosition, int textHeight, EdgeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker) : base(element)
+      internal EdgeDrawing(Edge element, IEdgePreference preferences, Position fromPosition, Position toPosition, int textHeight, EdgeSizesPreCalc cache, ISelectableElementRegister selectableElementRegister, IElementSelectionChecker selectionChecker, IRegionBuilder regionBuilder) : base(element)
       {
          _preferences = preferences;
          _fromPosition = fromPosition;
@@ -31,13 +29,14 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Nodes
          _cache = cache;
          _selectableElementRegister = selectableElementRegister;
          _selectionChecker = selectionChecker;
+         _regionBuilder = regionBuilder;
       }
 
       public override void Draw(ICanvas canvas)
       {
          RegisterSelectableConnectorLine(canvas);
 
-         var pen = GetPen(_selectionChecker.IsSelected(this.Element));
+         var pen = GetPen();
          canvas.DrawLine(_fromPosition, _toPosition, pen);
 
          DrawWeight(canvas);
@@ -45,25 +44,24 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Nodes
 
       private void RegisterSelectableConnectorLine(ICanvas canvas)
       {
-         var gp = new GraphicsPath();
-         gp.AddPolygon(new[]
+         var positions = new[]
          {
-                new Gdi.Point(_fromPosition.X - 4 , _fromPosition.Y - 4),
-                new Gdi.Point(_fromPosition.X + 4 , _fromPosition.Y + 4),
-                new Gdi.Point(_toPosition.X + 4 , _toPosition.Y + 4),
-                new Gdi.Point(_toPosition.X - 4 , _toPosition.Y - 4),
-            });
+                new Position(_fromPosition.X - 4 , _fromPosition.Y - 4),
+                new Position(_fromPosition.X + 4 , _fromPosition.Y + 4),
+                new Position(_toPosition.X + 4 , _toPosition.Y + 4),
+                new Position(_toPosition.X - 4 , _toPosition.Y - 4),
+         };
 
-         gp.CloseFigure();
-
-         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, new Region(new Gdi.Region(gp)), 3));
+         _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, _regionBuilder.Polygon(positions), 3));
       }
 
-      private Pen GetPen(bool isSelected)
+      private Pen GetPen()
       {
-         return (isSelected)
-             ? _preferences.ConnectorSelectedFormatter.GetFormat(this.Element.Weight)
-             : _preferences.ConnectorFormatter.GetFormat(this.Element.Weight);
+         var isSelected = _selectionChecker.IsSelected(this.Element);
+         var formatter = _preferences.GetInfoBySelection(isSelected);
+         var pen = formatter.GetFormat(this.Element.Weight);
+
+         return pen;
       }
 
       private void DrawWeight(ICanvas canvas)

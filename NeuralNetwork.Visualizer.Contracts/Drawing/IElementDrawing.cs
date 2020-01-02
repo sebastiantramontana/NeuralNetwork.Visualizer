@@ -2,7 +2,7 @@
 
 namespace NeuralNetwork.Visualizer.Contracts.Drawing
 {
-   public interface IDrawing
+   public interface IElementDrawing
    {
       void Draw(ICanvas canvas);
    }

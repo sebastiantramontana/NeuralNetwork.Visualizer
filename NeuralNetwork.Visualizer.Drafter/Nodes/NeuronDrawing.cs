@@ -11,7 +11,7 @@ using NeuralNetwork.Visualizer.Contracts.Selection;
 using System;
 using System.Collections.Generic;
 
-namespace NeuralNetwork.Visualizer.Winform.Drawing.Nodes
+namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
    internal class NeuronDrawing : NodeBaseDrawing<Neuron>
    {
@@ -22,8 +22,9 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Nodes
       private readonly EdgeSizesPreCalc _edgesCache;
       private readonly IElementSelectionChecker _selectionChecker;
       private readonly ISelectableElementRegister _selectableElementRegister;
+      private readonly IRegionBuilder _regionBuilder;
 
-      internal NeuronDrawing(Neuron element, IDictionary<NodeBase, INodeDrawing> previousNodes, ICanvas edgesCanvas, IPreference preferences, NeuronSizesPreCalc cache, EdgeSizesPreCalc edgesCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister) : base(element, preferences.Neurons, cache, selectableElementRegister, selectionChecker)
+      internal NeuronDrawing(Neuron element, IDictionary<NodeBase, INodeDrawing> previousNodes, ICanvas edgesCanvas, IPreference preferences, NeuronSizesPreCalc cache, EdgeSizesPreCalc edgesCache, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister, IRegionBuilder regionBuilder) : base(element, preferences.Neurons, cache, selectableElementRegister, selectionChecker, regionBuilder)
       {
          _previousNodes = previousNodes;
          _edgesCanvas = edgesCanvas;
@@ -32,6 +33,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Nodes
          _edgesCache = edgesCache;
          _selectionChecker = selectionChecker;
          _selectableElementRegister = selectableElementRegister;
+         _regionBuilder = regionBuilder;
       }
 
       public override void Draw(ICanvas canvas)
@@ -92,7 +94,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Nodes
             var outputPositionTrans = previousNode.Canvas.Translate(previousNode.EdgeStartPosition, _edgesCanvas);
             var inputPositionTrans = canvas.Translate(inputPosition, _edgesCanvas);
 
-            var edgeDrawing = new EdgeDrawing(edge, _preferences.Edges, outputPositionTrans, inputPositionTrans, textEdgeHeight, _edgesCache, _selectableElementRegister, _selectionChecker);
+            var edgeDrawing = new EdgeDrawing(edge, _preferences.Edges, outputPositionTrans, inputPositionTrans, textEdgeHeight, _edgesCache, _selectableElementRegister, _selectionChecker, _regionBuilder);
             edgeDrawing.Draw(_edgesCanvas);
          }
       }

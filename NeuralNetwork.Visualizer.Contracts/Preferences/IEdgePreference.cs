@@ -3,7 +3,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 
 namespace NeuralNetwork.Visualizer.Contracts.Preferences
 {
-   public interface IEdgePreference
+   public interface IEdgePreference : ISelectablePreference<IFormatter<Pen>>
    {
       IFormatter<Pen> ConnectorFormatter { get; set; }
       IFormatter<Pen> ConnectorSelectedFormatter { get; set; }

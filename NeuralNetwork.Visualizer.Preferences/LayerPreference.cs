@@ -4,31 +4,31 @@ using NeuralNetwork.Visualizer.Contracts.Preferences;
 
 namespace NeuralNetwork.Visualizer.Preferences
 {
-   public class LayerPreference : ILayerPreference
+   public class LayerPreference : Selectable2DPreferenceBase
    {
       private IBrush _background;
-      public IBrush Background
+      public override IBrush Background
       {
          get => _background ?? (_background = SolidBrush.Null);
          set => _background = value;
       }
 
       private Pen _border;
-      public Pen Border
+      public override Pen Border
       {
          get => _border ?? (_border = Pen.Null);
          set => _border = value;
       }
 
       private Pen _borderSelected;
-      public Pen BorderSelected
+      public override Pen BorderSelected
       {
          get => _borderSelected ?? (_borderSelected = Pen.Null);
          set => _borderSelected = value;
       }
 
       private IBrush _backgroundSelected;
-      public IBrush BackgroundSelected
+      public override IBrush BackgroundSelected
       {
          get => _backgroundSelected ?? (_backgroundSelected = SolidBrush.Null);
          set => _backgroundSelected = value;

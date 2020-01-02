@@ -7,17 +7,17 @@ using NeuralNetwork.Visualizer.Preferences.Formatting;
 
 namespace NeuralNetwork.Visualizer.Preferences
 {
-   public class NodePreference : INodePreference
+   public class NodePreference : Selectable2DPreferenceBase
    {
       private IBrush _background;
-      public IBrush Background
+      public override IBrush Background
       {
          get => _background ?? (_background = SolidBrush.Null);
          set => _background = value;
       }
 
       private IBrush _backgroundSelected;
-      public IBrush BackgroundSelected
+      public override IBrush BackgroundSelected
       {
          get => _backgroundSelected ?? (_backgroundSelected = SolidBrush.Null);
          set => _backgroundSelected = value;
@@ -31,14 +31,14 @@ namespace NeuralNetwork.Visualizer.Preferences
       }
 
       private Pen _border = Pen.BasicFromColor(Color.Black);
-      public Pen Border
+      public override Pen Border
       {
          get => _border ?? (_border = Pen.Null);
          set => _border = value;
       }
 
       private Pen _borderSelected = Pen.BasicFromColor(Color.Orange);
-      public Pen BorderSelected
+      public override Pen BorderSelected
       {
          get => _borderSelected ?? (_borderSelected = Pen.Null);
          set => _borderSelected = value;
