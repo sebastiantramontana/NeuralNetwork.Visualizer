@@ -7,6 +7,6 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
    internal interface IControlCanvas : ICanvasBuilder
    {
       Gdi.Image GetImage();
-      Task RedrawAsync();
+      void Redraw();
    }
 }

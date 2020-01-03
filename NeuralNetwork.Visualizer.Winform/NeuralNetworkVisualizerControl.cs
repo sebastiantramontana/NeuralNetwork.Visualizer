@@ -74,7 +74,7 @@ namespace NeuralNetwork.Visualizer.Winform
       public InputLayer InputLayer
       {
          get => _InputLayer;
-         set => Task.Run(async () => await SetInputLayer(value));
+         set => SetInputLayer(value);
       }
 
       [Browsable(false)]
@@ -85,7 +85,7 @@ namespace NeuralNetwork.Visualizer.Winform
       public float Zoom
       {
          get => _zoom;
-         set => Task.Run(async () => await MakeZoom(value));
+         set => MakeZoom(value);
       }
 
       Size INeuralNetworkVisualizerControl.Size => this.Size.ToVisualizer();
@@ -97,10 +97,10 @@ namespace NeuralNetwork.Visualizer.Winform
          return await Task.Run(() => _controlCanvas.GetImage().ToVisualizer());
       }
 
-      public async Task RedrawAsync()
+      public void Redraw()
       {
-         await _controlCanvas.RedrawAsync();
-         FinishRedrawFromOuter();
+         _controlCanvas.Redraw();
+         SetReadyForAutoRedraw();
       }
 
       private bool _isAutoRedrawSuspended = false;
@@ -117,29 +117,29 @@ namespace NeuralNetwork.Visualizer.Winform
       /// <para>Resume any previous auto redraw suspension.</para>
       /// <para>If Preferences.AutoRedrawMode is AutoRedrawSync or AutoRedrawAsync performs a redraw.</para>
       /// </summary>
-      public async Task ResumeAutoRedraw()
+      public void ResumeAutoRedraw()
       {
          _isAutoRedrawSuspended = false;
-         await AutoRedraw();
+         AutoRedraw();
       }
 
-      private async void InputLayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+      private void InputLayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
       {
-         await AutoRedraw();
+         AutoRedraw();
          _selector.MarkToBeRefreshed(_InputLayer);
       }
 
-      private async void Preferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
+      private void Preferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
       {
          if (e.PropertyName == nameof(this.Preferences.Selectable))
          {
             CheckSelectionPreferenceChanged();
          }
 
-         await AutoRedraw();
+         AutoRedraw();
       }
 
-      private async Task SetInputLayer(InputLayer inputLayer)
+      private void SetInputLayer(InputLayer inputLayer)
       {
          _InputLayer = inputLayer;
 
@@ -151,11 +151,11 @@ namespace NeuralNetwork.Visualizer.Winform
 
          if (_readyToRedrawWhenPropertyChange)
          {
-            await _controlCanvas.RedrawAsync();
+            _controlCanvas.Redraw();
          }
       }
 
-      private async Task MakeZoom(float factor)
+      private void MakeZoom(float factor)
       {
          if (_InputLayer == null)
          {
@@ -166,7 +166,7 @@ namespace NeuralNetwork.Visualizer.Winform
 
          if (_readyToRedrawWhenPropertyChange)
          {
-            await RedrawAsync();
+            Redraw();
          }
       }
 
@@ -178,21 +178,21 @@ namespace NeuralNetwork.Visualizer.Winform
          }
       }
 
-      private async Task AutoRedraw()
+      private void AutoRedraw()
       {
          if (!_isAutoRedrawSuspended && _readyToRedrawWhenPropertyChange && this.Preferences.AutoRedrawOnChanges)
          {
-            await RedrawAsync();
+            Redraw();
          }
       }
 
-      private void FinishRedrawFromOuter()
+      private void SetReadyForAutoRedraw()
       {
          _readyToRedrawWhenPropertyChange = true;
       }
 
       private Size _previousSize = Contracts.Drawing.Core.Primitives.Size.Null;
-      protected override async void OnSizeChanged(EventArgs e)
+      protected override void OnSizeChanged(EventArgs e)
       {
          _previousSize = this.ClientSize.ToVisualizer();
 
@@ -202,7 +202,7 @@ namespace NeuralNetwork.Visualizer.Winform
             {
                if (_readyToRedrawWhenPropertyChange)
                {
-                  await _controlCanvas.RedrawAsync();
+                  _controlCanvas.Redraw();
                }
             }
          }

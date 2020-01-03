@@ -3,12 +3,11 @@ using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
+using NeuralNetwork.Visualizer.Drawing;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas;
-using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using System;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gdi = System.Drawing;
 
@@ -35,7 +34,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
             ?? new Gdi.Bitmap(_control.ClientSize.Width, _control.ClientSize.Height));  //Clone for safe handling
       }
 
-      public async Task RedrawAsync()
+      public void Redraw()
       {
          if (!_control.IsHandleCreated)
             return;
@@ -46,28 +45,32 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
             return;
          }
 
-         await _drafter.RedrawAsync(this);
+         _drafter.Redraw(this);
+         Destroy.Disposable(ref _graph);
       }
 
+      private Gdi.Graphics _graph = null;
       public ICanvas Build(Size size)
       {
-        // _pictureBox.ClientSize = size.ToGdi();
+         var bmp = new Gdi.Bitmap(size.Width, size.Height);
+         _graph = Gdi.Graphics.FromImage(bmp);
+         _invoker.SafeInvoke(() => _pictureBox.Image = bmp);
 
-         Gdi.Bitmap bmp = new Gdi.Bitmap(size.Width, size.Height);
-         Gdi.Graphics graph = Gdi.Graphics.FromImage(bmp);
-         _pictureBox.Image = bmp;
+         SetQuality(_graph);
 
-         SetQuality(graph);
-
-         return new GraphicsCanvas(graph, size);
+         return new GraphicsCanvas(_graph, size);
       }
 
       private void SetBlank()
       {
-         DestroyImageCanvas();
+         _invoker.SafeInvoke(() =>
+         {
+            DestroyImageCanvas();
 
-         _pictureBox.ClientSize = _control.ClientSize;
-         _pictureBox.BackColor = _control.BackColor;
+            _pictureBox.ClientSize = _control.ClientSize;
+            _pictureBox.BackColor = _control.BackColor;
+
+         });
       }
 
       private void DestroyImageCanvas()

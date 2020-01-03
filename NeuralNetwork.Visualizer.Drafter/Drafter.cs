@@ -9,7 +9,6 @@ using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing.Layer;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Drawing
 {
@@ -30,23 +29,15 @@ namespace NeuralNetwork.Visualizer.Drawing
          _control = control;
       }
 
-      private bool _isDrawing = false; //flag to avoid multiple parallel drawing
-      public async Task RedrawAsync(ICanvasBuilder canvasBuilder)
+      public void Redraw(ICanvasBuilder canvasBuilder)
       {
-         //if (_isDrawing)
-         //   return;
-
-         _isDrawing = true;
-
          ValidateInputLayer();
 
          var zoomedControlSize = GetZoomedControlSize();
          var layerSizes = GetLayerSizes(zoomedControlSize);
          var canvas = canvasBuilder.Build(new Size(zoomedControlSize.Width, layerSizes.Height));
 
-         await Task.Run(() => DrawLayersAsync(canvas, layerSizes));
-
-         _isDrawing = false;
+         DrawLayersAsync(canvas, layerSizes);
       }
 
       private void ValidateInputLayer()

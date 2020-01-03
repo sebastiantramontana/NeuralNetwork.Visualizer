@@ -26,8 +26,8 @@ namespace NeuralNetwork.Visualizer.Contracts
       Size Size { get; }
       Size DrawingSize { get; }
 
-      Task RedrawAsync();
-      Task ResumeAutoRedraw();
+      void Redraw();
+      void ResumeAutoRedraw();
       void SuspendAutoRedraw();
       Task<Image> ExportToImage();
    }

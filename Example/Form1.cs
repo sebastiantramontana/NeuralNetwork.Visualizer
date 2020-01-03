@@ -179,7 +179,7 @@ namespace WindowsFormsApp1
          btnChangeValue.Enabled = btnAddBias.Enabled = btnClear.Enabled = trackZoom.Enabled = cboQuality.Enabled = true;
       }
 
-      private async void btnChangeValue_Click(object sender, EventArgs e)
+      private void btnChangeValue_Click(object sender, EventArgs e)
       {
          NeuralNetworkVisualizerControl1.SuspendAutoRedraw();
 
@@ -189,7 +189,7 @@ namespace WindowsFormsApp1
          var node = _input.Nodes.Single(n => n.Id == "e3");
          node.OutputValue = 1.44444;
 
-         await NeuralNetworkVisualizerControl1.ResumeAutoRedraw();
+         NeuralNetworkVisualizerControl1.ResumeAutoRedraw();
       }
 
       private void btnAddBias_Click(object sender, EventArgs e)
@@ -197,7 +197,7 @@ namespace WindowsFormsApp1
          AddHiddenBias();
       }
 
-      private async void AddHiddenBias()
+      private void AddHiddenBias()
       {
          NeuralNetworkVisualizerControl1.SuspendAutoRedraw();
 
@@ -214,7 +214,7 @@ namespace WindowsFormsApp1
             weight++;
          }
 
-         await NeuralNetworkVisualizerControl1.ResumeAutoRedraw();
+         NeuralNetworkVisualizerControl1.ResumeAutoRedraw();
       }
 
       private void trackZoom_Scroll(object sender, EventArgs e)
@@ -228,10 +228,10 @@ namespace WindowsFormsApp1
          btnChangeValue.Enabled = btnAddBias.Enabled = btnClear.Enabled = trackZoom.Enabled = cboQuality.Enabled = false;
       }
 
-      private async void cboQuality_SelectedIndexChanged(object sender, EventArgs e)
+      private void cboQuality_SelectedIndexChanged(object sender, EventArgs e)
       {
          NeuralNetworkVisualizerControl1.Preferences.Quality = (RenderQuality)cboQuality.SelectedItem;
-         await NeuralNetworkVisualizerControl1.RedrawAsync();
+         NeuralNetworkVisualizerControl1.Redraw();
       }
 
       private void chSelectable_CheckedChanged(object sender, EventArgs e)
