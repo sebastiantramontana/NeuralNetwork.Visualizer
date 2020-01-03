@@ -7,6 +7,9 @@ using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
+using NeuralNetwork.Visualizer.Drawing;
+using NeuralNetwork.Visualizer.Drawing.Controls;
+using NeuralNetwork.Visualizer.Drawing.Selection;
 using NeuralNetwork.Visualizer.Preferences;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using NeuralNetwork.Visualizer.Winform.Drawing.Controls;
@@ -15,15 +18,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using Winforms = System.Windows.Forms;
 
 namespace NeuralNetwork.Visualizer.Winform
 {
-   public partial class NeuralNetworkVisualizerControl : UserControl, INeuralNetworkVisualizerControl
+   public partial class NeuralNetworkVisualizerControl : Winforms.UserControl, INeuralNetworkVisualizerControl
    {
       private bool _readyToRedrawWhenPropertyChange = false;
 
-      private readonly IControlDrawing _controlDrawing;
+      private readonly IControlCanvas _controlCanvas;
       private readonly IElementSelector _selector;
       private readonly Invoker _visualizerInvoker;
       private readonly ISelectionEventFiring _selectionEventFiring;
@@ -42,11 +45,9 @@ namespace NeuralNetwork.Visualizer.Winform
 
          var selectableElementRegisterResolver = new SelectableElementRegister();
          _selector = new ElementSelector(selectableElementRegisterResolver);
-
          _visualizerInvoker = new Invoker(this);
-
-         _controlDrawing = new ControlDrawing(new ControlCanvas(this.picCanvas, this, _visualizerInvoker), _selector, selectableElementRegisterResolver, selectableElementRegisterResolver, _visualizerInvoker);
-         _toolTipFiring = new ToolTipFiring(this, picCanvas, selectableElementRegisterResolver, _visualizerInvoker);
+         var drafter = new Drafter(this, _selector, selectableElementRegisterResolver, selectableElementRegisterResolver, new RegionBuilder());
+         _toolTipFiring = new ToolTipFiring(new ToolTip(_visualizerInvoker, picCanvas), this, selectableElementRegisterResolver);
          _selectionEventFiring = new SelectionEventFiring(this, _selector,
                                     () => this.SelectInputLayer,
                                     () => this.SelectNeuronLayer,
@@ -54,8 +55,9 @@ namespace NeuralNetwork.Visualizer.Winform
                                     () => this.SelectInput,
                                     () => this.SelectNeuron,
                                     () => this.SelectEdge);
+         _controlCanvas = new ControlCanvas(this.picCanvas, this, drafter, _visualizerInvoker);
 
-         Control.CheckForIllegalCrossThreadCalls = true;
+         Winforms.Control.CheckForIllegalCrossThreadCalls = true;
          this.BackColor = Color.White.ToGdi();
 
          picCanvas.MouseDown += PicCanvas_MouseDown;
@@ -86,14 +88,18 @@ namespace NeuralNetwork.Visualizer.Winform
          set => Task.Run(async () => await MakeZoom(value));
       }
 
-      public Task<Image> ExportToImage()
+      Size INeuralNetworkVisualizerControl.Size => this.Size.ToVisualizer();
+
+      public Size DrawingSize => picCanvas.ClientSize.ToVisualizer();
+
+      public async Task<Image> ExportToImage()
       {
-         return _controlDrawing.GetImage();
+         return await Task.Run(() => _controlCanvas.GetImage().ToVisualizer());
       }
 
       public async Task RedrawAsync()
       {
-         await RedrawInternalAsync();
+         await _controlCanvas.RedrawAsync();
          FinishRedrawFromOuter();
       }
 
@@ -125,7 +131,7 @@ namespace NeuralNetwork.Visualizer.Winform
 
       private async void Preferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
       {
-         if (e.PropertyName == "Selectable")
+         if (e.PropertyName == nameof(this.Preferences.Selectable))
          {
             CheckSelectionPreferenceChanged();
          }
@@ -145,7 +151,7 @@ namespace NeuralNetwork.Visualizer.Winform
 
          if (_readyToRedrawWhenPropertyChange)
          {
-            await RedrawInternalAsync();
+            await _controlCanvas.RedrawAsync();
          }
       }
 
@@ -185,11 +191,6 @@ namespace NeuralNetwork.Visualizer.Winform
          _readyToRedrawWhenPropertyChange = true;
       }
 
-      private async Task RedrawInternalAsync()
-      {
-         await _controlDrawing?.RedrawAsync();
-      }
-
       private Size _previousSize = Contracts.Drawing.Core.Primitives.Size.Null;
       protected override async void OnSizeChanged(EventArgs e)
       {
@@ -201,7 +202,7 @@ namespace NeuralNetwork.Visualizer.Winform
             {
                if (_readyToRedrawWhenPropertyChange)
                {
-                  await RedrawInternalAsync();
+                  await _controlCanvas.RedrawAsync();
                }
             }
          }
@@ -209,12 +210,19 @@ namespace NeuralNetwork.Visualizer.Winform
          _visualizerInvoker?.SafeInvoke(() => base.OnSizeChanged(e));
       }
 
-      private void PicCanvas_MouseDown(object sender, MouseEventArgs e)
+      private void PicCanvas_MouseDown(object sender, Winforms.MouseEventArgs e)
       {
          if (!_readyToRedrawWhenPropertyChange)
             return;
 
-         _selectionEventFiring.FireSelectionEvent(e.Location.ToVisualizer());
+         var selectionEvent = Winforms.Control.ModifierKeys switch
+         {
+            Winforms.Keys.Control => SelectionEvent.Unselect,
+            Winforms.Keys.Shift => SelectionEvent.AddToSelection,
+            _ => SelectionEvent.SelectOnly,
+         };
+
+         _selectionEventFiring.FireSelectionEvent(e.Location.ToVisualizer(), selectionEvent);
       }
 
       private void PicCanvas_MouseLeave(object sender, EventArgs e)
@@ -225,7 +233,7 @@ namespace NeuralNetwork.Visualizer.Winform
          _toolTipFiring.Hide();
       }
 
-      private void PicCanvas_MouseMove(object sender, MouseEventArgs e)
+      private void PicCanvas_MouseMove(object sender, Winforms.MouseEventArgs e)
       {
          if (!_readyToRedrawWhenPropertyChange)
             return;

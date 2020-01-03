@@ -1,11 +1,14 @@
 ﻿using NeuralNetwork.Infrastructure.Winform;
-using NeuralNetwork.Visualizer.Calcs;
+using NeuralNetwork.Visualizer.Contracts.Controls;
+using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
+using NeuralNetwork.Visualizer.Winform.Drawing.Canvas;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using System;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gdi = System.Drawing;
 
@@ -15,68 +18,56 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
    {
       private readonly PictureBox _pictureBox;
       private readonly IInvoker _invoker;
+      private readonly NeuralNetworkVisualizerControl _control;
+      private readonly IDrafter _drafter;
 
-      internal ControlCanvas(PictureBox pictureBox, NeuralNetworkVisualizerControl control, IInvoker invoker)
+      internal ControlCanvas(PictureBox pictureBox, NeuralNetworkVisualizerControl control, IDrafter drafter, IInvoker invoker)
       {
          _pictureBox = pictureBox;
-         Control = control;
+         _control = control;
+         _drafter = drafter;
          _invoker = invoker;
       }
 
-      public NeuralNetworkVisualizerControl Control { get; }
-
-      public Size Size
+      public Gdi.Image GetImage()
       {
-         get => _pictureBox.ClientSize.ToVisualizer();
-         set => _pictureBox.ClientSize = value.ToGdi();
+         return _invoker.SafeInvoke(() => _pictureBox.Image?.Clone() as Gdi.Image
+            ?? new Gdi.Bitmap(_control.ClientSize.Width, _control.ClientSize.Height));  //Clone for safe handling
       }
 
-      public Gdi.Image Image
+      public async Task RedrawAsync()
       {
-         get { return _invoker.SafeInvoke(() => _pictureBox.Image?.Clone() as Gdi.Image ?? new Gdi.Bitmap(Control.ClientSize.Width, Control.ClientSize.Height)); } //Clone for safe handling
-         set => _pictureBox.Image = value;
+         if (!_control.IsHandleCreated)
+            return;
+
+         if (_control.InputLayer == null)
+         {
+            SetBlank();
+            return;
+         }
+
+         await _drafter.RedrawAsync(this);
       }
 
-      public bool IsReady => Control.IsHandleCreated;
-
-      public void SetBlank()
+      public ICanvas Build(Size size)
       {
-         DestroyImageCanvas();
+        // _pictureBox.ClientSize = size.ToGdi();
 
-         _pictureBox.ClientSize = Control.ClientSize;
-         _pictureBox.BackColor = Control.BackColor;
-      }
-
-      public (Gdi.Graphics Graph, Gdi.Image Image, LayerSizesPreCalc LayerSizes) GetGraphics()
-      {
-         var imgSize = GetImageSize(Control.Size.ToVisualizer());
-         var sizes = GetDrawingSizes(imgSize);
-
-         _pictureBox.ClientSize = sizes.CanvasSize.ToGdi();
-         Gdi.Bitmap bmp = new Gdi.Bitmap(sizes.CanvasSize.Width, sizes.CanvasSize.Height);
+         Gdi.Bitmap bmp = new Gdi.Bitmap(size.Width, size.Height);
          Gdi.Graphics graph = Gdi.Graphics.FromImage(bmp);
+         _pictureBox.Image = bmp;
 
          SetQuality(graph);
 
-         return (graph, bmp, sizes.LayerSize);
+         return new GraphicsCanvas(graph, size);
       }
 
-      private Size GetImageSize(Size canvasSize)
+      private void SetBlank()
       {
-         var size = new Size((int)(Control.Zoom * canvasSize.Width), (int)(Control.Zoom * canvasSize.Height));
-         return size;
-      }
+         DestroyImageCanvas();
 
-      private (LayerSizesPreCalc LayerSize, Size CanvasSize) GetDrawingSizes(Size initialSize)
-      {
-         var layersCount = Control.InputLayer.CountLayers();
-         var maxNodes = Control.InputLayer.GetMaxNodeCountInLayer();
-         var preferences = Control.Preferences;
-
-         var layerSize = new LayerSizesPreCalc(initialSize, layersCount, maxNodes, preferences);
-         var canvasSize = new Size(initialSize.Width, layerSize.Height);
-
-         return (layerSize, canvasSize);
+         _pictureBox.ClientSize = _control.ClientSize;
+         _pictureBox.BackColor = _control.BackColor;
       }
 
       private void DestroyImageCanvas()
@@ -90,7 +81,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
 
       private void SetQuality(Gdi.Graphics graphics)
       {
-         switch (Control.Preferences.Quality)
+         switch (_control.Preferences.Quality)
          {
             case RenderQuality.Low:
                graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
@@ -114,7 +105,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
                graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                break;
             default:
-               throw new InvalidOperationException($"Quality not implemented: {Control.Preferences.Quality}");
+               throw new InvalidOperationException($"Quality not implemented: {_control.Preferences.Quality}");
          }
       }
    }

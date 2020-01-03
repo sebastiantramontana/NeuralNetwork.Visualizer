@@ -7,12 +7,12 @@ using System.Linq;
 
 namespace NeuralNetwork.Visualizer.Drawing.Selection
 {
-   internal class ElementSelector : IElementSelector
+   public class ElementSelector : IElementSelector
    {
       private readonly ICollection<Element> _selectedElements;
       private readonly ISelectionResolver _selectionResolver;
 
-      internal ElementSelector(ISelectionResolver selectionResolver)
+      public ElementSelector(ISelectionResolver selectionResolver)
       {
          _selectedElements = new List<Element>();
          _selectionResolver = selectionResolver;

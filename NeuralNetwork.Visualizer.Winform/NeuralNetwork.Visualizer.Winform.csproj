@@ -59,13 +59,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Destroy.cs" />
     <Compile Include="Drawing\Canvas\GdiMapping\GdiExtensions.cs" />
     <Compile Include="Drawing\Controls\ControlCanvas.cs" />
     <Compile Include="Drawing\Controls\IControlCanvas.cs" />
     <Compile Include="Drawing\Controls\ToolTip.cs" />
     <Compile Include="Selection\RegionBuilder.cs" />
-    <Compile Include="Selection\SelectionEventFiring.cs" />
     <Compile Include="Drawing\Canvas\GraphicsCanvas.cs" />
     <Compile Include="NeuralNetworkVisualizerControl.cs">
       <SubType>UserControl</SubType>
@@ -104,6 +102,10 @@
     <ProjectReference Include="..\NeuralNetwork.Visualizer.Contracts\NeuralNetwork.Visualizer.Contracts.csproj">
       <Project>{813bb79a-d4a7-4483-93a9-b257eb87b7ba}</Project>
       <Name>NeuralNetwork.Visualizer.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Drafter\NeuralNetwork.Visualizer.Drawing.csproj">
+      <Project>{ec9ef9e3-bedb-49ca-aac4-474530eb6d77}</Project>
+      <Name>NeuralNetwork.Visualizer.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\NeuralNetwork.Visualizer.Preferences\NeuralNetwork.Visualizer.Preferences.csproj">
       <Project>{B8B0BB00-0D6E-4B03-AAD8-5DD59214ED49}</Project>

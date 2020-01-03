@@ -4,7 +4,7 @@ using NeuralNetwork.Visualizer.Contracts.Preferences;
 
 namespace NeuralNetwork.Visualizer.Preferences
 {
-   public class LayerPreference : Selectable2DPreferenceBase
+   public class LayerPreference : Selectable2DPreferenceBase, ILayerPreference
    {
       private IBrush _background;
       public override IBrush Background

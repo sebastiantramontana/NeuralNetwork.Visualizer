@@ -1,9 +1,9 @@
 ﻿using NeuralNetwork.Model;
+using NeuralNetwork.Visualizer.Contracts;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Selection;
 using System;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using SelectBias = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Bias>>>;
 using SelectEdge = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Edge>>>;
 using SelectInput = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Input>>>;
@@ -13,9 +13,9 @@ using SelectNeuronLayer = System.Func<System.EventHandler<NeuralNetwork.Visualiz
 
 namespace NeuralNetwork.Visualizer.Winform.Selection
 {
-   internal class SelectionEventFiring : ISelectionEventFiring
+   public class SelectionEventFiring : ISelectionEventFiring
    {
-      private readonly NeuralNetworkVisualizerControl _control;
+      private readonly INeuralNetworkVisualizerControl _control;
       private readonly IElementSelector _selector;
 
       private readonly SelectInputLayer _selectInputLayer;
@@ -25,7 +25,7 @@ namespace NeuralNetwork.Visualizer.Winform.Selection
       private readonly SelectNeuron _selectNeuron;
       private readonly SelectEdge _selectEdge;
 
-      internal SelectionEventFiring(NeuralNetworkVisualizerControl control, IElementSelector selector,
+      public SelectionEventFiring(INeuralNetworkVisualizerControl control, IElementSelector selector,
           SelectInputLayer selectInputLayer,
           SelectNeuronLayer selectNeuronLayer,
           SelectBias selectBias,
@@ -44,7 +44,7 @@ namespace NeuralNetwork.Visualizer.Winform.Selection
          _selectEdge = selectEdge;
       }
 
-      public async Task FireSelectionEvent(Position position)
+      public async Task FireSelectionEvent(Position position, SelectionEvent selectionEvent)
       {
          if (!_control.Preferences.Selectable)
             return;
@@ -52,20 +52,22 @@ namespace NeuralNetwork.Visualizer.Winform.Selection
          Func<Position, Element> selectFunc;
          bool isSelected;
 
-         switch (Control.ModifierKeys)
+         switch (selectionEvent)
          {
-            case Keys.Control:
+            case SelectionEvent.Unselect:
                selectFunc = _selector.Unselect;
                isSelected = false;
                break;
-            case Keys.Shift:
+            case SelectionEvent.AddToSelection:
                selectFunc = _selector.AddToSelection;
                isSelected = true;
                break;
-            default:
+            case SelectionEvent.SelectOnly:
                selectFunc = _selector.SelectOnly;
                isSelected = true;
                break;
+            default:
+               throw new NotImplementedException($"Selection event not implemented: {selectionEvent}");
          }
 
          var element = selectFunc(position);

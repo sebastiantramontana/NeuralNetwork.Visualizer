@@ -7,7 +7,7 @@ using NeuralNetwork.Visualizer.Preferences.Formatting;
 
 namespace NeuralNetwork.Visualizer.Preferences
 {
-   public class NodePreference : Selectable2DPreferenceBase
+   public class NodePreference : Selectable2DPreferenceBase, INodePreference
    {
       private IBrush _background;
       public override IBrush Background

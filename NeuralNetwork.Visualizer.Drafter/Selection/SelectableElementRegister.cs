@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace NeuralNetwork.Visualizer.Drawing.Selection
 {
-   internal class SelectableElementRegister : ISelectableElementRegister, ISelectionResolver
+   public class SelectableElementRegister : ISelectableElementRegister, ISelectionResolver
    {
       private readonly IDictionary<Element, RegistrationInfo> _registeredElements;
       private ICanvas _currentRootCanvas;

@@ -124,3 +124,10 @@
 /NeuralNetwork.Visualizer.Drafter/obj/*.json
 /NeuralNetwork.Visualizer.Drafter/obj/*.props
 /NeuralNetwork.Visualizer.Drafter/obj/*.targets
+/NeuralNetwork.Visualizer.Drafter/bin/Debug/netstandard2.0/*.dll
+/NeuralNetwork.Visualizer.Drafter/bin/Debug/netstandard2.0/*.pdb
+/NeuralNetwork.Visualizer.Drafter/bin/Debug/netstandard2.0/*.json
+/NeuralNetwork.Visualizer.Drafter/obj/Debug/netstandard2.0/*.CopyComplete
+/NeuralNetwork.Visualizer.Drafter/obj/Debug/netstandard2.0/*.txt
+/NeuralNetwork.Visualizer.Drafter/obj/Debug/netstandard2.0/*.dll
+/NeuralNetwork.Visualizer.Drafter/obj/Debug/netstandard2.0/*.pdb

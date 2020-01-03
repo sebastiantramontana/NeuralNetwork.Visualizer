@@ -12,7 +12,7 @@ using System.Timers;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
 {
-   internal class ToolTipFiring : IToolTipFiring
+   public class ToolTipFiring : IToolTipFiring
    {
       private readonly IToolTip _toolTip;
       private readonly INeuralNetworkVisualizerControl _control;
@@ -21,7 +21,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
       private Timer _timeout = null;
       private Position _lastToolTipLocation = null;
 
-      internal ToolTipFiring(IToolTip toolTip, INeuralNetworkVisualizerControl control, ISelectionResolver selectionResolver)
+      public ToolTipFiring(IToolTip toolTip, INeuralNetworkVisualizerControl control, ISelectionResolver selectionResolver)
       {
          _toolTip = toolTip;
          _control = control;

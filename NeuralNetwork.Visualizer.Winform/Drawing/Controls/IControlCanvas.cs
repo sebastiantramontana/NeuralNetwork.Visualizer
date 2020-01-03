@@ -1,17 +1,12 @@
-﻿using NeuralNetwork.Visualizer.Calcs;
-using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+﻿using NeuralNetwork.Visualizer.Contracts.Drawing;
+using System.Threading.Tasks;
 using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
 {
-   internal interface IControlCanvas
+   internal interface IControlCanvas : ICanvasBuilder
    {
-      Size Size { get; set; }
-      Gdi.Image Image { get; set; }
-      NeuralNetworkVisualizerControl Control { get; }
-      bool IsReady { get; }
-
-      void SetBlank();
-      (Gdi.Graphics Graph, Gdi.Image Image, LayerSizesPreCalc LayerSizes) GetGraphics();
+      Gdi.Image GetImage();
+      Task RedrawAsync();
    }
 }

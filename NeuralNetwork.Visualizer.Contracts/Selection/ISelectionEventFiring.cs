@@ -5,6 +5,6 @@ namespace NeuralNetwork.Visualizer.Contracts.Selection
 {
    public interface ISelectionEventFiring
    {
-      Task FireSelectionEvent(Position position);
+      Task FireSelectionEvent(Position position, SelectionEvent selectionEvent);
    }
 }

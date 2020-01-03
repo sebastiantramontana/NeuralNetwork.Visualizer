@@ -1,5 +1,6 @@
 ﻿using NeuralNetwork.Infrastructure.Winform;
 using NeuralNetwork.Visualizer.Contracts.Controls;
+using NeuralNetwork.Visualizer.Drawing;
 using System.Windows.Forms;
 using WinToolTip = System.Windows.Forms.ToolTip;
 

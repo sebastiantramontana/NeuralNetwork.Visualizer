@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Drawing
 {
-   internal class Drafter : IDrafter
+   public class Drafter : IDrafter
    {
       private readonly IElementSelectionChecker _selectionChecker;
       private readonly ISelectableElementRegister _selectableElementRegister;
@@ -33,6 +33,9 @@ namespace NeuralNetwork.Visualizer.Drawing
       private bool _isDrawing = false; //flag to avoid multiple parallel drawing
       public async Task RedrawAsync(ICanvasBuilder canvasBuilder)
       {
+         //if (_isDrawing)
+         //   return;
+
          _isDrawing = true;
 
          ValidateInputLayer();
@@ -41,7 +44,7 @@ namespace NeuralNetwork.Visualizer.Drawing
          var layerSizes = GetLayerSizes(zoomedControlSize);
          var canvas = canvasBuilder.Build(new Size(zoomedControlSize.Width, layerSizes.Height));
 
-         await DrawLayersAsync(canvas, layerSizes);
+         await Task.Run(() => DrawLayersAsync(canvas, layerSizes));
 
          _isDrawing = false;
       }
@@ -68,7 +71,7 @@ namespace NeuralNetwork.Visualizer.Drawing
          return size;
       }
 
-      private async Task DrawLayersAsync(ICanvas canvas, LayerSizesPreCalc layerSizesPreCalc)
+      private void DrawLayersAsync(ICanvas canvas, LayerSizesPreCalc layerSizesPreCalc)
       {
          int x = 0;
 
@@ -92,7 +95,7 @@ namespace NeuralNetwork.Visualizer.Drawing
             var canvasRect = new Rectangle(new Position(x, 0), new Size(layerSizesPreCalc.Width, layerSizesPreCalc.Height));
             var layerCanvas = new NestedCanvas(canvasRect, canvas);
 
-            await Task.Run(() => layerDrawing.Draw(layerCanvas));
+            layerDrawing.Draw(layerCanvas);
 
             previousNodesDic = layerDrawing.NodesDrawing.ToDictionary(n => n.Node, n => n);
             x += layerSizesPreCalc.Width;
