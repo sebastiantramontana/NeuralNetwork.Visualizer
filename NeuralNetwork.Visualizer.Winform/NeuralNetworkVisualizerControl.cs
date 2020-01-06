@@ -191,21 +191,18 @@ namespace NeuralNetwork.Visualizer.Winform
          _readyToRedrawWhenPropertyChange = true;
       }
 
-      private Size _previousSize = Contracts.Drawing.Core.Primitives.Size.Null;
+      private Size _previousSize;
       protected override void OnSizeChanged(EventArgs e)
       {
-         _previousSize = this.ClientSize.ToVisualizer();
+         var currentSize = this.ClientSize.ToVisualizer();
 
-         if (!this.ClientSize.IsEmpty)
+         if (this.ClientSize.IsEmpty || currentSize == _previousSize || !_readyToRedrawWhenPropertyChange)
          {
-            if (!_previousSize.IsNull)
-            {
-               if (_readyToRedrawWhenPropertyChange)
-               {
-                  _controlCanvas.Redraw();
-               }
-            }
+            return;
          }
+
+         _previousSize = currentSize;
+         _controlCanvas.Redraw();
 
          _visualizerInvoker?.SafeInvoke(() => base.OnSizeChanged(e));
       }

@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drawing\Canvas\GdiMapping\GdiExtensions.cs" />
+    <Compile Include="Drawing\Canvas\CanvasBuilder.cs" />
     <Compile Include="Drawing\Controls\ControlCanvas.cs" />
     <Compile Include="Drawing\Controls\IControlCanvas.cs" />
     <Compile Include="Drawing\Controls\ToolTip.cs" />

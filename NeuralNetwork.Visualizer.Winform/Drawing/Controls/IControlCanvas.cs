@@ -4,7 +4,7 @@ using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
 {
-   internal interface IControlCanvas : ICanvasBuilder
+   internal interface IControlCanvas
    {
       Gdi.Image GetImage();
       void Redraw();

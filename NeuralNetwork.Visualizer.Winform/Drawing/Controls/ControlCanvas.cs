@@ -5,6 +5,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Drawing;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using System;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -54,7 +55,12 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
       {
          var bmp = new Gdi.Bitmap(size.Width, size.Height);
          _graph = Gdi.Graphics.FromImage(bmp);
-         _invoker.SafeInvoke(() => _pictureBox.Image = bmp);
+
+         _invoker.SafeInvoke(() =>
+         {
+            _pictureBox.ClientSize = size.ToGdi();
+            _pictureBox.Image = bmp;
+         });
 
          SetQuality(_graph);
 
