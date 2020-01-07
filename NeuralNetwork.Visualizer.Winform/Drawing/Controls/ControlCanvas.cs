@@ -5,21 +5,22 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Drawing;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas;
-using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using System;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
 {
-   internal class ControlCanvas : IControlCanvas
+   internal class ControlCanvas : IControlCanvas, ICanvasBuilder
    {
       private readonly PictureBox _pictureBox;
       private readonly IInvoker _invoker;
       private readonly NeuralNetworkVisualizerControl _control;
       private readonly IDrafter _drafter;
+      private Gdi.Graphics _graph = null;
 
       internal ControlCanvas(PictureBox pictureBox, NeuralNetworkVisualizerControl control, IDrafter drafter, IInvoker invoker)
       {
@@ -35,32 +36,43 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
             ?? new Gdi.Bitmap(_control.ClientSize.Width, _control.ClientSize.Height));  //Clone for safe handling
       }
 
-      public void Redraw()
+      private Gdi.Image _image = null;
+      private bool _isDrawing = false;
+
+      public async Task RedrawAsync()
       {
          if (!_control.IsHandleCreated)
             return;
 
+         if (_isDrawing)
+            return;
+
+         _isDrawing = true;
+
          if (_control.InputLayer == null)
          {
             SetBlank();
+            _isDrawing = false;
             return;
          }
 
-         _drafter.Redraw(this);
-         Destroy.Disposable(ref _graph);
-      }
-
-      private Gdi.Graphics _graph = null;
-      public ICanvas Build(Size size)
-      {
-         var bmp = new Gdi.Bitmap(size.Width, size.Height);
-         _graph = Gdi.Graphics.FromImage(bmp);
+         await _drafter.RedrawAsync(this);
 
          _invoker.SafeInvoke(() =>
          {
-            _pictureBox.ClientSize = size.ToGdi();
-            _pictureBox.Image = bmp;
+            _pictureBox.ClientSize = _image.Size;
+            _pictureBox.Image = _image;
          });
+
+         Destroy.Disposable(ref _graph);
+         _image = null;
+         _isDrawing = false;
+      }
+
+      public ICanvas Build(Size size)
+      {
+         _image = new Gdi.Bitmap(size.Width, size.Height);
+         _graph = Gdi.Graphics.FromImage(_image);
 
          SetQuality(_graph);
 
@@ -116,6 +128,11 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
             default:
                throw new InvalidOperationException($"Quality not implemented: {_control.Preferences.Quality}");
          }
+      }
+
+      public void Dispose()
+      {
+         Destroy.Disposable(ref _graph);
       }
    }
 }

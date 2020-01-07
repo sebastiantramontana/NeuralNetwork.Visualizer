@@ -11,6 +11,7 @@ using NeuralNetwork.Visualizer.Preferences.Formatting;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp1
@@ -179,7 +180,7 @@ namespace WindowsFormsApp1
          btnChangeValue.Enabled = btnAddBias.Enabled = btnClear.Enabled = trackZoom.Enabled = cboQuality.Enabled = true;
       }
 
-      private void btnChangeValue_Click(object sender, EventArgs e)
+      private async void btnChangeValue_Click(object sender, EventArgs e)
       {
          NeuralNetworkVisualizerControl1.SuspendAutoRedraw();
 
@@ -189,15 +190,15 @@ namespace WindowsFormsApp1
          var node = _input.Nodes.Single(n => n.Id == "e3");
          node.OutputValue = 1.44444;
 
-         NeuralNetworkVisualizerControl1.ResumeAutoRedraw();
+         await NeuralNetworkVisualizerControl1.ResumeAutoRedrawAsync();
       }
 
-      private void btnAddBias_Click(object sender, EventArgs e)
+      private async void btnAddBias_Click(object sender, EventArgs e)
       {
-         AddHiddenBias();
+         await AddHiddenBias();
       }
 
-      private void AddHiddenBias()
+      private async Task AddHiddenBias()
       {
          NeuralNetworkVisualizerControl1.SuspendAutoRedraw();
 
@@ -214,7 +215,7 @@ namespace WindowsFormsApp1
             weight++;
          }
 
-         NeuralNetworkVisualizerControl1.ResumeAutoRedraw();
+         await NeuralNetworkVisualizerControl1.ResumeAutoRedrawAsync();
       }
 
       private void trackZoom_Scroll(object sender, EventArgs e)
@@ -228,10 +229,10 @@ namespace WindowsFormsApp1
          btnChangeValue.Enabled = btnAddBias.Enabled = btnClear.Enabled = trackZoom.Enabled = cboQuality.Enabled = false;
       }
 
-      private void cboQuality_SelectedIndexChanged(object sender, EventArgs e)
+      private async void cboQuality_SelectedIndexChanged(object sender, EventArgs e)
       {
          NeuralNetworkVisualizerControl1.Preferences.Quality = (RenderQuality)cboQuality.SelectedItem;
-         NeuralNetworkVisualizerControl1.Redraw();
+         await NeuralNetworkVisualizerControl1.RedrawAsync();
       }
 
       private void chSelectable_CheckedChanged(object sender, EventArgs e)

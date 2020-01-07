@@ -1,12 +1,12 @@
-﻿using NeuralNetwork.Visualizer.Contracts.Drawing;
+﻿using System;
 using System.Threading.Tasks;
 using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
 {
-   internal interface IControlCanvas
+   internal interface IControlCanvas : IDisposable
    {
       Gdi.Image GetImage();
-      void Redraw();
+      Task RedrawAsync();
    }
 }

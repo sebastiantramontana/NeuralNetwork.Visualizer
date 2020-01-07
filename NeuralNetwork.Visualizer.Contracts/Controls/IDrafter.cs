@@ -5,6 +5,6 @@ namespace NeuralNetwork.Visualizer.Contracts.Controls
 {
    public interface IDrafter
    {
-      void Redraw(ICanvasBuilder canvasBuilder);
+      Task RedrawAsync(ICanvasBuilder canvasBuilder);
    }
 }

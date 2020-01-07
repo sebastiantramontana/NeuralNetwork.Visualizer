@@ -44,7 +44,7 @@ namespace NeuralNetwork.Visualizer.Winform.Selection
          _selectEdge = selectEdge;
       }
 
-      public void FireSelectionEvent(Position position, SelectionEvent selectionEvent)
+      public async Task FireSelectionEvent(Position position, SelectionEvent selectionEvent)
       {
          if (!_control.Preferences.Selectable)
             return;
@@ -78,7 +78,7 @@ namespace NeuralNetwork.Visualizer.Winform.Selection
          }
 
          FireSelectionEvent(element, isSelected);
-         _control.Redraw();
+         await _control.RedrawAsync();
       }
 
       private void FireSelectionEvent(Element element, bool isSelected)
