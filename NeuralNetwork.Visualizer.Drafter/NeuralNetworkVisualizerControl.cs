@@ -6,7 +6,6 @@ using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
-using NeuralNetwork.Visualizer.Drawing;
 using NeuralNetwork.Visualizer.Drawing.Controls;
 using NeuralNetwork.Visualizer.Drawing.Selection;
 using NeuralNetwork.Visualizer.Preferences;
@@ -16,7 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace NeuralNetwork.Visualizer.Html5
+namespace NeuralNetwork.Visualizer.Drawing
 {
    public class NeuralNetworkVisualizerControl : INeuralNetworkVisualizerControl
    {
@@ -119,12 +118,21 @@ namespace NeuralNetwork.Visualizer.Html5
          if (!_readyToRedrawWhenPropertyChange)
             return;
 
-         var selectionEvent = modifierKeys switch
+         SelectionEvent selectionEvent;
+
+         switch (modifierKeys)
          {
-            Keys.Control => SelectionEvent.Unselect,
-            Keys.Shift => SelectionEvent.AddToSelection,
-            _ => SelectionEvent.SelectOnly
-         };
+            case Keys.Control:
+               selectionEvent = SelectionEvent.Unselect;
+               break;
+            case Keys.Shift:
+               selectionEvent = SelectionEvent.AddToSelection;
+               break;
+            case Keys.None:
+            default:
+               selectionEvent = SelectionEvent.SelectOnly;
+               break;
+         }
 
          _selectionEventFiring.FireSelectionEvent(position, selectionEvent);
       }
