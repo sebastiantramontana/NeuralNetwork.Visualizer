@@ -8,9 +8,6 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing;
-using NeuralNetwork.Visualizer.Drawing.Controls;
-using NeuralNetwork.Visualizer.Drawing.Selection;
-using NeuralNetwork.Visualizer.Preferences;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using NeuralNetwork.Visualizer.Winform.Drawing.Controls;
 using NeuralNetwork.Visualizer.Winform.Selection;
@@ -24,13 +21,9 @@ namespace NeuralNetwork.Visualizer.Winform
 {
    public partial class NeuralNetworkVisualizerControl : Winforms.UserControl, INeuralNetworkVisualizerControl
    {
-      private bool _readyToRedrawWhenPropertyChange = false;
-
-      private readonly IControlCanvas _controlCanvas;
-      private readonly IElementSelector _selector;
+      private readonly NeuralNetworkVisualizerControlDrawing _neuralNetworkVisualizerControlInner;
       private readonly Invoker _visualizerInvoker;
-      private readonly ISelectionEventFiring _selectionEventFiring;
-      private readonly IToolTipFiring _toolTipFiring;
+      private IDisposable _drawableSurface;
 
       public event EventHandler<SelectionEventArgs<InputLayer>> SelectInputLayer;
       public event EventHandler<SelectionEventArgs<NeuronLayer>> SelectNeuronLayer;
@@ -43,74 +36,106 @@ namespace NeuralNetwork.Visualizer.Winform
       {
          InitializeComponent();
 
-         var selectableElementRegisterResolver = new SelectableElementRegister();
-         _selector = new ElementSelector(selectableElementRegisterResolver);
          _visualizerInvoker = new Invoker(this);
-         var drafter = new Drafter(this, _selector, selectableElementRegisterResolver, selectableElementRegisterResolver, new RegionBuilder());
-         _toolTipFiring = new ToolTipFiring(new ToolTip(_visualizerInvoker, picCanvas), this, selectableElementRegisterResolver);
-         _selectionEventFiring = new SelectionEventFiring(this, _selector,
-                                    () => this.SelectInputLayer,
-                                    () => this.SelectNeuronLayer,
-                                    () => this.SelectBias,
-                                    () => this.SelectInput,
-                                    () => this.SelectNeuron,
-                                    () => this.SelectEdge);
-         _controlCanvas = new ControlCanvas(this.picCanvas, this, drafter, _visualizerInvoker);
 
-         Winforms.Control.CheckForIllegalCrossThreadCalls = true;
+         Func<IDrafter, IDrawableSurface> drawableSurfaceBuilder = (drafter) =>
+         {
+            var drawableSurface = new DrawableSurface(picCanvas, this, drafter, _visualizerInvoker);
+            _drawableSurface = drawableSurface;
+
+            return drawableSurface;
+         };
+
+         _neuralNetworkVisualizerControlInner = new NeuralNetworkVisualizerControlDrawing(new ToolTip(_visualizerInvoker, picCanvas), new RegionBuilder(), drawableSurfaceBuilder);
+
+         CheckForIllegalCrossThreadCalls = true;
          this.BackColor = Color.White.ToGdi();
 
          picCanvas.MouseDown += PicCanvas_MouseDown;
          picCanvas.MouseMove += PicCanvas_MouseMove;
          picCanvas.MouseLeave += PicCanvas_MouseLeave;
+
+         _neuralNetworkVisualizerControlInner.SelectInputLayer += _neuralNetworkVisualizerControlInner_SelectInputLayer;
+         _neuralNetworkVisualizerControlInner.SelectNeuronLayer += _neuralNetworkVisualizerControlInner_SelectNeuronLayer;
+         _neuralNetworkVisualizerControlInner.SelectBias += _neuralNetworkVisualizerControlInner_SelectBias;
+         _neuralNetworkVisualizerControlInner.SelectInput += _neuralNetworkVisualizerControlInner_SelectInput;
+         _neuralNetworkVisualizerControlInner.SelectNeuron += _neuralNetworkVisualizerControlInner_SelectNeuron;
+         _neuralNetworkVisualizerControlInner.SelectEdge += _neuralNetworkVisualizerControlInner_SelectEdge;
       }
 
-      private IPreference _preferences = null;
-      [Browsable(false)]
-      public IPreference Preferences => _preferences ?? (_preferences = Preference.Create(Preferences_PropertyChanged));
+      private void _neuralNetworkVisualizerControlInner_SelectEdge(object sender, SelectionEventArgs<Edge> e)
+      {
+         SelectEdge?.Invoke(this, e);
+      }
 
-      private InputLayer _InputLayer = null;
+      private void _neuralNetworkVisualizerControlInner_SelectNeuron(object sender, SelectionEventArgs<Neuron> e)
+      {
+         SelectNeuron?.Invoke(this, e);
+      }
+
+      private void _neuralNetworkVisualizerControlInner_SelectInput(object sender, SelectionEventArgs<Input> e)
+      {
+         SelectInput?.Invoke(this, e);
+      }
+
+      private void _neuralNetworkVisualizerControlInner_SelectNeuronLayer(object sender, SelectionEventArgs<NeuronLayer> e)
+      {
+         SelectNeuronLayer?.Invoke(this, e);
+      }
+
+      private void _neuralNetworkVisualizerControlInner_SelectInputLayer(object sender, SelectionEventArgs<InputLayer> e)
+      {
+         SelectInputLayer?.Invoke(this, e);
+      }
+
+      private void _neuralNetworkVisualizerControlInner_SelectBias(object sender, SelectionEventArgs<Bias> e)
+      {
+         SelectBias?.Invoke(this, e);
+      }
+
+      [Browsable(false)]
+      public IPreference Preferences => _neuralNetworkVisualizerControlInner.Preferences;
+
       [Browsable(false)]
       public InputLayer InputLayer
       {
-         get => _InputLayer;
-         set => SetInputLayer(value);
+         get => _neuralNetworkVisualizerControlInner.InputLayer;
+         set => _neuralNetworkVisualizerControlInner.InputLayer = value;
       }
 
       [Browsable(false)]
-      public IEnumerable<Element> SelectedElements => _selector.SelectedElements;
+      public IEnumerable<Element> SelectedElements => _neuralNetworkVisualizerControlInner.SelectedElements;
 
-      private float _zoom = 1f;
       [Browsable(false)]
       public float Zoom
       {
-         get => _zoom;
-         set => MakeZoom(value);
+         get => _neuralNetworkVisualizerControlInner.Zoom;
+         set => _neuralNetworkVisualizerControlInner.Zoom = value;
       }
 
-      Size INeuralNetworkVisualizerControl.Size => this.Size.ToVisualizer();
+      [Browsable(false)]
+      Size INeuralNetworkVisualizerControl.Size => _neuralNetworkVisualizerControlInner.Size;
 
-      public Size DrawingSize => picCanvas.ClientSize.ToVisualizer();
+      [Browsable(false)]
+      public Size DrawingSize => _neuralNetworkVisualizerControlInner.DrawingSize;
 
-      public async Task<Image> ExportToImage()
+      public Image ExportToImage()
       {
-         return await Task.Run(() => _controlCanvas.GetImage().ToVisualizer());
+         return _neuralNetworkVisualizerControlInner.ExportToImage();
       }
 
       public async Task RedrawAsync()
       {
-         await _controlCanvas.RedrawAsync();
-         SetReadyForAutoRedraw();
+         await _neuralNetworkVisualizerControlInner.RedrawAsync();
       }
 
-      private bool _isAutoRedrawSuspended = false;
       /// <summary>
       /// <para>Suspend auto redraw when Preferences.AutoRedrawMode is AutoRedrawSync or AutoRedrawAsync.</para>
       /// <c>Avoid auto readraw overhead when will be multiple changes on InputLayer model.</c>
       /// </summary>
       public void SuspendAutoRedraw()
       {
-         _isAutoRedrawSuspended = true;
+         _neuralNetworkVisualizerControlInner.SuspendAutoRedraw();
       }
 
       /// <summary>
@@ -119,133 +144,44 @@ namespace NeuralNetwork.Visualizer.Winform
       /// </summary>
       public async Task ResumeAutoRedrawAsync()
       {
-         _isAutoRedrawSuspended = false;
-         await AutoRedraw();
+         await _neuralNetworkVisualizerControlInner.ResumeAutoRedrawAsync();
       }
 
-      private async void InputLayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
-      {
-         await AutoRedraw();
-         _selector.MarkToBeRefreshed(_InputLayer);
-      }
-
-      private async void Preferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
-      {
-         if (e.PropertyName == nameof(this.Preferences.Selectable))
-         {
-            CheckSelectionPreferenceChanged();
-         }
-
-         await AutoRedraw();
-      }
-
-      private async void SetInputLayer(InputLayer inputLayer)
-      {
-         _InputLayer = inputLayer;
-
-         if (_InputLayer != null)
-            _InputLayer.PropertyChanged += InputLayer_PropertyChanged;
-
-         _zoom = 1f; //restart zoom
-         _selector.UnselectAll();
-
-         if (_readyToRedrawWhenPropertyChange)
-         {
-            await _controlCanvas.RedrawAsync();
-         }
-      }
-
-      private async void MakeZoom(float factor)
-      {
-         if (_InputLayer == null)
-         {
-            return; //nothing to do
-         }
-
-         _zoom = Constrain(0.1f, factor, 10.0f); //limit the zoom value: Graphics will throw exception if not.
-
-         if (_readyToRedrawWhenPropertyChange)
-         {
-            await RedrawAsync();
-         }
-      }
-
-      private void CheckSelectionPreferenceChanged()
-      {
-         if (!this.Preferences.Selectable)
-         {
-            _selector.UnselectAll();
-         }
-      }
-
-      private async Task AutoRedraw()
-      {
-         if (!_isAutoRedrawSuspended && _readyToRedrawWhenPropertyChange && this.Preferences.AutoRedrawOnChanges)
-         {
-            await RedrawAsync();
-         }
-      }
-
-      private void SetReadyForAutoRedraw()
-      {
-         _readyToRedrawWhenPropertyChange = true;
-      }
-
-      private Size _previousSize;
       protected override async void OnSizeChanged(EventArgs e)
       {
-         var currentSize = this.ClientSize.ToVisualizer();
-
-         if (this.ClientSize.IsEmpty || currentSize == _previousSize || !_readyToRedrawWhenPropertyChange)
-         {
+         if (_neuralNetworkVisualizerControlInner is null)
             return;
-         }
 
-         _previousSize = currentSize;
-         await _controlCanvas.RedrawAsync();
+         await _neuralNetworkVisualizerControlInner.DispatchOnSizeChange();
 
          _visualizerInvoker?.SafeInvoke(() => base.OnSizeChanged(e));
       }
 
       private void PicCanvas_MouseDown(object sender, Winforms.MouseEventArgs e)
       {
-         if (!_readyToRedrawWhenPropertyChange)
-            return;
-
-         var selectionEvent = ModifierKeys switch
+         var Modifierkey = ModifierKeys switch
          {
-            Winforms.Keys.Control => SelectionEvent.Unselect,
-            Winforms.Keys.Shift => SelectionEvent.AddToSelection,
-            _ => SelectionEvent.SelectOnly,
+            Winforms.Keys.Control => Keys.Control,
+            Winforms.Keys.Shift => Keys.Shift,
+            _ => Keys.None,
          };
 
-         _selectionEventFiring.FireSelectionEvent(e.Location.ToVisualizer(), selectionEvent);
+         _neuralNetworkVisualizerControlInner.DispatchMouseDown(e.Location.ToVisualizer(), Modifierkey);
       }
 
       private void PicCanvas_MouseLeave(object sender, EventArgs e)
       {
-         if (!_readyToRedrawWhenPropertyChange)
-            return;
-
-         _toolTipFiring.Hide();
+         _neuralNetworkVisualizerControlInner.DispatchMouseLeave();
       }
 
       private void PicCanvas_MouseMove(object sender, Winforms.MouseEventArgs e)
       {
-         if (!_readyToRedrawWhenPropertyChange)
-            return;
-
-         _toolTipFiring.Show(e.Location.ToVisualizer());
-      }
-
-      private T Constrain<T>(T low, T value, T max) where T : IComparable<T>
-      {
-         return (value.CompareTo(low) < 0 ? low : (value.CompareTo(max) > 0 ? max : value));
+         _neuralNetworkVisualizerControlInner.DispatchMouseMove(e.Location.ToVisualizer());
       }
 
       protected override void Dispose(bool disposing)
       {
-         _controlCanvas.Dispose();
+         _drawableSurface.Dispose();
 
          if (disposing && (components != null))
          {

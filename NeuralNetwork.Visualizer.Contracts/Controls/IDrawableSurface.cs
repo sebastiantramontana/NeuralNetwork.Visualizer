@@ -7,7 +7,8 @@ namespace NeuralNetwork.Visualizer.Contracts.Controls
    {
       Size Size { get; }
       Size DrawingSize { get; }
-      Task<Image> GetImage();
+      Image GetImage();
       Task RedrawAsync();
+      IDrafter Drafter { get; }
    }
 }

@@ -29,6 +29,6 @@ namespace NeuralNetwork.Visualizer.Contracts
       Task RedrawAsync();
       Task ResumeAutoRedrawAsync();
       void SuspendAutoRedraw();
-      Task<Image> ExportToImage();
+      Image ExportToImage();
    }
 }

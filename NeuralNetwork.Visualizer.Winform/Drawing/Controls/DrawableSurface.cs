@@ -5,6 +5,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Drawing;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using System;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -14,27 +15,32 @@ using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
 {
-   internal class ControlCanvas : IControlCanvas, ICanvasBuilder
+   internal class DrawableSurface : IDrawableSurface, ICanvasBuilder, IDisposable
    {
       private readonly PictureBox _pictureBox;
       private readonly IInvoker _invoker;
       private readonly NeuralNetworkVisualizerControl _control;
-      private readonly IDrafter _drafter;
       private Gdi.Graphics _graph = null;
 
-      internal ControlCanvas(PictureBox pictureBox, NeuralNetworkVisualizerControl control, IDrafter drafter, IInvoker invoker)
+      internal DrawableSurface(PictureBox pictureBox, NeuralNetworkVisualizerControl control, IDrafter drafter, IInvoker invoker)
       {
          _pictureBox = pictureBox;
          _control = control;
-         _drafter = drafter;
          _invoker = invoker;
+         this.Drafter = drafter;
       }
 
-      public Gdi.Image GetImage()
+      public Image GetImage()
       {
-         return _invoker.SafeInvoke(() => _pictureBox.Image?.Clone() as Gdi.Image
-            ?? new Gdi.Bitmap(_control.ClientSize.Width, _control.ClientSize.Height));  //Clone for safe handling
+         var img = _invoker.SafeInvoke(() => _pictureBox.Image?.Clone() as Gdi.Image
+             ?? new Gdi.Bitmap(_control.ClientSize.Width, _control.ClientSize.Height));  //Clone for safe handling
+
+         return img.ToVisualizer();
       }
+
+      public IDrafter Drafter { get; }
+      public Size Size => _control.Size.ToVisualizer();
+      public Size DrawingSize => _pictureBox.ClientSize.ToVisualizer();
 
       private Gdi.Image _image = null;
       private bool _isDrawing = false;
@@ -56,7 +62,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
             return;
          }
 
-         await _drafter.RedrawAsync(this);
+         await this.Drafter.RedrawAsync(this);
 
          _invoker.SafeInvoke(() =>
          {

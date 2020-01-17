@@ -18,7 +18,6 @@ namespace NeuralNetwork.Visualizer.Drawing
       private readonly IElementSelectionChecker _selectionChecker;
       private readonly ISelectableElementRegister _selectableElementRegister;
       private readonly ISelectionResolver _selectionResolver;
-      private readonly IRegionBuilder _regionBuilder;
       private readonly INeuralNetworkVisualizerControl _control;
 
       public Drafter(INeuralNetworkVisualizerControl control, IElementSelectionChecker selectionChecker, ISelectableElementRegister selectableElementRegister, ISelectionResolver selectionResolver, IRegionBuilder regionBuilder)
@@ -26,9 +25,11 @@ namespace NeuralNetwork.Visualizer.Drawing
          _selectionChecker = selectionChecker;
          _selectableElementRegister = selectableElementRegister;
          _selectionResolver = selectionResolver;
-         _regionBuilder = regionBuilder;
          _control = control;
+         this.RegionBuilder = regionBuilder;
       }
+
+      public IRegionBuilder RegionBuilder { get; }
 
       public async Task RedrawAsync(ICanvasBuilder canvasBuilder)
       {
@@ -81,8 +82,8 @@ namespace NeuralNetwork.Visualizer.Drawing
          for (LayerBase layer = inputLayer; layer != null; layer = layer.Next)
          {
             ILayerDrawing layerDrawing = (layer == inputLayer)
-               ? new InputLayerDrawing(layer as InputLayer, preferences, layerSizesPreCalc, simpleNodeSizesCache, _selectionChecker, _selectableElementRegister, _regionBuilder) as ILayerDrawing
-               : new NeuronLayerDrawing(layer as NeuronLayer, previousNodesDic, canvas, preferences, layerSizesPreCalc, neuronCache, simpleNodeSizesCache, edgesCache, _selectionChecker, _selectableElementRegister, _regionBuilder);
+               ? new InputLayerDrawing(layer as InputLayer, preferences, layerSizesPreCalc, simpleNodeSizesCache, _selectionChecker, _selectableElementRegister, this.RegionBuilder) as ILayerDrawing
+               : new NeuronLayerDrawing(layer as NeuronLayer, previousNodesDic, canvas, preferences, layerSizesPreCalc, neuronCache, simpleNodeSizesCache, edgesCache, _selectionChecker, _selectableElementRegister, this.RegionBuilder);
 
             var canvasRect = new Rectangle(new Position(x, 0), new Size(layerSizesPreCalc.Width, layerSizesPreCalc.Height));
             var layerCanvas = new NestedCanvas(canvasRect, canvas);

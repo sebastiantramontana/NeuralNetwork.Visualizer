@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Drawing
 {
-   public class NeuralNetworkVisualizerControl : INeuralNetworkVisualizerControl
+   public class NeuralNetworkVisualizerControlDrawing : INeuralNetworkVisualizerControl
    {
       private bool _readyToRedrawWhenPropertyChange = false;
 
@@ -33,12 +33,13 @@ namespace NeuralNetwork.Visualizer.Drawing
       public event EventHandler<SelectionEventArgs<Neuron>> SelectNeuron;
       public event EventHandler<SelectionEventArgs<NeuronLayer>> SelectNeuronLayer;
 
-      public NeuralNetworkVisualizerControl(IToolTip toolTip, IRegionBuilder regionBuilder, IDrawableSurface drawableSurface)
+      public NeuralNetworkVisualizerControlDrawing(IToolTip toolTip, IRegionBuilder regionBuilder, Func<IDrafter, IDrawableSurface> drawableSurfaceBuilder)
       {
          var selectableElementRegisterResolver = new SelectableElementRegister();
          _selector = new ElementSelector(selectableElementRegisterResolver);
 
          var drafter = new Drafter(this, _selector, selectableElementRegisterResolver, selectableElementRegisterResolver, regionBuilder);
+
          _toolTipFiring = new ToolTipFiring(toolTip, this, selectableElementRegisterResolver);
          _selectionEventFiring = new SelectionEventFiring(this, _selector,
                                     () => this.SelectInputLayer,
@@ -47,7 +48,7 @@ namespace NeuralNetwork.Visualizer.Drawing
                                     () => this.SelectInput,
                                     () => this.SelectNeuron,
                                     () => this.SelectEdge);
-         _drawableSurface = drawableSurface;
+         _drawableSurface = drawableSurfaceBuilder(drafter);
       }
 
       private InputLayer _InputLayer = null;
@@ -69,8 +70,7 @@ namespace NeuralNetwork.Visualizer.Drawing
          set => MakeZoom(value);
       }
 
-      Size INeuralNetworkVisualizerControl.Size => _drawableSurface.Size;
-
+      public Size Size => _drawableSurface.Size;
       public Size DrawingSize => _drawableSurface.DrawingSize;
 
       public async Task RedrawAsync()
@@ -79,9 +79,10 @@ namespace NeuralNetwork.Visualizer.Drawing
          SetReadyForAutoRedraw();
       }
 
-      public Task ResumeAutoRedrawAsync()
+      public async Task ResumeAutoRedrawAsync()
       {
-         throw new NotImplementedException();
+         _isAutoRedrawSuspended = false;
+         await AutoRedraw();
       }
 
       private bool _isAutoRedrawSuspended = false;
@@ -94,9 +95,9 @@ namespace NeuralNetwork.Visualizer.Drawing
          _isAutoRedrawSuspended = true;
       }
 
-      public async Task<Image> ExportToImage()
+      public Image ExportToImage()
       {
-         return await _drawableSurface.GetImage();
+         return _drawableSurface.GetImage();
       }
 
       private Size _previousSize;
