@@ -2,11 +2,8 @@
 using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
-using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using System;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gdi = System.Drawing;
