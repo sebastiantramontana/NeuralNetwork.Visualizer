@@ -62,6 +62,8 @@
     <Compile Include="Drawing\Canvas\GdiMapping\GdiExtensions.cs" />
     <Compile Include="Drawing\Controls\DrawableSurface.cs" />
     <Compile Include="Drawing\Controls\ToolTip.cs" />
+    <Compile Include="Drawing\GdiImageCanvasBuilder.cs" />
+    <Compile Include="Drawing\IGdiImageCanvasBuilder.cs" />
     <Compile Include="Selection\RegionBuilder.cs" />
     <Compile Include="Drawing\Canvas\GraphicsCanvas.cs" />
     <Compile Include="NeuralNetworkVisualizerControl.cs">

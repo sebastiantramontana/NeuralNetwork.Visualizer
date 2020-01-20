@@ -8,6 +8,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing;
+using NeuralNetwork.Visualizer.Winform.Drawing;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using NeuralNetwork.Visualizer.Winform.Drawing.Controls;
 using NeuralNetwork.Visualizer.Winform.Selection;
@@ -38,13 +39,13 @@ namespace NeuralNetwork.Visualizer.Winform
 
          _visualizerInvoker = new Invoker(this);
 
-         Func<IDrafter, IDrawableSurface> drawableSurfaceBuilder = (drafter) =>
+         IDrawableSurface drawableSurfaceBuilder(IDrafter drafter)
          {
-            var drawableSurface = new DrawableSurface(picCanvas, this, drafter, _visualizerInvoker);
+            var drawableSurface = new DrawableSurface(picCanvas, this, drafter, _visualizerInvoker, new GdiImageCanvasBuilder());
             _drawableSurface = drawableSurface;
 
             return drawableSurface;
-         };
+         }
 
          _neuralNetworkVisualizerControlInner = new NeuralNetworkVisualizerControlDrawing(new ToolTip(_visualizerInvoker, picCanvas), new RegionBuilder(), drawableSurfaceBuilder);
 
@@ -55,40 +56,40 @@ namespace NeuralNetwork.Visualizer.Winform
          picCanvas.MouseMove += PicCanvas_MouseMove;
          picCanvas.MouseLeave += PicCanvas_MouseLeave;
 
-         _neuralNetworkVisualizerControlInner.SelectInputLayer += _neuralNetworkVisualizerControlInner_SelectInputLayer;
-         _neuralNetworkVisualizerControlInner.SelectNeuronLayer += _neuralNetworkVisualizerControlInner_SelectNeuronLayer;
-         _neuralNetworkVisualizerControlInner.SelectBias += _neuralNetworkVisualizerControlInner_SelectBias;
-         _neuralNetworkVisualizerControlInner.SelectInput += _neuralNetworkVisualizerControlInner_SelectInput;
-         _neuralNetworkVisualizerControlInner.SelectNeuron += _neuralNetworkVisualizerControlInner_SelectNeuron;
-         _neuralNetworkVisualizerControlInner.SelectEdge += _neuralNetworkVisualizerControlInner_SelectEdge;
+         _neuralNetworkVisualizerControlInner.SelectInputLayer += NeuralNetworkVisualizerControlInner_SelectInputLayer;
+         _neuralNetworkVisualizerControlInner.SelectNeuronLayer += NeuralNetworkVisualizerControlInner_SelectNeuronLayer;
+         _neuralNetworkVisualizerControlInner.SelectBias += NeuralNetworkVisualizerControlInner_SelectBias;
+         _neuralNetworkVisualizerControlInner.SelectInput += NeuralNetworkVisualizerControlInner_SelectInput;
+         _neuralNetworkVisualizerControlInner.SelectNeuron += NeuralNetworkVisualizerControlInner_SelectNeuron;
+         _neuralNetworkVisualizerControlInner.SelectEdge += NeuralNetworkVisualizerControlInner_SelectEdge;
       }
 
-      private void _neuralNetworkVisualizerControlInner_SelectEdge(object sender, SelectionEventArgs<Edge> e)
+      private void NeuralNetworkVisualizerControlInner_SelectEdge(object sender, SelectionEventArgs<Edge> e)
       {
          SelectEdge?.Invoke(this, e);
       }
 
-      private void _neuralNetworkVisualizerControlInner_SelectNeuron(object sender, SelectionEventArgs<Neuron> e)
+      private void NeuralNetworkVisualizerControlInner_SelectNeuron(object sender, SelectionEventArgs<Neuron> e)
       {
          SelectNeuron?.Invoke(this, e);
       }
 
-      private void _neuralNetworkVisualizerControlInner_SelectInput(object sender, SelectionEventArgs<Input> e)
+      private void NeuralNetworkVisualizerControlInner_SelectInput(object sender, SelectionEventArgs<Input> e)
       {
          SelectInput?.Invoke(this, e);
       }
 
-      private void _neuralNetworkVisualizerControlInner_SelectNeuronLayer(object sender, SelectionEventArgs<NeuronLayer> e)
+      private void NeuralNetworkVisualizerControlInner_SelectNeuronLayer(object sender, SelectionEventArgs<NeuronLayer> e)
       {
          SelectNeuronLayer?.Invoke(this, e);
       }
 
-      private void _neuralNetworkVisualizerControlInner_SelectInputLayer(object sender, SelectionEventArgs<InputLayer> e)
+      private void NeuralNetworkVisualizerControlInner_SelectInputLayer(object sender, SelectionEventArgs<InputLayer> e)
       {
          SelectInputLayer?.Invoke(this, e);
       }
 
-      private void _neuralNetworkVisualizerControlInner_SelectBias(object sender, SelectionEventArgs<Bias> e)
+      private void NeuralNetworkVisualizerControlInner_SelectBias(object sender, SelectionEventArgs<Bias> e)
       {
          SelectBias?.Invoke(this, e);
       }
