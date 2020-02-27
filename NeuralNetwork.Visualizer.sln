@@ -22,6 +22,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork.Visualizer.Ca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork.Visualizer.Drawing", "NeuralNetwork.Visualizer.Drafter\NeuralNetwork.Visualizer.Drawing.csproj", "{EC9EF9E3-BEDB-49CA-AAC4-474530EB6D77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetwork.Visualizer.Html", "NeuralNetwork.Visualizer.Html\NeuralNetwork.Visualizer.Html.csproj", "{08D72D00-01DF-4E60-ABE6-A0C14716D08D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBlazor", "ExampleBlazor\ExampleBlazor.csproj", "{45551616-EC2C-41DD-9B2A-C869EF81295F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +56,14 @@ Global
 		{EC9EF9E3-BEDB-49CA-AAC4-474530EB6D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC9EF9E3-BEDB-49CA-AAC4-474530EB6D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC9EF9E3-BEDB-49CA-AAC4-474530EB6D77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08D72D00-01DF-4E60-ABE6-A0C14716D08D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08D72D00-01DF-4E60-ABE6-A0C14716D08D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D72D00-01DF-4E60-ABE6-A0C14716D08D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08D72D00-01DF-4E60-ABE6-A0C14716D08D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45551616-EC2C-41DD-9B2A-C869EF81295F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45551616-EC2C-41DD-9B2A-C869EF81295F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45551616-EC2C-41DD-9B2A-C869EF81295F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45551616-EC2C-41DD-9B2A-C869EF81295F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
