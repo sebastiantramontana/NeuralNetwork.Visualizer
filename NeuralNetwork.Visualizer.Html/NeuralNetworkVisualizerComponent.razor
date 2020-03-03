@@ -1,0 +1,13 @@
+﻿@using Microsoft.JSInterop
+
+@inject IJSRuntime _jsRuntime
+
+@inherits NeuralNetworkVisualizerControl
+
+<div id='@("neuralnetwork-visualizer-" + this.GlobalInstanceName)' class="visualizer-component">
+    <canvas id='@("neuralnetwork-visualizer-canvas-" + this.GlobalInstanceName)'></canvas>
+</div>
+<div id='@("neuralnetwork-visualizer-tooltip-" + this.GlobalInstanceName)' class="tooltip">
+    <div id='@("neuralnetwork-visualizer-tooltip-title-" + this.GlobalInstanceName)' class="tooltip-title"></div>
+    <div id='@("neuralnetwork-visualizer-tooltip-text-" + this.GlobalInstanceName)' class="tooltip-text"></div>
+</div>
