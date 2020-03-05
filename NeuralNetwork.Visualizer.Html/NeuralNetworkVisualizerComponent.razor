@@ -11,3 +11,16 @@
     <div id='@("neuralnetwork-visualizer-tooltip-title-" + this.GlobalInstanceName)' class="tooltip-title"></div>
     <div id='@("neuralnetwork-visualizer-tooltip-text-" + this.GlobalInstanceName)' class="tooltip-text"></div>
 </div>
+
+@code
+{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await InitContext(_jsRuntime);
+        }
+    }
+}

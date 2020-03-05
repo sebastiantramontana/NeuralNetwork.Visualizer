@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using NeuralNetwork.Model;
 using NeuralNetwork.Model.Layers;
 using NeuralNetwork.Model.Nodes;
@@ -18,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Html
 {
-   public class NeuralNetworkVisualizerControl : INeuralNetworkVisualizerControl
+   public class NeuralNetworkVisualizerControl : ComponentBase, INeuralNetworkVisualizerControl
    {
       private NeuralNetworkVisualizerControlDrawing _neuralNetworkVisualizerControlInner;
 
@@ -41,16 +42,16 @@ namespace NeuralNetwork.Visualizer.Html
          _neuralNetworkVisualizerControlInner.SelectEdge += NeuralNetworkVisualizerControlInner_SelectEdge;
       }
 
-      protected async Task InitContext(IJSRuntime jsRuntime)
+      private protected async Task InitContext(IJSRuntime jsRuntime)
       {
-         IDrawableSurface drawableSurfaceBuilder(IDrafter drafter)
-         {
-            var drawableSurface = new DrawableSurface(drafter);
-            return drawableSurface;
-         }
-
          var jsInterop = new JsInterop(jsRuntime);
          await jsInterop.ExecuteFunction("createGlobalDomAccessInstance", this.GlobalInstanceName);
+
+         IDrawableSurface drawableSurfaceBuilder(IDrafter drafter)
+         {
+            var drawableSurface = new DrawableSurface(drafter, new CanvasBuilder(jsInterop, this.GlobalInstanceName), jsInterop, this.GlobalInstanceName);
+            return drawableSurface;
+         }
 
          _neuralNetworkVisualizerControlInner = new NeuralNetworkVisualizerControlDrawing(new ToolTip(jsInterop, this.GlobalInstanceName), new RegionBuilder(), drawableSurfaceBuilder);
 
@@ -142,6 +143,7 @@ namespace NeuralNetwork.Visualizer.Html
          await _neuralNetworkVisualizerControlInner.ResumeAutoRedrawAsync();
       }
 
+      /*
       protected override async void OnSizeChanged(EventArgs e)
       {
          if (_neuralNetworkVisualizerControlInner is null)
@@ -149,7 +151,9 @@ namespace NeuralNetwork.Visualizer.Html
 
          await _neuralNetworkVisualizerControlInner.DispatchOnSizeChange();
       }
+      */
 
+      /*
       private void PicCanvas_MouseDown(object sender, Winforms.MouseEventArgs e)
       {
          var modifierkey = ModifierKeys switch
@@ -161,15 +165,17 @@ namespace NeuralNetwork.Visualizer.Html
 
          _neuralNetworkVisualizerControlInner.DispatchMouseDown(e.Location.ToVisualizer(), modifierkey);
       }
+      */
 
       private void PicCanvas_MouseLeave(object sender, EventArgs e)
       {
          _neuralNetworkVisualizerControlInner.DispatchMouseLeave();
       }
 
+      /*
       private void PicCanvas_MouseMove(object sender, Winforms.MouseEventArgs e)
       {
          _neuralNetworkVisualizerControlInner.DispatchMouseMove(e.Location.ToVisualizer());
-      }
+      }*/
    }
 }
