@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Html
 {
-   public class NeuralNetworkVisualizerControl : ComponentBase, INeuralNetworkVisualizerControl
+   public abstract class NeuralNetworkVisualizerControl : ComponentBase, INeuralNetworkVisualizerControl
    {
       private NeuralNetworkVisualizerControlDrawing _neuralNetworkVisualizerControlInner;
 
@@ -33,16 +33,9 @@ namespace NeuralNetwork.Visualizer.Html
       public NeuralNetworkVisualizerControl()
       {
          this.GlobalInstanceName = "neuralnetwork_visualizer_" + Guid.NewGuid().ToString().Replace("-", "_");
-
-         _neuralNetworkVisualizerControlInner.SelectInputLayer += NeuralNetworkVisualizerControlInner_SelectInputLayer;
-         _neuralNetworkVisualizerControlInner.SelectNeuronLayer += NeuralNetworkVisualizerControlInner_SelectNeuronLayer;
-         _neuralNetworkVisualizerControlInner.SelectBias += NeuralNetworkVisualizerControlInner_SelectBias;
-         _neuralNetworkVisualizerControlInner.SelectInput += NeuralNetworkVisualizerControlInner_SelectInput;
-         _neuralNetworkVisualizerControlInner.SelectNeuron += NeuralNetworkVisualizerControlInner_SelectNeuron;
-         _neuralNetworkVisualizerControlInner.SelectEdge += NeuralNetworkVisualizerControlInner_SelectEdge;
       }
 
-      private protected async Task InitContext(IJSRuntime jsRuntime)
+      public async Task InitContext(IJSRuntime jsRuntime)
       {
          var jsInterop = new JsInterop(jsRuntime);
          await jsInterop.ExecuteFunction("createGlobalDomAccessInstance", this.GlobalInstanceName);
@@ -54,6 +47,13 @@ namespace NeuralNetwork.Visualizer.Html
          }
 
          _neuralNetworkVisualizerControlInner = new NeuralNetworkVisualizerControlDrawing(new ToolTip(jsInterop, this.GlobalInstanceName), new RegionBuilder(), drawableSurfaceBuilder);
+
+         _neuralNetworkVisualizerControlInner.SelectInputLayer += NeuralNetworkVisualizerControlInner_SelectInputLayer;
+         _neuralNetworkVisualizerControlInner.SelectNeuronLayer += NeuralNetworkVisualizerControlInner_SelectNeuronLayer;
+         _neuralNetworkVisualizerControlInner.SelectBias += NeuralNetworkVisualizerControlInner_SelectBias;
+         _neuralNetworkVisualizerControlInner.SelectInput += NeuralNetworkVisualizerControlInner_SelectInput;
+         _neuralNetworkVisualizerControlInner.SelectNeuron += NeuralNetworkVisualizerControlInner_SelectNeuron;
+         _neuralNetworkVisualizerControlInner.SelectEdge += NeuralNetworkVisualizerControlInner_SelectEdge;
 
          /*
          picCanvas.MouseDown += PicCanvas_MouseDown;

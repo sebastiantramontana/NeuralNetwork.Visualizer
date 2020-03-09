@@ -1,8 +1,4 @@
-﻿@using Microsoft.JSInterop
-
-@inject IJSRuntime _jsRuntime
-
-@inherits NeuralNetworkVisualizerControl
+﻿@inherits NeuralNetworkVisualizerControl
 
 <div id='@("neuralnetwork-visualizer-" + this.GlobalInstanceName)' class="visualizer-component">
     <canvas id='@("neuralnetwork-visualizer-canvas-" + this.GlobalInstanceName)'></canvas>
@@ -12,15 +8,4 @@
     <div id='@("neuralnetwork-visualizer-tooltip-text-" + this.GlobalInstanceName)' class="tooltip-text"></div>
 </div>
 
-@code
-{
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
-        {
-            await InitContext(_jsRuntime);
-        }
-    }
-}
+<div>Razor component blablabla</div>
