@@ -1,0 +1,25 @@
+﻿.tooltip {
+    position: absolute;
+    display: none;
+    left: 0;
+    float: left;
+    background-color: steelblue;
+}
+
+.tooltip-title {
+    position: relative;
+    display: block;
+    left: 0;
+    float: left;
+    width: 100%;
+    font-weight: bold;
+}
+
+.tooltip-text {
+    position: relative;
+    display: block;
+    left: 0;
+    float: left;
+    width: 100%;
+    font-weight: normal;
+}

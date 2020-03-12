@@ -6,27 +6,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\DrawableSurface\drawable-surface.js" />
-    <Content Remove="wwwroot\neuralnetwork-visualizer-instance.js" />
-    <Content Remove="wwwroot\styles.css" />
-    <Content Remove="wwwroot\Tooltip\tooltip.css" />
-    <Content Remove="wwwroot\Tooltip\tooltip.js" />
+    <Content Remove="NeuralNetwork.Visualizer.Assets\DrawableSurface\drawable-surface.js" />
+    <Content Remove="NeuralNetwork.Visualizer.Assets\neuralnetwork-visualizer-instance.js" />
+    <Content Remove="NeuralNetwork.Visualizer.Assets\styles.css" />
+    <Content Remove="NeuralNetwork.Visualizer.Assets\Tooltip\tooltip.css" />
+    <Content Remove="NeuralNetwork.Visualizer.Assets\Tooltip\tooltip.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="wwwroot\DrawableSurface\drawable-surface.js">
+    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\DrawableSurface\drawable-surface.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="wwwroot\neuralnetwork-visualizer-instance.js">
+    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\neuralnetwork-visualizer-instance.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="wwwroot\styles.css">
+    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\styles.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="wwwroot\Tooltip\tooltip.css">
+    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\Tooltip\tooltip.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="wwwroot\Tooltip\tooltip.js">
+    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\Tooltip\tooltip.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
