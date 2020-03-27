@@ -46,7 +46,7 @@ namespace NeuralNetwork.Visualizer.Html
             return drawableSurface;
          }
 
-         _neuralNetworkVisualizerControlInner = new NeuralNetworkVisualizerControlDrawing(new ToolTip(jsInterop, this.GlobalInstanceName), new RegionBuilder(), drawableSurfaceBuilder);
+         _neuralNetworkVisualizerControlInner = new NeuralNetworkVisualizerControlDrawing(new ToolTipControl(jsInterop, this.GlobalInstanceName), new RegionBuilder(), drawableSurfaceBuilder);
 
          _neuralNetworkVisualizerControlInner.SelectInputLayer += NeuralNetworkVisualizerControlInner_SelectInputLayer;
          _neuralNetworkVisualizerControlInner.SelectNeuronLayer += NeuralNetworkVisualizerControlInner_SelectNeuronLayer;

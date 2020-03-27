@@ -7,9 +7,9 @@ namespace NeuralNetwork.Visualizer.Html.Infrastructure
 {
    internal interface IJsInterop
    {
-      Task Excute(string code);
-      Task<TReturn> Excute<TReturn>(string code);
-      Task ExecuteFunction(string functionName, params object[] args);
-      Task<TReturn> ExecuteFunction<TReturn>(string functionName, params object[] args);
+      ValueTask Excute(string code);
+      ValueTask<TReturn> Excute<TReturn>(string code);
+      ValueTask ExecuteFunction(string functionName, params object[] args);
+      ValueTask<TReturn> ExecuteFunction<TReturn>(string functionName, params object[] args);
    }
 }
