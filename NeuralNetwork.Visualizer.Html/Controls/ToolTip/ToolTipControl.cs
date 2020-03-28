@@ -1,24 +1,25 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Controls;
+using NeuralNetwork.Visualizer.Html.Infrastructure;
 
 namespace NeuralNetwork.Visualizer.Html.Controls.ToolTip
 {
    internal class ToolTipControl : IToolTip
    {
-      private readonly IToolTipDomAccess _toolTipDomAccess;
+      private readonly IJsInterop _jsInterop;
 
-      internal ToolTipControl(IToolTipDomAccess toolTipDomAccess)
+      internal ToolTipControl(IJsInterop jsInterop)
       {
-         _toolTipDomAccess = toolTipDomAccess;
+         _jsInterop = jsInterop;
       }
 
       public async void Show(string title, string text)
       {
-         await _toolTipDomAccess.Show(title, text);
+         await _jsInterop.ExecuteInstance("ToolTip.show");
       }
 
       public async void Close()
       {
-         await _toolTipDomAccess.Close();
+         await _jsInterop.ExecuteInstance("ToolTip.close");
       }
    }
 }

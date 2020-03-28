@@ -8,18 +8,9 @@
     <base href="/" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/site.css" rel="stylesheet" />
-    <script>
-        function Cargar() {
-            var fileref = document.createElement('script');
-            fileref.setAttribute("src", "NeuralNetwork.Visualizer.Assets/neuralnetwork-visualizer-instance.js");
-            document.getElementsByTagName('body')[0].appendChild(fileref);
-
-            window.createGlobalDomAccessInstance('dfsdfsdfdf');
-        }
-    </script>
 </head>
 
-<body onload="Cargar();">
+<body>
     <app>Loading...</app>
 
     <div id="blazor-error-ui">
@@ -28,7 +19,6 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
-    <!--<script src="NeuralNetwork.Visualizer.Assets/neuralnetwork-visualizer-instance.js"></script>-->
 </body>
 
 </html>

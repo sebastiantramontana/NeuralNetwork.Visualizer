@@ -9,9 +9,10 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing;
-using NeuralNetwork.Visualizer.Html.Controls;
+using NeuralNetwork.Visualizer.Html.Controls.ToolTip;
 using NeuralNetwork.Visualizer.Html.Drawing;
 using NeuralNetwork.Visualizer.Html.Infrastructure;
+using NeuralNetwork.Visualizer.Html.Infrastructure.Scripts;
 using NeuralNetwork.Visualizer.Html.Selection;
 using System;
 using System.Collections.Generic;
@@ -37,16 +38,20 @@ namespace NeuralNetwork.Visualizer.Html
 
       public async Task InitContext(IJSRuntime jsRuntime)
       {
-         var jsInterop = new JsInterop(jsRuntime);
-         await jsInterop.ExecuteFunction("createGlobalDomAccessInstance", this.GlobalInstanceName);
+         var globalInstanceName = this.GlobalInstanceName;
+
+         var jsInterop = new JsInterop(jsRuntime, globalInstanceName);
+
+         var scriptRegistrar = GetScriptRegistrar(jsInterop);
+         RegisterScripts(scriptRegistrar, globalInstanceName);
 
          IDrawableSurface drawableSurfaceBuilder(IDrafter drafter)
          {
-            var drawableSurface = new DrawableSurface(drafter, new CanvasBuilder(jsInterop, this.GlobalInstanceName), jsInterop, this.GlobalInstanceName);
+            var drawableSurface = new DrawableSurface(drafter, new CanvasBuilder(jsInterop, this.GlobalInstanceName), jsInterop);
             return drawableSurface;
          }
 
-         _neuralNetworkVisualizerControlInner = new NeuralNetworkVisualizerControlDrawing(new ToolTipControl(jsInterop, this.GlobalInstanceName), new RegionBuilder(), drawableSurfaceBuilder);
+         _neuralNetworkVisualizerControlInner = new NeuralNetworkVisualizerControlDrawing(new ToolTipControl(jsInterop), new RegionBuilder(), drawableSurfaceBuilder);
 
          _neuralNetworkVisualizerControlInner.SelectInputLayer += NeuralNetworkVisualizerControlInner_SelectInputLayer;
          _neuralNetworkVisualizerControlInner.SelectNeuronLayer += NeuralNetworkVisualizerControlInner_SelectNeuronLayer;
@@ -62,6 +67,18 @@ namespace NeuralNetwork.Visualizer.Html
          */
 
          await Task.CompletedTask;
+      }
+
+      private void RegisterScripts(IScriptRegistrar scriptRegistrar, string globalInstanceName)
+      {
+         scriptRegistrar.Register(new GlobalInstanceScriptRegistration(globalInstanceName));
+         scriptRegistrar.Register(new ToolTipScriptRegistration(globalInstanceName));
+         scriptRegistrar.Register(new DrawableSurfaceScriptRegistration(globalInstanceName));
+      }
+
+      private IScriptRegistrar GetScriptRegistrar(IJsInterop jsInterop)
+      {
+         return new ScriptRegistrar(jsInterop);
       }
 
       private void NeuralNetworkVisualizerControlInner_SelectEdge(object sender, SelectionEventArgs<Edge> e)
