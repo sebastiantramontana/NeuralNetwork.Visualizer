@@ -17,8 +17,6 @@ namespace NeuralNetwork.Visualizer.Html.Infrastructure
 
       public async ValueTask Excute(string code)
       {
-         Console.WriteLine(code);
-
          await _jsRuntime.InvokeVoidAsync($"window.eval", code);
       }
 
