@@ -6,27 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="NeuralNetwork.Visualizer.Assets\DrawableSurface\drawable-surface.js" />
-    <Content Remove="NeuralNetwork.Visualizer.Assets\neuralnetwork-visualizer-instance.js" />
     <Content Remove="NeuralNetwork.Visualizer.Assets\styles.css" />
-    <Content Remove="NeuralNetwork.Visualizer.Assets\Tooltip\tooltip.css" />
-    <Content Remove="NeuralNetwork.Visualizer.Assets\Tooltip\tooltip.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\DrawableSurface\drawable-surface.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\neuralnetwork-visualizer-instance.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\styles.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\Tooltip\tooltip.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\Tooltip\tooltip.js">
+    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\tooltip.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
