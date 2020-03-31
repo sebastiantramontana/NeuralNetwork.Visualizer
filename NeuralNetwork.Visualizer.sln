@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork.Visualizer.Dr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork.Visualizer.Razor", "NeuralNetwork.Visualizer.Razor\NeuralNetwork.Visualizer.Razor.csproj", "{08D72D00-01DF-4E60-ABE6-A0C14716D08D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp1", "BlazorApp1\BlazorApp1.csproj", "{FA5595F7-F169-4807-9AD7-E10248D987BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleBlazor", "ExampleBlazor\ExampleBlazor.csproj", "{FA5595F7-F169-4807-9AD7-E10248D987BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
