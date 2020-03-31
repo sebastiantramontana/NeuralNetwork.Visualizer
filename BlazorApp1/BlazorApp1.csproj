@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NeuralNetwork.Visualizer.Html\NeuralNetwork.Visualizer.Html.csproj" />
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Razor\NeuralNetwork.Visualizer.Razor.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
