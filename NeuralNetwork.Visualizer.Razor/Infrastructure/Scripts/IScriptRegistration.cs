@@ -6,6 +6,6 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
 {
    internal interface IScriptRegistration
    {
-      string Code { get; }
+      string FunctionName { get; }
    }
 }

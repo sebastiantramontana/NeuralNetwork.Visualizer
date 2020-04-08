@@ -2,11 +2,6 @@
 {
    internal class GlobalInstanceScriptRegistration : IScriptRegistration
    {
-      public GlobalInstanceScriptRegistration(string globalInstanceName)
-      {
-         this.Code = $@"window['{globalInstanceName}'] = {{}};";
-      }
-
-      public string Code { get; }
+      public string FunctionName { get; } = "registerGlobalInstance";
    }
 }

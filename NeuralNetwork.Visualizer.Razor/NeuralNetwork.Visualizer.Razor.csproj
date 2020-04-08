@@ -10,10 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\styles.css">
+    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\css\styles.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\tooltip.css">
+    <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\css\tooltip.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

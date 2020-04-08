@@ -4,9 +4,11 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure
 {
    internal interface IJsInterop
    {
-      ValueTask Excute(string code);
-      ValueTask<TReturn> Excute<TReturn>(string code);
-      ValueTask ExecuteInstance(string functionPath, params object[] args);
-      ValueTask<TReturn> ExecuteInstance<TReturn>(string functionPath, params object[] args);
+      ValueTask ExcuteCode(string code);
+      ValueTask<TReturn> ExcuteCode<TReturn>(string code);
+      ValueTask ExcuteFunction(string functionName, params object[] args);
+      ValueTask<TReturn> ExcuteFunction<TReturn>(string functionName, params object[] args);
+      ValueTask ExecuteOnInstance(string functionPath, params object[] args);
+      ValueTask<TReturn> ExecuteOnInstance<TReturn>(string functionPath, params object[] args);
    }
 }

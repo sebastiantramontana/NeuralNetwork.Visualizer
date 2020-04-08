@@ -69,11 +69,11 @@ namespace NeuralNetwork.Visualizer.Razor
          await Task.CompletedTask;
       }
 
-      private void RegisterScripts(IScriptRegistrar scriptRegistrar, string globalInstanceName)
+      private async ValueTask RegisterScripts(IScriptRegistrar scriptRegistrar, string globalInstanceName)
       {
-         scriptRegistrar.Register(new GlobalInstanceScriptRegistration(globalInstanceName));
-         scriptRegistrar.Register(new ToolTipScriptRegistration(globalInstanceName));
-         scriptRegistrar.Register(new DrawableSurfaceScriptRegistration(globalInstanceName));
+         await scriptRegistrar.Register(new GlobalInstanceScriptRegistration());
+         await scriptRegistrar.Register(new ToolTipScriptRegistration());
+         await scriptRegistrar.Register(new DrawableSurfaceScriptRegistration());
       }
 
       private IScriptRegistrar GetScriptRegistrar(IJsInterop jsInterop)

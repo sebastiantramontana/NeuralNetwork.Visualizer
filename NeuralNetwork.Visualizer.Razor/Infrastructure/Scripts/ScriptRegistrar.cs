@@ -13,7 +13,7 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
 
       public async ValueTask Register(IScriptRegistration script)
       {
-         await _jsInterop.Excute(script.Code);
+         await _jsInterop.ExcuteFunction(script.FunctionName);
       }
    }
 }
