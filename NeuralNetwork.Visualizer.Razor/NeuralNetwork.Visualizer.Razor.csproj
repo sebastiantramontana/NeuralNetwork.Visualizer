@@ -10,6 +10,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="NeuralNetwork.Visualizer.Assets\js\registrations\drawable-surface-registration.js" />
+    <None Remove="NeuralNetwork.Visualizer.Assets\js\registrations\global-instance-registration.js" />
+    <None Remove="NeuralNetwork.Visualizer.Assets\js\registrations\tootltip-registration.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="NeuralNetwork.Visualizer.Assets\js\registrations\drawable-surface-registration.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NeuralNetwork.Visualizer.Assets\js\registrations\global-instance-registration.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NeuralNetwork.Visualizer.Assets\js\registrations\tootltip-registration.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="NeuralNetwork.Visualizer.Assets\css\styles.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>

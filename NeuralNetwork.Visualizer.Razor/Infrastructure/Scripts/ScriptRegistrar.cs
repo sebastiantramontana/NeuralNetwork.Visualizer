@@ -11,9 +11,12 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
          _jsInterop = jsInterop;
       }
 
-      public async ValueTask Register(IScriptRegistration script)
+      public async ValueTask<IScriptRegistrar> Register(IScriptRegistration script, string globalInstanceName)
       {
-         await _jsInterop.ExcuteFunction(script.FunctionName);
+         await Task.Delay(3000);
+         await _jsInterop.ExcuteFunction(script.FunctionName, globalInstanceName);
+
+         return this;
       }
    }
 }

@@ -18,13 +18,13 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
          _jsInterop = jsInterop;
       }
 
-      public Size Size => _jsInterop.ExecuteInstance<Size>("DrawableSurface.getSize").Result;
-      public Size DrawingSize => _jsInterop.ExecuteInstance<Size>("DrawableSurface.getDrawingSize").Result;
+      public Size Size => _jsInterop.ExecuteOnInstance<Size>("DrawableSurface.getSize").Result;
+      public Size DrawingSize => _jsInterop.ExecuteOnInstance<Size>("DrawableSurface.getDrawingSize").Result;
       public IDrafter Drafter { get; }
 
       public Image GetImage()
       {
-         return _jsInterop.ExecuteInstance<Image>("DrawableSurface.getImage").Result;
+         return _jsInterop.ExecuteOnInstance<Image>("DrawableSurface.getImage").Result;
       }
 
       public async Task RedrawAsync()

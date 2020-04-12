@@ -999,3 +999,10 @@
 /ExampleBlazor/obj/Debug/netstandard2.1/compressed/_framework/wasm/*.hash
 /ExampleBlazor/obj/Debug/netstandard2.1/staticwebassets/*.cache
 /ExampleBlazor/obj/Debug/netstandard2.1/staticwebassets/*.xml
+/ExampleBlazor/bin/Debug/netstandard2.1/NeuralNetwork.Visualizer.Assets/css/*.css
+/ExampleBlazor/bin/Debug/netstandard2.1/NeuralNetwork.Visualizer.Assets/js/registrations/*.js
+/NeuralNetwork.Visualizer.Razor/bin/Debug/netstandard2.1/NeuralNetwork.Visualizer.Assets/css/styles.css
+/NeuralNetwork.Visualizer.Razor/bin/Debug/netstandard2.1/NeuralNetwork.Visualizer.Assets/css/tooltip.css
+/NeuralNetwork.Visualizer.Razor/bin/Debug/netstandard2.1/NeuralNetwork.Visualizer.Assets/js/registrations/drawable-surface-registration.js
+/NeuralNetwork.Visualizer.Razor/bin/Debug/netstandard2.1/NeuralNetwork.Visualizer.Assets/js/registrations/global-instance-registration.js
+/NeuralNetwork.Visualizer.Razor/bin/Debug/netstandard2.1/NeuralNetwork.Visualizer.Assets/js/registrations/tootltip-registration.js
