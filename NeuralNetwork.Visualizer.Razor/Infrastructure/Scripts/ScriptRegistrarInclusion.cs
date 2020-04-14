@@ -84,6 +84,10 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
 
                      var head = document.getElementsByTagName('head')[0];
                      head.appendChild(script);
+                  }}
+                  else
+                  {{
+                     {functionCallings}
                   }}";
       }
 
