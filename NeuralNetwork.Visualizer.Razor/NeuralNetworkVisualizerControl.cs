@@ -43,7 +43,7 @@ namespace NeuralNetwork.Visualizer.Razor
          var scriptFileRegistrarInclusion = GetScriptFileRegistrarInclusion(jsInterop);
 
          await RegisterScripts(scriptFileRegistrarInclusion, globalInstanceName);
-         
+
          IDrawableSurface drawableSurfaceBuilder(IDrafter drafter)
          {
             var drawableSurface = new DrawableSurface(drafter, new CanvasBuilder(jsInterop, this.GlobalInstanceName), jsInterop);
@@ -70,24 +70,19 @@ namespace NeuralNetwork.Visualizer.Razor
 
       private async ValueTask RegisterScripts(IScriptFileRegistrarInclusion scriptFileRegistrarInclusion, string globalInstanceName)
       {
-         Console.WriteLine("Registering global-instance-registration.js");
-
-         await scriptFileRegistrarInclusion.Include("global-instance-registration.js")
-            .Register(new GlobalInstanceScriptRegistration(), globalInstanceName);
-
-
-         Console.WriteLine("Registering drawable-surface-registration.js");
-
-         await scriptFileRegistrarInclusion.Include("drawable-surface-registration.js")
-            .Register(new DrawableSurfaceScriptRegistration(), globalInstanceName);
-
-         await scriptFileRegistrarInclusion.Include("tootltip-registration.js")
-            .Register(new ToolTipScriptRegistration(), globalInstanceName);
+         await scriptFileRegistrarInclusion
+            .Include("global-instance-registration.js")
+               .Register(new GlobalInstanceScriptRegistration(), globalInstanceName)
+            .Include("drawable-surface-registration.js")
+               .Register(new DrawableSurfaceScriptRegistration(), globalInstanceName)
+            .Include("tootltip-registration.js")
+               .Register(new ToolTipScriptRegistration(), globalInstanceName)
+            .Execute();
       }
 
       private IScriptFileRegistrarInclusion GetScriptFileRegistrarInclusion(IJsInterop jsInterop)
       {
-         return new ScriptFileRegistrarInclusion(new ScriptRegistrar(jsInterop), jsInterop, "NeuralNetwork.Visualizer.Assets/js/registrations/");
+         return new ScriptRegistrarInclusion(jsInterop, "NeuralNetwork.Visualizer.Assets/js/registrations/");
       }
 
       private void NeuralNetworkVisualizerControlInner_SelectEdge(object sender, SelectionEventArgs<Edge> e)
