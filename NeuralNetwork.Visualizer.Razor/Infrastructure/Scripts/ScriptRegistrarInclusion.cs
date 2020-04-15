@@ -39,8 +39,6 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
             string id = BuildIdAttributte(src);
             string code = BuildCode(id, src, fileRegistraion.InstanceRegistrations);
 
-            Console.WriteLine(code);
-
             await _jsInterop.ExcuteCode(code);
          }
       }
