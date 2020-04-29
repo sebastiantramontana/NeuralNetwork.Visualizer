@@ -135,7 +135,7 @@ namespace NeuralNetwork.Visualizer.Razor
 
       public Size Size => _neuralNetworkVisualizerControlInner.Size;
       public Size DrawingSize => _neuralNetworkVisualizerControlInner.DrawingSize;
-
+      public async Task<Size> GetDrawingSize() => await _neuralNetworkVisualizerControlInner.GetDrawingSize();
       public Image ExportToImage()
       {
          return _neuralNetworkVisualizerControlInner.ExportToImage();

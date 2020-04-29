@@ -10,5 +10,9 @@ namespace NeuralNetwork.Visualizer.Contracts.Controls
       Image GetImage();
       Task RedrawAsync();
       IDrafter Drafter { get; }
+
+
+      //SACAR
+      Task<Size> GetDrawingSize();
    }
 }

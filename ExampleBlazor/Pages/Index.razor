@@ -1,19 +1,27 @@
 ﻿@page "/"
 @inject IJSRuntime _jsRuntime
 
+<button @onclick="Click">Click</button>
 <NeuralNetworkVisualizerComponent @ref="_visualizer" />
 
 @code
 {
-    NeuralNetworkVisualizerComponent _visualizer;
+   NeuralNetworkVisualizerComponent _visualizer;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
+   protected override async Task OnAfterRenderAsync(bool firstRender)
+   {
+       await base.OnAfterRenderAsync(firstRender);
 
-        if (firstRender)
-        {
-            await _visualizer.InitContext(_jsRuntime);
-        }
-    }
+       if (firstRender)
+       {
+           await _visualizer.InitContext(_jsRuntime);
+       }
+   }
+
+   private async Task Click()
+   {
+       var size = await _visualizer.GetDrawingSize();
+
+       Console.WriteLine($"{nameof(size.IsNull)} = {size.IsNull}");
+   }
 }

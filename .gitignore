@@ -1006,3 +1006,9 @@
 /NeuralNetwork.Visualizer.Razor/bin/Debug/netstandard2.1/NeuralNetwork.Visualizer.Assets/js/registrations/drawable-surface-registration.js
 /NeuralNetwork.Visualizer.Razor/bin/Debug/netstandard2.1/NeuralNetwork.Visualizer.Assets/js/registrations/global-instance-registration.js
 /NeuralNetwork.Visualizer.Razor/bin/Debug/netstandard2.1/NeuralNetwork.Visualizer.Assets/js/registrations/tootltip-registration.js
+/ExampleBlazor/bin/Debug/netstandard2.1/wwwroot/_framework/wasm/*.dat
+/ExampleBlazor/obj/Debug/netstandard2.1/blazor/*.input
+/ExampleBlazor/obj/Debug/netstandard2.1/blazor/unlinked/*.dll
+/ExampleBlazor/obj/Debug/netstandard2.1/blazor/unlinked/*.pdb
+/ExampleBlazor/obj/Debug/netstandard2.1/compressed/*.json
+/ExampleBlazor/obj/Debug/netstandard2.1/integrity/*.hash

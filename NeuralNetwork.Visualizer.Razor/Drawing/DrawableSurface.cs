@@ -19,7 +19,14 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
       }
 
       public Size Size => _jsInterop.ExecuteOnInstance<Size>("DrawableSurface.getSize").Result;
-      public Size DrawingSize => _jsInterop.ExecuteOnInstance<Size>("DrawableSurface.getDrawingSize").Result;
+      private Size _drawingSize;
+      public Size DrawingSize
+      {
+         get
+         {
+            return _drawingSize;
+         }
+      }
       public IDrafter Drafter { get; }
 
       public Image GetImage()
@@ -30,6 +37,11 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
       public async Task RedrawAsync()
       {
          await this.Drafter.RedrawAsync(_canvasBuilder);
+      }
+
+      public async Task<Size> GetDrawingSize()
+      {
+         return await _jsInterop.ExecuteOnInstance<Size>("DrawableSurface.getDrawingSize");
       }
    }
 }

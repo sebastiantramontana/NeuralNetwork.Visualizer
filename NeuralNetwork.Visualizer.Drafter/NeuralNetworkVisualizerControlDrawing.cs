@@ -72,7 +72,7 @@ namespace NeuralNetwork.Visualizer.Drawing
 
       public Size Size => _drawableSurface.Size;
       public Size DrawingSize => _drawableSurface.DrawingSize;
-
+      public async Task<Size> GetDrawingSize() => await _drawableSurface.GetDrawingSize();
       public async Task RedrawAsync()
       {
          await _drawableSurface.RedrawAsync();

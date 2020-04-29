@@ -36,12 +36,12 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure
 
       public async ValueTask ExecuteOnInstance(string functionPath, params object[] args)
       {
-         await _jsRuntime.InvokeVoidAsync($"window[{_globalInstanceName}].{functionPath}", args);
+         await _jsRuntime.InvokeVoidAsync($"{_globalInstanceName}.{functionPath}", args);
       }
 
       public async ValueTask<TReturn> ExecuteOnInstance<TReturn>(string functionPath, params object[] args)
       {
-         return await _jsRuntime.InvokeAsync<TReturn>($"window[{_globalInstanceName}].{functionPath}", args);
+         return await _jsRuntime.InvokeAsync<TReturn>($"{_globalInstanceName}.{functionPath}", args);
       }
    }
 }
