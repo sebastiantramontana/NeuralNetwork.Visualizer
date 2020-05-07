@@ -2,13 +2,11 @@
 {
    internal class ScriptInstanceRegistration
    {
-      internal ScriptInstanceRegistration(string functionName, string globalInstanceName)
+      internal ScriptInstanceRegistration(string functionName)
       {
          this.FunctionName = functionName;
-         this.GlobalInstanceName = globalInstanceName;
       }
 
       internal string FunctionName { get; }
-      internal string GlobalInstanceName { get; }
    }
 }

@@ -1,6 +1,7 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Razor.Drawing.Dtos;
 using NeuralNetwork.Visualizer.Razor.Infrastructure;
 using System.Threading.Tasks;
 
@@ -41,7 +42,8 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
 
       public async Task<Size> GetDrawingSize()
       {
-         return await _jsInterop.ExecuteOnInstance<Size>("DrawableSurface.getDrawingSize");
+         var dto = await _jsInterop.ExecuteOnInstance<SizeDto>("DrawableSurface.getDrawingSize");
+         return dto.ToSize();
       }
    }
 }
