@@ -3,7 +3,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
-using NeuralNetwork.Visualizer.Razor.Infrastructure;
+using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 
 namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
 {

@@ -1,5 +1,5 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Controls;
-using NeuralNetwork.Visualizer.Razor.Infrastructure;
+using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 
 namespace NeuralNetwork.Visualizer.Razor.Controls.ToolTip
 {

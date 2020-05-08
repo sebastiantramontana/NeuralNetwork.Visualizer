@@ -1,7 +1,7 @@
 ﻿using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
-namespace NeuralNetwork.Visualizer.Razor.Infrastructure
+namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Interops
 {
    internal class JsInterop : IJsInterop
    {

@@ -2,7 +2,7 @@
 using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Razor.Drawing.Dtos;
-using NeuralNetwork.Visualizer.Razor.Infrastructure;
+using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Razor.Drawing

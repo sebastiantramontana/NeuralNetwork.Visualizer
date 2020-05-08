@@ -1,8 +1,7 @@
-﻿using System;
-using NeuralNetwork.Visualizer.Contracts.Drawing;
+﻿using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Razor.Drawing.Canvas;
-using NeuralNetwork.Visualizer.Razor.Infrastructure;
+using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 
 namespace NeuralNetwork.Visualizer.Razor.Drawing
 {
