@@ -44,11 +44,10 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
 
       public async Task Execute()
       {
+         await ExecuteInsertScriptCode();
+
          _executeTaskCompletion = new TaskCompletionSource<bool>();
          Task executeTask = _executeTaskCompletion.Task;
-
-         string insertCode = BuildInsertScriptCode();
-         await _jsInterop.ExcuteCode(insertCode);
 
          Task task = Task.CompletedTask;
          using var dotNetReference = DotNetObjectReference.Create(this);
@@ -95,6 +94,12 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
       private string BuildIdAttributte(string srcAttribute)
       {
          return $"neuralnetwork-visualizer-script-{srcAttribute.Replace(' ', '-').Replace('/', '-')}";
+      }
+
+      private async Task ExecuteInsertScriptCode()
+      {
+         string insertCode = BuildInsertScriptCode();
+         await _jsInterop.ExcuteCode(insertCode);
       }
 
       private string BuildInsertScriptCode()
