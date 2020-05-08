@@ -24,7 +24,6 @@ namespace NeuralNetwork.Visualizer.Razor
    {
       private NeuralNetworkVisualizerControlDrawing _neuralNetworkVisualizerControlInner;
 
-      public event EventHandler OnLoaded;
       public event EventHandler<SelectionEventArgs<InputLayer>> SelectInputLayer;
       public event EventHandler<SelectionEventArgs<NeuronLayer>> SelectNeuronLayer;
       public event EventHandler<SelectionEventArgs<Bias>> SelectBias;
@@ -67,7 +66,7 @@ namespace NeuralNetwork.Visualizer.Razor
          */
       }
 
-      private async ValueTask RegisterScripts(IScriptFileRegistrarInclusion scriptFileRegistrarInclusion)
+      private async Task RegisterScripts(IScriptFileRegistrarInclusion scriptFileRegistrarInclusion)
       {
          await scriptFileRegistrarInclusion
             .Include("global-instance-registration.js")
@@ -82,14 +81,7 @@ namespace NeuralNetwork.Visualizer.Razor
       private IScriptFileRegistrarInclusion GetScriptFileRegistrarInclusion(IJsInterop jsInterop, string globalInstanceName)
       {
          var scriptRegistrarInclusion = new ScriptRegistrarInclusion(jsInterop, "NeuralNetwork.Visualizer.Assets/js/registrations/", globalInstanceName);
-         scriptRegistrarInclusion.OnCompleted += ScriptFileRegistrarInclusion_OnCompleted;
-
          return scriptRegistrarInclusion;
-      }
-
-      private void ScriptFileRegistrarInclusion_OnCompleted(object sender, EventArgs e)
-      {
-         OnLoaded?.Invoke(this, EventArgs.Empty);
       }
 
       private void NeuralNetworkVisualizerControlInner_SelectEdge(object sender, SelectionEventArgs<Edge> e)

@@ -15,8 +15,6 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
       private readonly string _scriptBaseUrl;
       private readonly ICollection<ScriptFileRegistration> _fileRegistrations;
 
-      internal event EventHandler OnCompleted;
-
       internal ScriptRegistrarInclusion(IJsInterop jsInterop, string scriptBaseUrl, string globalInstanceName)
       {
          _fileRegistrations = new List<ScriptFileRegistration>();
@@ -41,17 +39,26 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
          return this;
       }
 
-      public async ValueTask Execute()
+      private TaskCompletionSource<bool> _executeTaskCompletion;
+
+      public async Task Execute()
       {
+         _executeTaskCompletion = new TaskCompletionSource<bool>();
+         Task executeTask = _executeTaskCompletion.Task;
+
          string insertCode = BuildInsertScriptCode();
          await _jsInterop.ExcuteCode(insertCode);
+
+         Task task = Task.CompletedTask;
 
          foreach (var fileRegistraion in _fileRegistrations)
          {
             string src = BuildSrcAttribute(_scriptBaseUrl, fileRegistraion.FileName);
             string id = BuildIdAttributte(src);
-            await ExecuteInsertScript(id, src, fileRegistraion.InstanceRegistrations, _globalInstanceName);
+            await task.ContinueWith((t) => task = ExecuteInsertScript(id, src, fileRegistraion.InstanceRegistrations, _globalInstanceName));
          }
+
+         await executeTask;
       }
 
       private int _onScriptRegisteredCount = 0;
@@ -63,7 +70,7 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
 
          if (_fileRegistrations.Count == _onScriptRegisteredCount)
          {
-            OnCompleted?.Invoke(this, EventArgs.Empty);
+            _executeTaskCompletion.SetResult(true);
          }
       }
 
@@ -96,17 +103,19 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
                      registrationFunctions
                            .forEach(rf => window[rf](globalInstanceName));
 
-                     dotNetRef.invokeMethodAsync('{nameof(OnScriptRegistered)}');
+                     dotNetRef.invokeMethod('{nameof(OnScriptRegistered)}');
                   }};
                   
                   let createScriptTag = () =>
                   {{
                      let script = document.createElement('script');
-                     script.type = 'text/javascript';
-                     script.defer = 'defer';
-                     script.src = src;
-                     script.id = id;
-                     script.onload = function()
+
+                     script.setAttribute('type', 'text/javascript');
+                     script.setAttribute('async', 'async');
+                     script.setAttribute('src', src);
+                     script.setAttribute('id', id);
+
+                     script.onload = () =>
                      {{
                         executeRegistrations();
                      }};
