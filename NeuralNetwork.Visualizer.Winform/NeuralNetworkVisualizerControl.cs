@@ -114,15 +114,12 @@ namespace NeuralNetwork.Visualizer.Winform
          set => _neuralNetworkVisualizerControlInner.Zoom = value;
       }
 
-      [Browsable(false)]
-      Size INeuralNetworkVisualizerControl.Size => _neuralNetworkVisualizerControlInner.Size;
+      public async Task<Size> GetSize() => await _neuralNetworkVisualizerControlInner.GetSize();
+      public async Task<Size> GetDrawingSize() => await _neuralNetworkVisualizerControlInner.GetDrawingSize();
 
-      [Browsable(false)]
-      public Size DrawingSize => _neuralNetworkVisualizerControlInner.DrawingSize;
-
-      public Image ExportToImage()
+      public async Task<Image> ExportToImage()
       {
-         return _neuralNetworkVisualizerControlInner.ExportToImage();
+         return await _neuralNetworkVisualizerControlInner.ExportToImage();
       }
 
       public async Task RedrawAsync()

@@ -70,8 +70,7 @@ namespace NeuralNetwork.Visualizer.Drawing
          set => MakeZoom(value);
       }
 
-      public Size Size => _drawableSurface.Size;
-      public Size DrawingSize => _drawableSurface.DrawingSize;
+      public async Task<Size> GetSize() => await _drawableSurface.GetSize();
       public async Task<Size> GetDrawingSize() => await _drawableSurface.GetDrawingSize();
       public async Task RedrawAsync()
       {
@@ -95,17 +94,17 @@ namespace NeuralNetwork.Visualizer.Drawing
          _isAutoRedrawSuspended = true;
       }
 
-      public Image ExportToImage()
+      public async Task<Image> ExportToImage()
       {
-         return _drawableSurface.GetImage();
+         return await _drawableSurface.GetImage();
       }
 
       private Size _previousSize;
       public async Task DispatchOnSizeChange()
       {
-         var currentSize = _drawableSurface.Size;
+         var currentSize = await _drawableSurface.GetSize();
 
-         if (_drawableSurface.Size.IsNull || currentSize == _previousSize || !_readyToRedrawWhenPropertyChange)
+         if (currentSize.IsNull || currentSize == _previousSize || !_readyToRedrawWhenPropertyChange)
          {
             return;
          }

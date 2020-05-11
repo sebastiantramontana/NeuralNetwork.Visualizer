@@ -5,14 +5,10 @@ namespace NeuralNetwork.Visualizer.Contracts.Controls
 {
    public interface IDrawableSurface
    {
-      Size Size { get; }
-      Size DrawingSize { get; }
-      Image GetImage();
+      Task<Size> GetSize();
+      Task<Size> GetDrawingSize();
+      Task<Image> GetImage();
       Task RedrawAsync();
       IDrafter Drafter { get; }
-
-
-      //SACAR
-      Task<Size> GetDrawingSize();
    }
 }

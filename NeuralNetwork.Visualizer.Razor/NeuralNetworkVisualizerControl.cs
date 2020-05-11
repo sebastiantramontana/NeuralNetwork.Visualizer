@@ -11,6 +11,7 @@ using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing;
 using NeuralNetwork.Visualizer.Razor.Controls.ToolTip;
 using NeuralNetwork.Visualizer.Razor.Drawing;
+using NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts;
 using NeuralNetwork.Visualizer.Razor.Selection;
@@ -80,7 +81,7 @@ namespace NeuralNetwork.Visualizer.Razor
 
       private IScriptFileRegistrarInclusion GetScriptFileRegistrarInclusion(IJsInterop jsInterop, string globalInstanceName)
       {
-         var scriptRegistrarInclusion = new ScriptRegistrarInclusion(jsInterop, "NeuralNetwork.Visualizer.Assets/js/registrations/", globalInstanceName);
+         var scriptRegistrarInclusion = new ScriptRegistrarInclusion(jsInterop, new Synchronize(), new TaskUnit(), "NeuralNetwork.Visualizer.Assets/js/registrations/", globalInstanceName);
          return scriptRegistrarInclusion;
       }
 
@@ -132,13 +133,9 @@ namespace NeuralNetwork.Visualizer.Razor
          set => _neuralNetworkVisualizerControlInner.Zoom = value;
       }
 
-      public Size Size => _neuralNetworkVisualizerControlInner.Size;
-      public Size DrawingSize => _neuralNetworkVisualizerControlInner.DrawingSize;
+      public async Task<Size> GetSize() => await _neuralNetworkVisualizerControlInner.GetSize();
       public async Task<Size> GetDrawingSize() => await _neuralNetworkVisualizerControlInner.GetDrawingSize();
-      public Image ExportToImage()
-      {
-         return _neuralNetworkVisualizerControlInner.ExportToImage();
-      }
+      public async Task<Image> ExportToImage() => await _neuralNetworkVisualizerControlInner.ExportToImage();
 
       public async Task RedrawAsync()
       {

@@ -23,12 +23,12 @@ namespace NeuralNetwork.Visualizer.Contracts
       IPreference Preferences { get; }
       IEnumerable<Element> SelectedElements { get; }
       float Zoom { get; set; }
-      Size Size { get; }
-      Size DrawingSize { get; }
+      Task<Size> GetSize();
+      Task<Size> GetDrawingSize();
 
       Task RedrawAsync();
       Task ResumeAutoRedrawAsync();
       void SuspendAutoRedraw();
-      Image ExportToImage();
+      Task<Image> ExportToImage();
    }
 }

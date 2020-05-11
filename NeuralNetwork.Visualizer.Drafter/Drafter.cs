@@ -35,7 +35,7 @@ namespace NeuralNetwork.Visualizer.Drawing
       {
          ValidateInputLayer();
 
-         var zoomedControlSize = GetZoomedControlSize();
+         var zoomedControlSize = await GetZoomedControlSize();
          var layerSizes = GetLayerSizes(zoomedControlSize);
          var canvas = canvasBuilder.Build(new Size(zoomedControlSize.Width, layerSizes.Height));
 
@@ -58,9 +58,11 @@ namespace NeuralNetwork.Visualizer.Drawing
          return layerSize;
       }
 
-      private Size GetZoomedControlSize()
+      private async Task<Size> GetZoomedControlSize()
       {
-         var size = new Size((int)(_control.Zoom * _control.Size.Width), (int)(_control.Zoom * _control.Size.Height));
+         var controlSize = await _control.GetSize();
+
+         var size = new Size((int)(_control.Zoom * controlSize.Width), (int)(_control.Zoom * controlSize.Height));
          return size;
       }
 

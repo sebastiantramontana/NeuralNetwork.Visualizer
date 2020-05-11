@@ -5,22 +5,22 @@
 
 @code
 {
-   NeuralNetworkVisualizerComponent _visualizer;
+    NeuralNetworkVisualizerComponent _visualizer;
 
 
-   protected override async Task OnAfterRenderAsync(bool firstRender)
-   {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
 
-       if (firstRender)
-       {
-           await _visualizer.Initialize(_jsRuntime);
+        if (firstRender)
+        {
+            await _visualizer.Initialize(_jsRuntime);
 
-           var size = await _visualizer.GetDrawingSize();
+            var size = await _visualizer.GetDrawingSize();
 
-           Console.WriteLine($"{size.Width} x {size.Height}");
-       };
+            Console.WriteLine($"{size.Width} x {size.Height}");
+        };
 
 
-       await base.OnAfterRenderAsync(firstRender);
-   }
+        await base.OnAfterRenderAsync(firstRender);
+    }
 }
