@@ -11,6 +11,7 @@ using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing;
 using NeuralNetwork.Visualizer.Razor.Controls.ToolTip;
 using NeuralNetwork.Visualizer.Razor.Drawing;
+using NeuralNetwork.Visualizer.Razor.Drawing.Canvas;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts;
@@ -76,6 +77,8 @@ namespace NeuralNetwork.Visualizer.Razor
                .Register(new DrawableSurfaceScriptRegistration())
             .Include("tootltip-registration.js")
                .Register(new ToolTipScriptRegistration())
+            .Include("canvas-registration.js")
+               .Register(new CanvasRegistration())
             .Execute();
       }
 

@@ -82,15 +82,6 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Canvas
          });
       }
 
-      public Size MeasureText(string text, FontLabel font, Position position)
-      {
-         using var gdiFont = font.ToGdi();
-         using var gdiFormat = font.TextFormat.ToGdi();
-         var stringSize = _graph.MeasureString(text, gdiFont, position.ToGdi(), gdiFormat);
-
-         return Gdi.Size.Ceiling(stringSize).ToVisualizer();
-      }
-
       public void DrawLine(Position pos1, Position pos2, Pen pen)
       {
          if (!Validate(pen))

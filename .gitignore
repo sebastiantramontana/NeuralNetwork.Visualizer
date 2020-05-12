@@ -1012,3 +1012,5 @@
 /ExampleBlazor/obj/Debug/netstandard2.1/blazor/unlinked/*.pdb
 /ExampleBlazor/obj/Debug/netstandard2.1/compressed/*.json
 /ExampleBlazor/obj/Debug/netstandard2.1/integrity/*.hash
+/ExampleBlazor/wwwroot/NeuralNetwork.Visualizer.Assets/js/registrations
+/NeuralNetwork.Visualizer.Razor/bin/Debug/netstandard2.1/NeuralNetwork.Visualizer.Assets/js/registrations

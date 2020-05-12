@@ -50,14 +50,14 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          throw new System.NotImplementedException();
       }
 
-      public Size MeasureText(string text, FontLabel font, Position position)
+      public Position Translate(Position position, ICanvas destination)
       {
-         throw new System.NotImplementedException();
-      }
+         if (object.ReferenceEquals(destination, this) || destination is HtmlCanvas)
+            return position;
 
-      public Position Translate(Position point, ICanvas destination)
-      {
-         throw new System.NotImplementedException();
+         var posTranslated = destination.Translate(new Position(0, 0), this);
+         position = new Position(position.X - posTranslated.X, position.Y - posTranslated.Y);
+         return position;
       }
    }
 }
