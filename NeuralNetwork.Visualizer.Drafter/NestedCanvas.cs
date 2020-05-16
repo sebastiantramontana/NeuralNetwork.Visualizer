@@ -63,12 +63,6 @@ namespace NeuralNetwork.Visualizer.Drawing
          _decorated.DrawText(text, font, rectangle, angle);
       }
 
-      public Size MeasureText(string text, FontLabel font, Position position)
-      {
-         var newPosition = position + _rect.Position;
-         return _decorated.MeasureText(text, font, newPosition);
-      }
-
       public Position Translate(Position position, ICanvas destination)
       {
          if (destination == this)

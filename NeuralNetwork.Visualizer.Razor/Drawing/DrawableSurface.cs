@@ -3,6 +3,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Razor.Drawing.Dtos;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
+using System;
 using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Razor.Drawing
@@ -33,7 +34,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
 
       public async Task<Image> GetImage()
       {
-         return await _jsInterop.ExecuteOnInstance<Image>("DrawableSurface.getImage");
+         return await CallDomMethod<ImageDto, Image>("getImage", dto => dto.ToImage());
       }
 
       public async Task RedrawAsync()
@@ -43,8 +44,13 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
 
       private async Task<Size> CallDomSizeMethod(string domSizeMethod)
       {
-         var dto = await _jsInterop.ExecuteOnInstance<SizeDto>($"DrawableSurface.{domSizeMethod}");
-         return dto.ToSize();
+         return await CallDomMethod<SizeDto, Size>(domSizeMethod, dto => dto.ToSize());
+      }
+
+      private async Task<TPrimitive> CallDomMethod<TDto, TPrimitive>(string domMethod, Func<TDto, TPrimitive> converter)
+      {
+         var dto = await _jsInterop.ExecuteOnInstance<TDto>($"DrawableSurface.{domMethod}");
+         return converter.Invoke(dto);
       }
    }
 }
