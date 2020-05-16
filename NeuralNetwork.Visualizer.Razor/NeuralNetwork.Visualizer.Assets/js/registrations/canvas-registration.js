@@ -2,7 +2,7 @@
 
     const canvasId = 'neuralnetwork-visualizer-canvas-' + globalInstanceName;
 
-    let offscreenCanvas = nul;
+    let offscreenCanvas = null;
     let currentContext = null;
 
     getCanvasElement = () => {
