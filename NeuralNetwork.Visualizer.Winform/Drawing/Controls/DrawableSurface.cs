@@ -56,7 +56,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
             return;
          }
 
-         await this.Drafter.RedrawAsync(this);
+         await this.Drafter.RedrawAsync(this).ConfigureAwait(false);
          UpdatePictureBox(_gdiImageCanvasBuilder.CurrentImage, _pictureBox, _invoker);
 
          _gdiImageCanvasBuilder.Dispose();

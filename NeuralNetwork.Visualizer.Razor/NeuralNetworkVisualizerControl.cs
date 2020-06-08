@@ -44,7 +44,7 @@ namespace NeuralNetwork.Visualizer.Razor
          var jsInterop = new JsInterop(jsRuntime, globalInstanceName);
          var scriptFileRegistrarInclusion = GetScriptFileRegistrarInclusion(jsInterop, globalInstanceName);
 
-         await RegisterScripts(scriptFileRegistrarInclusion);
+         await RegisterScripts(scriptFileRegistrarInclusion).ConfigureAwait(false);
 
          IDrawableSurface drawableSurfaceBuilder(IDrafter drafter)
          {

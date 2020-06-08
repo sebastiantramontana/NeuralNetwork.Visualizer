@@ -13,9 +13,9 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs
 
          _executeTaskCompletion = new TaskCompletionSource<bool>();
 
-         await func.Invoke();
+         await func.Invoke().ConfigureAwait(false);
 
-         await _executeTaskCompletion.Task;
+         await _executeTaskCompletion.Task.ConfigureAwait(false);
       }
       public void Finish()
       {

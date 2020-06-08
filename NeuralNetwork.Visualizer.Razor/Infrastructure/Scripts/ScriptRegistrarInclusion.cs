@@ -47,7 +47,7 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
 
       public async Task Execute()
       {
-         await ExecuteInsertScriptTagCode();
+         await ExecuteInsertScriptTagCode().ConfigureAwait(false);
 
          using var dotNetObjectReference = DotNetObjectReference.Create(this);
 
@@ -57,7 +57,7 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
             {
                return ExecuteScriptFileRegistration(fileRegistraion, dotNetObjectReference);
             });
-         });
+         }).ConfigureAwait(false);
       }
 
       private int _onScriptRegisteredCount = 0;

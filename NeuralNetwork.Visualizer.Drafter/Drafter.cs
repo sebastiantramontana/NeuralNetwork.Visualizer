@@ -35,11 +35,11 @@ namespace NeuralNetwork.Visualizer.Drawing
       {
          ValidateInputLayer();
 
-         var zoomedControlSize = await GetZoomedControlSize();
+         var zoomedControlSize = await GetZoomedControlSize().ConfigureAwait(false);
          var layerSizes = GetLayerSizes(zoomedControlSize);
          var canvas = canvasBuilder.Build(new Size(zoomedControlSize.Width, layerSizes.Height));
 
-         await DrawLayersAsync(canvas, layerSizes);
+         await DrawLayersAsync(canvas, layerSizes).ConfigureAwait(false);
       }
 
       private void ValidateInputLayer()
@@ -60,7 +60,7 @@ namespace NeuralNetwork.Visualizer.Drawing
 
       private async Task<Size> GetZoomedControlSize()
       {
-         var controlSize = await _control.GetSize();
+         var controlSize = await _control.GetSize().ConfigureAwait(false);
 
          var size = new Size((int)(_control.Zoom * controlSize.Width), (int)(_control.Zoom * controlSize.Height));
          return size;
@@ -90,7 +90,7 @@ namespace NeuralNetwork.Visualizer.Drawing
             var canvasRect = new Rectangle(new Position(x, 0), new Size(layerSizesPreCalc.Width, layerSizesPreCalc.Height));
             var layerCanvas = new NestedCanvas(canvasRect, canvas);
 
-            await Task.Run(() => layerDrawing.Draw(layerCanvas));
+            await Task.Run(() => layerDrawing.Draw(layerCanvas)).ConfigureAwait(false);
 
             previousNodesDic = layerDrawing.NodesDrawing.ToDictionary(n => n.Node, n => n);
             x += layerSizesPreCalc.Width;
