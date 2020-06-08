@@ -1,6 +1,7 @@
 ﻿using NeuralNetwork.Infrastructure.Winform;
 using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinToolTip = System.Windows.Forms.ToolTip;
 
@@ -18,7 +19,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
          _controlToToolTip = controlToToolTip;
       }
 
-      public void Show(string title, string text)
+      public Task Show(string title, string text)
       {
          _tooltip = new WinToolTip
          {
@@ -33,11 +34,15 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
          };
 
          _invoker.SafeInvoke(() => _tooltip.Show(text, _controlToToolTip));
+
+         return Task.CompletedTask;
       }
 
-      public void Close()
+      public Task Close()
       {
          Destroy.Disposable(ref _tooltip);
+
+         return Task.CompletedTask;
       }
    }
 }

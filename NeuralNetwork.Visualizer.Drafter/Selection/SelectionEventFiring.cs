@@ -44,10 +44,10 @@ namespace NeuralNetwork.Visualizer.Winform.Selection
          _selectEdge = selectEdge;
       }
 
-      public async Task FireSelectionEvent(Position position, SelectionEvent selectionEvent)
+      public Task FireSelectionEvent(Position position, SelectionEvent selectionEvent)
       {
          if (!_control.Preferences.Selectable)
-            return;
+            return Task.CompletedTask;
 
          Func<Position, Element> selectFunc;
          bool isSelected;
@@ -74,11 +74,11 @@ namespace NeuralNetwork.Visualizer.Winform.Selection
 
          if (element == null)
          {
-            return;
+            return Task.CompletedTask;
          }
 
          FireSelectionEvent(element, isSelected);
-         await _control.RedrawAsync();
+         return _control.RedrawAsync();
       }
 
       private void FireSelectionEvent(Element element, bool isSelected)

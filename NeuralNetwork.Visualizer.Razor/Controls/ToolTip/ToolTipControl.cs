@@ -1,5 +1,6 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
+using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Razor.Controls.ToolTip
 {
@@ -12,14 +13,14 @@ namespace NeuralNetwork.Visualizer.Razor.Controls.ToolTip
          _jsInterop = jsInterop;
       }
 
-      public async void Show(string title, string text)
+      public Task Show(string title, string text)
       {
-         await _jsInterop.ExecuteOnInstance("ToolTip.show");
+         return _jsInterop.ExecuteOnInstance("ToolTip.show");
       }
 
-      public async void Close()
+      public Task Close()
       {
-         await _jsInterop.ExecuteOnInstance("ToolTip.close");
+         return _jsInterop.ExecuteOnInstance("ToolTip.close");
       }
    }
 }

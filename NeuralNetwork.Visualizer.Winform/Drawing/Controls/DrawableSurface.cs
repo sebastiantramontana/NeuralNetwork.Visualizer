@@ -26,9 +26,9 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
          _gdiImageCanvasBuilder = gdiImageCanvasBuilder;
       }
 
-      public async Task<Image> GetImage()
+      public Task<Image> GetImage()
       {
-         return await Task.Run(() =>
+         return Task.Run(() =>
          {
             var img = _invoker.SafeInvoke(() => _pictureBox.Image?.Clone() as Gdi.Image
              ?? new Gdi.Bitmap(_control.ClientSize.Width, _control.ClientSize.Height));  //Clone for safe handling
@@ -38,8 +38,8 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
       }
 
       public IDrafter Drafter { get; }
-      public async Task<Size> GetSize() => await Task.Run(() => _control.Size.ToVisualizer());
-      public async Task<Size> GetDrawingSize() => await Task.Run(() => _pictureBox.ClientSize.ToVisualizer());
+      public Task<Size> GetSize() => Task.Run(() => _control.Size.ToVisualizer());
+      public Task<Size> GetDrawingSize() => Task.Run(() => _pictureBox.ClientSize.ToVisualizer());
 
       private bool _isDrawing = false;
 

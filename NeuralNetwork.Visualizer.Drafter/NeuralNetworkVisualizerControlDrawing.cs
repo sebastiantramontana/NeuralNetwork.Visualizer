@@ -70,18 +70,18 @@ namespace NeuralNetwork.Visualizer.Drawing
          set => MakeZoom(value);
       }
 
-      public async Task<Size> GetSize() => await _drawableSurface.GetSize();
-      public async Task<Size> GetDrawingSize() => await _drawableSurface.GetDrawingSize();
-      public async Task RedrawAsync()
+      public Task<Size> GetSize() => _drawableSurface.GetSize();
+      public Task<Size> GetDrawingSize() => _drawableSurface.GetDrawingSize();
+      public Task RedrawAsync()
       {
-         await _drawableSurface.RedrawAsync();
          SetReadyForAutoRedraw();
+         return _drawableSurface.RedrawAsync();
       }
 
-      public async Task ResumeAutoRedrawAsync()
+      public Task ResumeAutoRedrawAsync()
       {
          _isAutoRedrawSuspended = false;
-         await AutoRedraw();
+         return AutoRedraw();
       }
 
       private bool _isAutoRedrawSuspended = false;
@@ -94,9 +94,9 @@ namespace NeuralNetwork.Visualizer.Drawing
          _isAutoRedrawSuspended = true;
       }
 
-      public async Task<Image> ExportToImage()
+      public Task<Image> ExportToImage()
       {
-         return await _drawableSurface.GetImage();
+         return _drawableSurface.GetImage();
       }
 
       private Size _previousSize;
@@ -182,12 +182,14 @@ namespace NeuralNetwork.Visualizer.Drawing
          }
       }
 
-      private async Task AutoRedraw()
+      private Task AutoRedraw()
       {
          if (!_isAutoRedrawSuspended && _readyToRedrawWhenPropertyChange && this.Preferences.AutoRedrawOnChanges)
          {
-            await _drawableSurface.RedrawAsync();
+            return _drawableSurface.RedrawAsync();
          }
+
+         return Task.CompletedTask;
       }
 
       private async void SetInputLayer(InputLayer inputLayer)
@@ -197,7 +199,7 @@ namespace NeuralNetwork.Visualizer.Drawing
          if (_InputLayer != null)
             _InputLayer.PropertyChanged += InputLayer_PropertyChanged;
 
-         _zoom = 1f; //restart zoom
+         _zoom = 1f;
          _selector.UnselectAll();
 
          if (_readyToRedrawWhenPropertyChange)
@@ -210,7 +212,7 @@ namespace NeuralNetwork.Visualizer.Drawing
       {
          if (_InputLayer == null)
          {
-            return; //nothing to do
+            return;
          }
 
          _zoom = Constrain(0.1f, factor, 10.0f); //limit the zoom value: Graphics will throw exception if not.

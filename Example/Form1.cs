@@ -198,7 +198,7 @@ namespace WindowsFormsApp1
          await AddHiddenBias();
       }
 
-      private async Task AddHiddenBias()
+      private Task AddHiddenBias()
       {
          NeuralNetworkVisualizerControl1.SuspendAutoRedraw();
 
@@ -215,7 +215,7 @@ namespace WindowsFormsApp1
             weight++;
          }
 
-         await NeuralNetworkVisualizerControl1.ResumeAutoRedrawAsync();
+         return NeuralNetworkVisualizerControl1.ResumeAutoRedrawAsync();
       }
 
       private void trackZoom_Scroll(object sender, EventArgs e)
