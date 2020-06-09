@@ -18,33 +18,19 @@
         linearGradient: "LinearGradient"
     });
 
-    applyFillBrush = (rectangle, fillbrush, context) => {
-        if (!fillbrush)
-            return;
+    applyStroke = (stroke, context) => {
+        context.fillStyle = stroke.color;
+        context.
+        context.stroke();
+    };
 
-        switch (fillbrush.type) {
-            case brushTypes.solid:
-                applySolidBrush();
-                break;
-            case brush.linearGradient:
-                applyLinearGradienBrush();
-            default:
-                throw "Unknown brush type: " + fillbrush.type;
-        }
+    applyLinearGradienBrush = () => {
+        const gradient = context.createLinearGradient(rectangle.x, rectangle.y, rectangle.x + rectangle.width, rectangle.y + rectangle.height);
+        gradient.addColorStop(0, fillbrush.color1);
+        gradient.addColorStop(1, fillbrush.color2);
 
-        applySolidBrush = () => {
-            context.fillStyle = fillbrush.color;
-            context.fill();
-        };
-
-        applyLinearGradienBrush = () => {
-            const gradient = context.createLinearGradient(rectangle.x, rectangle.y, rectangle.x + rectangle.width, rectangle.y + rectangle.height);
-            gradient.addColorStop(0, fillbrush.color1);
-            gradient.addColorStop(1, fillbrush.color2);
-
-            ctx.fillStyle = gradient;
-            context.fill();
-        };
+        ctx.fillStyle = gradient;
+        context.fill();
     };
 
 
@@ -64,16 +50,24 @@
         },
         Drawing =
         {
-            drawEllipse = (rectangle, pen, brush) => {
+            drawEllipseSolid = (x, y, radiusX, radiusY, stroke, fillColor) => {
                 const context = getCurrentContext();
 
                 context.beginPath();
-                applyFillBrush(brush),
 
-                ctx.fillStyle = 'red';
-               
-                ctx.ellipse(x, y, radiusX, radiusY, Math.PI * .25, 0, Math.PI * 1.5);
-                ctx.fill();
+                context.fillStyle = fillColor;
+
+                context.strokeStyle = stroke.color;
+                context.lineWidth = stroke.width;
+
+                context.ellipse(x, y, radiusX, radiusY, 0, 0, Math.PI * 2);
+
+                context.fill();
+                context.stroke();
+            },
+
+            drawEllipseGradient = (x, y, radiusX, radiusY, stroke, gradientBrush) => {
+
             }
 
             /*
