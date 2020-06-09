@@ -22,29 +22,29 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
 
       public IDrafter Drafter { get; }
 
-      public async Task<Size> GetSize()
+      public Task<Size> GetSize()
       {
-         return await CallDomSizeMethod("getSize");
+         return CallDomSizeMethod("getSize");
       }
 
-      public async Task<Size> GetDrawingSize()
+      public Task<Size> GetDrawingSize()
       {
-         return await CallDomSizeMethod("getDrawingSize");
+         return CallDomSizeMethod("getDrawingSize");
       }
 
-      public async Task<Image> GetImage()
+      public Task<Image> GetImage()
       {
-         return await CallDomMethod<ImageDto, Image>("getImage", dto => dto.ToImage());
+         return CallDomMethod<ImageDto, Image>("getImage", dto => dto.ToImage());
       }
 
-      public async Task RedrawAsync()
+      public Task RedrawAsync()
       {
-         await this.Drafter.RedrawAsync(_canvasBuilder);
+         return this.Drafter.RedrawAsync(_canvasBuilder);
       }
 
-      private async Task<Size> CallDomSizeMethod(string domSizeMethod)
+      private Task<Size> CallDomSizeMethod(string domSizeMethod)
       {
-         return await CallDomMethod<SizeDto, Size>(domSizeMethod, dto => dto.ToSize());
+         return CallDomMethod<SizeDto, Size>(domSizeMethod, dto => dto.ToSize());
       }
 
       private async Task<TPrimitive> CallDomMethod<TDto, TPrimitive>(string domMethod, Func<TDto, TPrimitive> converter)

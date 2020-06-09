@@ -51,11 +51,11 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
 
          using var dotNetObjectReference = DotNetObjectReference.Create(this);
 
-         await _taskUnit.StartAsync(async () =>
+         await _taskUnit.StartAsync(() =>
          {
-            await _syncLoop.ForEachhAsync(_fileRegistrations, async (fileRegistraion) =>
+            return _syncLoop.ForEachhAsync(_fileRegistrations, (fileRegistraion) =>
             {
-               await ExecuteScriptFileRegistration(fileRegistraion, dotNetObjectReference);
+               return ExecuteScriptFileRegistration(fileRegistraion, dotNetObjectReference);
             });
          });
       }
@@ -73,12 +73,12 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
          }
       }
 
-      private async Task ExecuteScriptFileRegistration(ScriptFileRegistration scriptFileRegistration, DotNetObjectReference<ScriptRegistrarInclusion> dotNetObjectReference)
+      private Task ExecuteScriptFileRegistration(ScriptFileRegistration scriptFileRegistration, DotNetObjectReference<ScriptRegistrarInclusion> dotNetObjectReference)
       {
          string src = BuildSrcAttribute(_scriptBaseUrl, scriptFileRegistration.FileName);
          string id = BuildIdAttributte(src);
 
-         await ExecuteInsertScript(id, src, scriptFileRegistration.InstanceRegistrations, _globalInstanceName, dotNetObjectReference);
+         return ExecuteInsertScript(id, src, scriptFileRegistration.InstanceRegistrations, _globalInstanceName, dotNetObjectReference);
       }
 
       private string NormalizeBaseUrl(string scriptBaseUrl)
@@ -101,10 +101,10 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
          return $"neuralnetwork-visualizer-script-{srcAttribute.Replace(' ', '-').Replace('/', '-')}";
       }
 
-      private async Task ExecuteInsertScriptTagCode()
+      private Task ExecuteInsertScriptTagCode()
       {
          string insertCode = BuildInsertScriptCode();
-         await _jsInterop.ExcuteCode(insertCode);
+         return _jsInterop.ExcuteCode(insertCode);
       }
 
       private string BuildInsertScriptCode()
@@ -154,11 +154,11 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
                }})";
       }
 
-      private async Task ExecuteInsertScript<T>(string id, string src, IEnumerable<ScriptInstanceRegistration> instanceRegistrations, string globalInstanceName, DotNetObjectReference<T> dotNetReference)
+      private Task ExecuteInsertScript<T>(string id, string src, IEnumerable<ScriptInstanceRegistration> instanceRegistrations, string globalInstanceName, DotNetObjectReference<T> dotNetReference)
          where T : class
       {
          var functions = StringifyFunctionsArray(instanceRegistrations);
-         await _jsInterop.ExcuteFunction(INSERT_SCRIPT_FUNCTION_NAME, id, src, functions, globalInstanceName, dotNetReference);
+         return _jsInterop.ExcuteFunction(INSERT_SCRIPT_FUNCTION_NAME, id, src, functions, globalInstanceName, dotNetReference);
       }
 
       private string[] StringifyFunctionsArray(IEnumerable<ScriptInstanceRegistration> instanceRegistrations)

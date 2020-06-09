@@ -14,34 +14,34 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Interops
          _globalInstanceName = globalInstanceName;
       }
 
-      public async Task ExcuteCode(string code)
+      public Task ExcuteCode(string code)
       {
-         await _jsRuntime.InvokeVoidAsync($"window.eval", code);
+         return _jsRuntime.InvokeVoidAsync($"window.eval", code).AsTask();
       }
 
-      public async Task<TReturn> ExcuteCode<TReturn>(string code)
+      public Task<TReturn> ExcuteCode<TReturn>(string code)
       {
-         return await _jsRuntime.InvokeAsync<TReturn>($"window.eval", code);
+         return _jsRuntime.InvokeAsync<TReturn>($"window.eval", code).AsTask();
       }
 
-      public async Task ExcuteFunction(string functionName, params object[] args)
+      public Task ExcuteFunction(string functionName, params object[] args)
       {
-         await _jsRuntime.InvokeVoidAsync(functionName, args);
+         return _jsRuntime.InvokeVoidAsync(functionName, args).AsTask();
       }
 
-      public async Task<TReturn> ExcuteFunction<TReturn>(string functionName, params object[] args)
+      public Task<TReturn> ExcuteFunction<TReturn>(string functionName, params object[] args)
       {
-         return await _jsRuntime.InvokeAsync<TReturn>(functionName, args);
+         return _jsRuntime.InvokeAsync<TReturn>(functionName, args).AsTask();
       }
 
-      public async Task ExecuteOnInstance(string functionPath, params object[] args)
+      public Task ExecuteOnInstance(string functionPath, params object[] args)
       {
-         await _jsRuntime.InvokeVoidAsync($"{_globalInstanceName}.{functionPath}", args);
+         return _jsRuntime.InvokeVoidAsync($"{_globalInstanceName}.{functionPath}", args).AsTask();
       }
 
-      public async Task<TReturn> ExecuteOnInstance<TReturn>(string functionPath, params object[] args)
+      public Task<TReturn> ExecuteOnInstance<TReturn>(string functionPath, params object[] args)
       {
-         return await _jsRuntime.InvokeAsync<TReturn>($"{_globalInstanceName}.{functionPath}", args);
+         return _jsRuntime.InvokeAsync<TReturn>($"{_globalInstanceName}.{functionPath}", args).AsTask();
       }
    }
 }

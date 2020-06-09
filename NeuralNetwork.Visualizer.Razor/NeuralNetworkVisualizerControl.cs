@@ -68,9 +68,9 @@ namespace NeuralNetwork.Visualizer.Razor
          */
       }
 
-      private async Task RegisterScripts(IScriptFileRegistrarInclusion scriptFileRegistrarInclusion)
+      private Task RegisterScripts(IScriptFileRegistrarInclusion scriptFileRegistrarInclusion)
       {
-         await scriptFileRegistrarInclusion
+         return scriptFileRegistrarInclusion
             .Include("global-instance-registration.js")
                .Register(new GlobalInstanceScriptRegistration())
             .Include("drawable-surface-registration.js")
@@ -136,13 +136,13 @@ namespace NeuralNetwork.Visualizer.Razor
          set => _neuralNetworkVisualizerControlInner.Zoom = value;
       }
 
-      public async Task<Size> GetSize() => await _neuralNetworkVisualizerControlInner.GetSize();
-      public async Task<Size> GetDrawingSize() => await _neuralNetworkVisualizerControlInner.GetDrawingSize();
-      public async Task<Image> ExportToImage() => await _neuralNetworkVisualizerControlInner.ExportToImage();
+      public Task<Size> GetSize() => _neuralNetworkVisualizerControlInner.GetSize();
+      public Task<Size> GetDrawingSize() => _neuralNetworkVisualizerControlInner.GetDrawingSize();
+      public Task<Image> ExportToImage() => _neuralNetworkVisualizerControlInner.ExportToImage();
 
-      public async Task RedrawAsync()
+      public Task RedrawAsync()
       {
-         await _neuralNetworkVisualizerControlInner.RedrawAsync();
+         return _neuralNetworkVisualizerControlInner.RedrawAsync();
       }
 
       /// <summary>
@@ -158,9 +158,9 @@ namespace NeuralNetwork.Visualizer.Razor
       /// <para>Resume any previous auto redraw suspension.</para>
       /// <para>If Preferences.AutoRedrawMode is AutoRedrawSync or AutoRedrawAsync performs a redraw.</para>
       /// </summary>
-      public async Task ResumeAutoRedrawAsync()
+      public Task ResumeAutoRedrawAsync()
       {
-         await _neuralNetworkVisualizerControlInner.ResumeAutoRedrawAsync();
+         return _neuralNetworkVisualizerControlInner.ResumeAutoRedrawAsync();
       }
 
       /*

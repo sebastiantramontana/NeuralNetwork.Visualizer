@@ -114,17 +114,17 @@ namespace NeuralNetwork.Visualizer.Winform
          set => _neuralNetworkVisualizerControlInner.Zoom = value;
       }
 
-      public async Task<Size> GetSize() => await _neuralNetworkVisualizerControlInner.GetSize();
-      public async Task<Size> GetDrawingSize() => await _neuralNetworkVisualizerControlInner.GetDrawingSize();
+      public Task<Size> GetSize() => _neuralNetworkVisualizerControlInner.GetSize();
+      public Task<Size> GetDrawingSize() => _neuralNetworkVisualizerControlInner.GetDrawingSize();
 
-      public async Task<Image> ExportToImage()
+      public Task<Image> ExportToImage()
       {
-         return await _neuralNetworkVisualizerControlInner.ExportToImage();
+         return _neuralNetworkVisualizerControlInner.ExportToImage();
       }
 
-      public async Task RedrawAsync()
+      public Task RedrawAsync()
       {
-         await _neuralNetworkVisualizerControlInner.RedrawAsync();
+         return _neuralNetworkVisualizerControlInner.RedrawAsync();
       }
 
       /// <summary>
@@ -140,9 +140,9 @@ namespace NeuralNetwork.Visualizer.Winform
       /// <para>Resume any previous auto redraw suspension.</para>
       /// <para>If Preferences.AutoRedrawMode is AutoRedrawSync or AutoRedrawAsync performs a redraw.</para>
       /// </summary>
-      public async Task ResumeAutoRedrawAsync()
+      public Task ResumeAutoRedrawAsync()
       {
-         await _neuralNetworkVisualizerControlInner.ResumeAutoRedrawAsync();
+         return _neuralNetworkVisualizerControlInner.ResumeAutoRedrawAsync();
       }
 
       protected override async void OnSizeChanged(EventArgs e)
