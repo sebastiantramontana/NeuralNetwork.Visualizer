@@ -1,20 +1,20 @@
 ﻿var registerDrawableSurfaceDomAccess = registerDrawableSurfaceDomAccess || ((globalInstanceName) => {
 
-    getVisualizerElement = () => {
+    const getVisualizerElement = () => {
         const visualizerId = 'neuralnetwork-visualizer-' + globalInstanceName;
 
         const elem = document.getElementById(visualizerId);
         return elem;
     };
 
-    getCanvasElement = () => {
+    const getCanvasElement = () => {
         const canvasId = 'neuralnetwork-visualizer-canvas-' + globalInstanceName;
 
         const elem = document.getElementById(canvasId);
         return elem;
     };
 
-    getElementSize = (element) => {
+    const getElementSize = (element) => {
         return Object.freeze({
             Width: element.offsetWidth,
             Height: element.offsetHeight
