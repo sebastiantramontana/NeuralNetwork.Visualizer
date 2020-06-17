@@ -37,20 +37,6 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Canvas
          DrawShape(rect, brush, pen, _graph.FillEllipse, _graph.DrawEllipse);
       }
 
-      public void DrawText(string text, FontLabel font, Position position)
-      {
-         if (!Validate(font.Brush))
-            return;
-
-         using var gdiFont = font.ToGdi();
-         var gdiSize = _graph.MeasureString(text, gdiFont);
-
-         using var gdiBrush = font.Brush.ToGdi(new Rectangle(position, gdiSize.ToVisualizer()));
-         using var gdiFormat = font.TextFormat.ToGdi();
-
-         _graph.DrawString(text, gdiFont, gdiBrush, position.ToGdi(), gdiFormat);
-      }
-
       public void DrawText(string text, FontLabel fontLabel, Rectangle rect)
       {
          if (!Validate(fontLabel.Brush))

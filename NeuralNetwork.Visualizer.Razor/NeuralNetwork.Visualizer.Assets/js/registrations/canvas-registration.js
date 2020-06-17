@@ -1,5 +1,7 @@
 ﻿var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) => {
 
+    const MINIMUM_FONT_SIZE = 8;
+
     let _currentContext = null;
 
     const getCanvasElement = () => {
@@ -37,6 +39,12 @@
         triangle: "Triangle",
         square: "Square",
         circle: "Circle"
+    });
+
+    const verticalAlignment = Object.freeze({
+        top: "Top",
+        middle: "Middle",
+        bottom: "bottom"
     });
 
     const getBrushStyle = (brush, context) => {
@@ -127,6 +135,73 @@
         context.lineCap = getCap();
     };
 
+    const drawText = (text, font, x, y, maxWidth, angle) => {
+
+        const getTextBaseline = () => {
+
+            let textBaseline;
+
+            switch (font.verticalAlignment) {
+                case null:
+                case undefined:
+                case verticalAlignment.middle:
+                    textBaseline = "middle";
+                    break;
+                case verticalAlignment.top:
+                    textBaseline = "top";
+                    break;
+                case verticalAlignment.bottom:
+                    textBaseline = "bottom";
+                    break;
+                default:
+                    throw "Unknown Vertical Alignment: " + font.verticalAlignment;
+            }
+
+            return textBaseline;
+        };
+
+        const measureIfTextVisible = (context) => {
+            const textSize = context.measureText(text);
+            return (textSize.width >= MINIMUM_FONT_SIZE);
+        };
+
+        const rotateText = () => {
+
+            if (!angle || angle === 0 || angle === 360)
+                return;
+
+            context.translate(x, y);
+            context.rotate(angle * (Math.PI / 180));
+        }
+
+        const context = createPath();
+
+        context.font = font.css;
+
+        if (!measureIfTextVisible(context))
+            return;
+
+        context.fillStyle = getBrushStyle(font.brush);
+        context.textAlign = font.textAlign;
+        context.textBaseline = getTextBaseline();
+
+        rotateText();
+
+        context.fillText(text, x, y, maxWidth);
+    };
+
+    const drawShape = (pen, brush, drawShapeFunc) => {
+        const context = createPath();
+
+        context.fillStyle = getBrushStyle(brush);
+        configureStroke(pen, context);
+
+        drawShapeFunc(context);
+
+        context.fill();
+        context.stroke();
+    };
+
     window[globalInstanceName].Canvas = {
 
         beginDraw: () => {
@@ -144,15 +219,11 @@
         Drawing:
         {
             drawEllipse: (x, y, radiusX, radiusY, pen, brush) => {
-                const context = createPath();
+                drawShape(pen, brush, (context) => context.ellipse(x, y, radiusX, radiusY, 0, 0, Math.PI * 2));
+            },
 
-                context.fillStyle = getBrushStyle(brush);
-                configureStroke(pen, context);
-
-                context.ellipse(x, y, radiusX, radiusY, 0, 0, Math.PI * 2);
-
-                context.fill();
-                context.stroke();
+            drawRectangle: (rectangle, pen, brush) => {
+                drawShape(pen, brush, (context) => context.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height));
             },
 
             drawLine: (position1, position2, pen) => {
@@ -165,22 +236,9 @@
                 context.stroke();
             },
 
-            drawRectangle: (rectangle, pen, brush) => {
-                const context = createPath();
-
-                context.fillStyle = getBrushStyle(brush);
-                context.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-
-                configureStroke(pen, context);
-                context.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-            },
-
-            /*
-            
-            void DrawText(string text, FontLabel font, Position position);
-            void DrawText(string text, FontLabel font, Rectangle rect);
-            void DrawText(string text, FontLabel font, Rectangle rect, float angle);
-            */
+            drawText: (text, font, rectangle, angle) => {
+                drawText(text, font, rectangle, angle);
+            }
         }
     };
 });

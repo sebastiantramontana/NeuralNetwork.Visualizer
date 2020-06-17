@@ -35,11 +35,6 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          throw new System.NotImplementedException();
       }
 
-      public void DrawText(string text, FontLabel font, Position position)
-      {
-         throw new System.NotImplementedException();
-      }
-
       public void DrawText(string text, FontLabel font, Rectangle rect)
       {
          throw new System.NotImplementedException();

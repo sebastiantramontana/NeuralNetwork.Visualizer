@@ -13,7 +13,6 @@ namespace NeuralNetwork.Visualizer.Contracts.Drawing
       void DrawEllipse(Rectangle rect, Pen pen, IBrush brush);
       void DrawLine(Position p1, Position p2, Pen pen);
       void DrawRectangle(Rectangle rect, Pen pen, IBrush brush);
-      void DrawText(string text, FontLabel font, Position position);
       void DrawText(string text, FontLabel font, Rectangle rect);
       void DrawText(string text, FontLabel font, Rectangle rect, float angle);
    }

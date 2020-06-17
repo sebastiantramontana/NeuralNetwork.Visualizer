@@ -45,12 +45,6 @@ namespace NeuralNetwork.Visualizer.Drawing
          _decorated.DrawRectangle(rectangle, pen, brush);
       }
 
-      public void DrawText(string text, FontLabel font, Position position)
-      {
-         var newPosition = position + _rect.Position;
-         _decorated.DrawText(text, font, newPosition);
-      }
-
       public void DrawText(string text, FontLabel font, Rectangle rect)
       {
          var rectangle = rect + _rect.Position;
