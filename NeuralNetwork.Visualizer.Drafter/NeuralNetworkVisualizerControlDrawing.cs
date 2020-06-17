@@ -113,10 +113,10 @@ namespace NeuralNetwork.Visualizer.Drawing
          await _drawableSurface.RedrawAsync().ConfigureAwait(false);
       }
 
-      public void DispatchMouseDown(Position position, Keys modifierKeys)
+      public Task DispatchMouseDown(Position position, Keys modifierKeys)
       {
          if (!_readyToRedrawWhenPropertyChange)
-            return;
+            return Task.CompletedTask;
 
          SelectionEvent selectionEvent;
 
@@ -134,23 +134,23 @@ namespace NeuralNetwork.Visualizer.Drawing
                break;
          }
 
-         _selectionEventFiring.FireSelectionEvent(position, selectionEvent);
+         return _selectionEventFiring.FireSelectionEvent(position, selectionEvent);
       }
 
-      public void DispatchMouseLeave()
+      public Task DispatchMouseLeave()
       {
          if (!_readyToRedrawWhenPropertyChange)
-            return;
+            return Task.CompletedTask;
 
-         _toolTipFiring.Hide();
+         return _toolTipFiring.Hide();
       }
 
-      public void DispatchMouseMove(Position position)
+      public Task DispatchMouseMove(Position position)
       {
          if (!_readyToRedrawWhenPropertyChange)
-            return;
+            return Task.CompletedTask;
 
-         _toolTipFiring.Show(position);
+         return _toolTipFiring.Show(position);
       }
 
       private void SetReadyForAutoRedraw()

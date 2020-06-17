@@ -10,6 +10,7 @@ using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
@@ -36,13 +37,13 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          _regionBuilder = regionBuilder;
       }
 
-      public override void Draw(ICanvas canvas)
+      public override async Task Draw(ICanvas canvas)
       {
-         base.Draw(canvas);
-         DrawLabel(canvas);
+         await base.Draw(canvas);
+         await DrawLabel(canvas);
       }
 
-      protected override void DrawContent(ICanvas canvas, Rectangle rect)
+      protected override async Task DrawContent(ICanvas canvas, Rectangle rect)
       {
          var sizesPositions = GetSizePositions(rect);
 
@@ -51,25 +52,25 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          if (this.Element.SumValue.HasValue)
          {
             var sumFont = _preferences.Neurons.SumValueFormatter.GetFormat(this.Element.SumValue.Value);
-            canvas.DrawText('\u2211' + " " + Math.Round(this.Element.SumValue.Value, roundingDigits).ToString(), sumFont, sizesPositions.SumRectangle);
+            await canvas.DrawText('\u2211' + " " + Math.Round(this.Element.SumValue.Value, roundingDigits).ToString(), sumFont, sizesPositions.SumRectangle);
          }
 
-         DrawActivationFunction(sizesPositions.ActivationFunctionPosition, sizesPositions.ActivationFunctionSize, canvas);
+         await DrawActivationFunction(sizesPositions.ActivationFunctionPosition, sizesPositions.ActivationFunctionSize, canvas);
 
          if (this.Element.OutputValue.HasValue)
          {
             var outputFont = _preferences.Neurons.OutputValueFormatter.GetFormat(this.Element.OutputValue.Value);
 
-            canvas.DrawText(Math.Round(this.Element.OutputValue.Value, roundingDigits).ToString(), outputFont, sizesPositions.OutputRectangle);
+            await canvas.DrawText(Math.Round(this.Element.OutputValue.Value, roundingDigits).ToString(), outputFont, sizesPositions.OutputRectangle);
          }
 
-         DrawEdges(sizesPositions.InputPosition, canvas, sizesPositions.OutputRectangle.Size.Height);
+         await DrawEdges(sizesPositions.InputPosition, canvas, sizesPositions.OutputRectangle.Size.Height);
       }
 
-      private void DrawLabel(ICanvas canvas)
+      private Task DrawLabel(ICanvas canvas)
       {
          if (this.Element.Layer.Next != null || _preferences.OutputFontLabel == FontLabel.Null || _cache.EllipseRectangle is null)
-            return;
+            return Task.CompletedTask;
 
          var fontLabel = _preferences.OutputFontLabel;
 
@@ -83,10 +84,10 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
 
          var label = this.Element.Id;
 
-         canvas.DrawText(label, fontLabel, _cache.OutputLabelRectangle);
+         return canvas.DrawText(label, fontLabel, _cache.OutputLabelRectangle);
       }
 
-      private void DrawEdges(Position inputPosition, ICanvas canvas, int textEdgeHeight)
+      private async Task DrawEdges(Position inputPosition, ICanvas canvas, int textEdgeHeight)
       {
          foreach (var edge in this.Element.Edges)
          {
@@ -95,7 +96,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
             var inputPositionTrans = canvas.Translate(inputPosition, _edgesCanvas);
 
             var edgeDrawing = new EdgeDrawing(edge, _preferences.Edges, outputPositionTrans, inputPositionTrans, textEdgeHeight, _edgesCache, _selectableElementRegister, _selectionChecker, _regionBuilder);
-            edgeDrawing.Draw(_edgesCanvas);
+            await edgeDrawing.Draw(_edgesCanvas);
          }
       }
 
@@ -119,87 +120,79 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          return (sumRectangle, activationFunctionPosition, _cache.ActivationFunctionSize, outputRectangle, inputPosition);
       }
 
-      private void DrawActivationFunction(Position position, Size size, ICanvas canvas)
+      private Task DrawActivationFunction(Position position, Size size, ICanvas canvas)
       {
          if (size.Width <= 8 || size.Height <= 8)
          {
-            return;
+            return Task.CompletedTask;
          }
 
          switch (this.Element.ActivationFunction)
          {
             case ActivationFunction.Relu:
-               DrawStrokedActivationFunction(size, (pen, stroke) =>
-               {
-                  canvas.DrawLine(new Position(position.X, (position.Y + size.Height) - stroke), new Position(position.X + size.Width / 2, (position.Y + size.Height) - stroke), pen);
-                  canvas.DrawLine(new Position(position.X + size.Width / 2 - stroke / 2, (position.Y + size.Height) - stroke), new Position((position.X + size.Width) - stroke, position.Y), pen);
+               return DrawStrokedActivationFunction(size, async (pen, stroke) =>
+                {
+                   await canvas.DrawLine(new Position(position.X, (position.Y + size.Height) - stroke), new Position(position.X + size.Width / 2, (position.Y + size.Height) - stroke), pen);
+                   await canvas.DrawLine(new Position(position.X + size.Width / 2 - stroke / 2, (position.Y + size.Height) - stroke), new Position((position.X + size.Width) - stroke, position.Y), pen);
 
-               });
-               break;
+                });
 
             case ActivationFunction.None:
                //Don't draw anything!
-               break;
+               return Task.CompletedTask;
 
             case ActivationFunction.BinaryStep:
-               DrawStrokedActivationFunction(size, (pen, stroke) =>
+               return DrawStrokedActivationFunction(size, async (pen, stroke) =>
                {
-                  canvas.DrawLine(new Position(position.X + size.Width / 2, position.Y + stroke / 2), new Position(position.X + size.Width, position.Y + stroke / 2), pen);
-                  canvas.DrawLine(new Position(position.X + size.Width / 2, position.Y), new Position(position.X + size.Width / 2, position.Y + size.Height), pen);
-                  canvas.DrawLine(new Position(position.X, position.Y + size.Height - stroke / 2), new Position(position.X + size.Width / 2, position.Y + size.Height - stroke / 2), pen);
+                  await canvas.DrawLine(new Position(position.X + size.Width / 2, position.Y + stroke / 2), new Position(position.X + size.Width, position.Y + stroke / 2), pen);
+                  await canvas.DrawLine(new Position(position.X + size.Width / 2, position.Y), new Position(position.X + size.Width / 2, position.Y + size.Height), pen);
+                  await canvas.DrawLine(new Position(position.X, position.Y + size.Height - stroke / 2), new Position(position.X + size.Width / 2, position.Y + size.Height - stroke / 2), pen);
                });
-               break;
 
             case ActivationFunction.Linear:
-               DrawStrokedActivationFunction(size, (pen, stroke) =>
+               return DrawStrokedActivationFunction(size, (pen, stroke) =>
                {
-                  canvas.DrawLine(new Position(position.X, position.Y + size.Height), new Position(position.X + size.Width, position.Y), pen);
+                  return canvas.DrawLine(new Position(position.X, position.Y + size.Height), new Position(position.X + size.Width, position.Y), pen);
                });
-               break;
 
             case ActivationFunction.LeakyRelu:
-               DrawStrokedActivationFunction(size, (pen, stroke) =>
+               return DrawStrokedActivationFunction(size, async (pen, stroke) =>
                {
-                  canvas.DrawLine(new Position(position.X, (position.Y + size.Height) - stroke), new Position(position.X + size.Width / 2, (position.Y + size.Height - size.Height / 10) - stroke), pen);
-                  canvas.DrawLine(new Position(position.X + size.Width / 2 - stroke / 2, (position.Y + size.Height - size.Height / 10) - stroke), new Position((position.X + size.Width) - stroke, position.Y), pen);
+                  await canvas.DrawLine(new Position(position.X, (position.Y + size.Height) - stroke), new Position(position.X + size.Width / 2, (position.Y + size.Height - size.Height / 10) - stroke), pen);
+                  await canvas.DrawLine(new Position(position.X + size.Width / 2 - stroke / 2, (position.Y + size.Height - size.Height / 10) - stroke), new Position((position.X + size.Width) - stroke, position.Y), pen);
                });
-               break;
 
             case ActivationFunction.Softmax:
-               DrawStrokedActivationFunction(size, (pen, stroke) =>
+               return DrawStrokedActivationFunction(size, async (pen, stroke) =>
                {
                   var x_centered = position.X + size.Width / 2 - stroke / 2;
 
-                  canvas.DrawLine(new Position(x_centered - (int)(stroke * 0.5) - (int)(stroke * 1.5), position.Y), new Position(x_centered - (int)(stroke * 0.5) + (int)(stroke * 1.5), position.Y), pen);
-                  canvas.DrawLine(new Position(x_centered - (int)(stroke * 0.5), position.Y), new Position(x_centered - (int)(stroke * 0.5), position.Y + size.Height), pen);
-                  canvas.DrawLine(new Position(x_centered - (int)(stroke * 0.5) - (int)(stroke * 1.5), position.Y + size.Height), new Position(x_centered - (int)(stroke * 0.5) + (int)(stroke * 1.5), position.Y + size.Height), pen);
-                  canvas.DrawLine(new Position(x_centered + (int)(stroke * 2.5), position.Y + (int)(size.Height * 0.2)), new Position(x_centered + (int)(stroke * 2.5), position.Y + size.Height + stroke / 2), pen);
+                  await canvas.DrawLine(new Position(x_centered - (int)(stroke * 0.5) - (int)(stroke * 1.5), position.Y), new Position(x_centered - (int)(stroke * 0.5) + (int)(stroke * 1.5), position.Y), pen);
+                  await canvas.DrawLine(new Position(x_centered - (int)(stroke * 0.5), position.Y), new Position(x_centered - (int)(stroke * 0.5), position.Y + size.Height), pen);
+                  await canvas.DrawLine(new Position(x_centered - (int)(stroke * 0.5) - (int)(stroke * 1.5), position.Y + size.Height), new Position(x_centered - (int)(stroke * 0.5) + (int)(stroke * 1.5), position.Y + size.Height), pen);
+                  await canvas.DrawLine(new Position(x_centered + (int)(stroke * 2.5), position.Y + (int)(size.Height * 0.2)), new Position(x_centered + (int)(stroke * 2.5), position.Y + size.Height + stroke / 2), pen);
                });
 
-               break;
-
             case ActivationFunction.Sigmoid:
-               DrawByCharActivationFunction('\u0283', "verdana", position, size, canvas);
-               break;
+               return DrawByCharActivationFunction('\u0283', "verdana", position, size, canvas);
 
             case ActivationFunction.Tanh:
-               DrawByCharActivationFunction('\u222B', "Verdana", position, size, canvas);
-               break;
+               return DrawByCharActivationFunction('\u222B', "Verdana", position, size, canvas);
 
             default:
                throw new InvalidOperationException("Inexistent drawing for the following activation function: " + this.Element.ActivationFunction);
          }
       }
 
-      private void DrawStrokedActivationFunction(Size size, Action<Pen, int> drawAction)
+      private Task DrawStrokedActivationFunction(Size size, Func<Pen, int, Task> drawAction)
       {
          var stroke = Math.Min(size.Width, size.Height) / 15;
          var pen = new Pen(new SolidBrush(Color.Black), LineStyle.Solid, stroke, Cap.None, Cap.None);
 
-         drawAction(pen, stroke);
+         return drawAction(pen, stroke);
       }
 
-      private void DrawByCharActivationFunction(char character, string fontfamily, Position position, Size size, ICanvas canvas)
+      private Task DrawByCharActivationFunction(char character, string fontfamily, Position position, Size size, ICanvas canvas)
       {
          var factor = size.Height / 5;
          var factorSize = factor * 2 - factor / 3;
@@ -208,7 +201,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          var brush = new SolidBrush(Color.Black);
          var font = new FontLabel(fontfamily, FontStyle.Italic, 8, brush, format);
 
-         canvas.DrawText(character.ToString(), font, new Rectangle(new Position(position.X - factor, position.Y - factor), new Size(size.Width + factorSize, size.Height + factorSize)));
+         return canvas.DrawText(character.ToString(), font, new Rectangle(new Position(position.X - factor, position.Y - factor), new Size(size.Width + factorSize, size.Height + factorSize)));
       }
    }
 }

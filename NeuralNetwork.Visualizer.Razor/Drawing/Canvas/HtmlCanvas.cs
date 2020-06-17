@@ -4,6 +4,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
+using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
 {
@@ -20,27 +21,27 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
       }
       public Size Size { get; }
 
-      public void DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
+      public async Task DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
+      {
+         await _jsInterop.ExecuteOnInstance($"Canvas.drawEllipse").ConfigureAwait(false);
+      }
+
+      public async Task DrawLine(Position p1, Position p2, Pen pen)
       {
          throw new System.NotImplementedException();
       }
 
-      public void DrawLine(Position p1, Position p2, Pen pen)
+      public async Task DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
       {
          throw new System.NotImplementedException();
       }
 
-      public void DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
+      public async Task DrawText(string text, FontLabel font, Rectangle rect)
       {
          throw new System.NotImplementedException();
       }
 
-      public void DrawText(string text, FontLabel font, Rectangle rect)
-      {
-         throw new System.NotImplementedException();
-      }
-
-      public void DrawText(string text, FontLabel font, Rectangle rect, float angle)
+      public async Task DrawText(string text, FontLabel font, Rectangle rect, float angle)
       {
          throw new System.NotImplementedException();
       }

@@ -24,6 +24,8 @@ namespace NeuralNetwork.Visualizer.Drawing.Selection
 
          return _registeredElements
              .Values
+             .ToArray()
+             .AsParallel()
              .Where(ri => ri.Region
                  .IsVisible(_currentRootCanvas
                      .Translate(position, ri.Canvas)))

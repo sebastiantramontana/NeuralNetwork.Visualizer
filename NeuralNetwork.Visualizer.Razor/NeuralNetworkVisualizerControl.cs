@@ -142,6 +142,7 @@ namespace NeuralNetwork.Visualizer.Razor
 
       public Task RedrawAsync()
       {
+
          return _neuralNetworkVisualizerControlInner.RedrawAsync();
       }
 

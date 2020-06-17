@@ -155,7 +155,7 @@ namespace NeuralNetwork.Visualizer.Winform
          _visualizerInvoker?.SafeInvoke(() => base.OnSizeChanged(e));
       }
 
-      private void PicCanvas_MouseDown(object sender, Winforms.MouseEventArgs e)
+      private async void PicCanvas_MouseDown(object sender, Winforms.MouseEventArgs e)
       {
          var Modifierkey = ModifierKeys switch
          {
@@ -164,17 +164,17 @@ namespace NeuralNetwork.Visualizer.Winform
             _ => Keys.None,
          };
 
-         _neuralNetworkVisualizerControlInner.DispatchMouseDown(e.Location.ToVisualizer(), Modifierkey);
+         await _neuralNetworkVisualizerControlInner.DispatchMouseDown(e.Location.ToVisualizer(), Modifierkey);
       }
 
-      private void PicCanvas_MouseLeave(object sender, EventArgs e)
+      private async void PicCanvas_MouseLeave(object sender, EventArgs e)
       {
-         _neuralNetworkVisualizerControlInner.DispatchMouseLeave();
+         await _neuralNetworkVisualizerControlInner.DispatchMouseLeave();
       }
 
-      private void PicCanvas_MouseMove(object sender, Winforms.MouseEventArgs e)
+      private async void PicCanvas_MouseMove(object sender, Winforms.MouseEventArgs e)
       {
-         _neuralNetworkVisualizerControlInner.DispatchMouseMove(e.Location.ToVisualizer());
+         await _neuralNetworkVisualizerControlInner.DispatchMouseMove(e.Location.ToVisualizer());
       }
 
       protected override void Dispose(bool disposing)

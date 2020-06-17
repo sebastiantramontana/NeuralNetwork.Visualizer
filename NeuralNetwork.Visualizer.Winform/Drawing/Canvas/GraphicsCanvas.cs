@@ -5,6 +5,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 using NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping;
 using System;
+using System.Threading.Tasks;
 using Gdi = System.Drawing;
 
 namespace NeuralNetwork.Visualizer.Winform.Drawing.Canvas
@@ -27,31 +28,35 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Canvas
          _graph = graph;
       }
 
-      public void DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
+      public Task DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
       {
          DrawShape(rect, brush, pen, _graph.FillRectangle, _graph.DrawRectangle);
+         return Task.CompletedTask;
       }
 
-      public void DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
+      public Task DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
       {
          DrawShape(rect, brush, pen, _graph.FillEllipse, _graph.DrawEllipse);
+         return Task.CompletedTask;
       }
 
-      public void DrawText(string text, FontLabel fontLabel, Rectangle rect)
+      public Task DrawText(string text, FontLabel fontLabel, Rectangle rect)
       {
          if (!Validate(fontLabel.Brush))
-            return;
+            return Task.CompletedTask;
 
          using var gdiBrush = fontLabel.Brush.ToGdi(rect);
          using var gdiFormat = fontLabel.TextFormat.ToGdi();
 
          DrawAdjustedFontString(text, fontLabel, rect.Size, (font) => _graph.DrawString(text, font, gdiBrush, rect.ToGdi(), gdiFormat));
+
+         return Task.CompletedTask;
       }
 
-      public void DrawText(string text, FontLabel fontLabel, Rectangle rect, float angle)
+      public Task DrawText(string text, FontLabel fontLabel, Rectangle rect, float angle)
       {
          if (!Validate(fontLabel.Brush))
-            return;
+            return Task.CompletedTask;
 
          DrawAdjustedFontString(text, fontLabel, rect.Size, (font) =>
          {
@@ -66,15 +71,19 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Canvas
             _graph.DrawString(text, font, gdiBrush, new Gdi.Rectangle(0, 0, rect.Size.Width, rect.Size.Height), gdiFormat);
             _graph.Transform = transform;
          });
+
+         return Task.CompletedTask;
       }
 
-      public void DrawLine(Position pos1, Position pos2, Pen pen)
+      public Task DrawLine(Position pos1, Position pos2, Pen pen)
       {
          if (!Validate(pen))
-            return;
+            return Task.CompletedTask; 
 
          using var gdiPen = pen.ToGdi(pos1, pos2);
          _graph.DrawLine(gdiPen, pos1.ToGdi(), pos2.ToGdi());
+
+         return Task.CompletedTask;
       }
 
       public Position Translate(Position position, ICanvas destination)

@@ -8,6 +8,7 @@ using NeuralNetwork.Visualizer.Contracts.Selection;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace NeuralNetwork.Visualizer.Drawing.Controls
@@ -29,24 +30,24 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          _lastToolTipLocation = new Position(0, 0);
       }
 
-      public void Show(Position position)
+      public async Task Show(Position position)
       {
          if (!Validate(position))
             return;
 
-         DestroyFiring();
+         await DestroyFiring();
 
          _timeout = CreateTimer();
 
-         _timeout.Elapsed += (s, ev) =>
+         _timeout.Elapsed += async (s, ev) =>
          {
-            DestroyFiring();
+            await DestroyFiring();
 
             var elem = _selectionResolver.GetElementFromLocation(position);
 
             if (elem != null)
             {
-               ShowToolTip(elem);
+               await ShowToolTip(elem);
                _lastToolTipLocation = position;
             }
          };
@@ -54,21 +55,21 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          _timeout.Start();
       }
 
-      public void Hide()
+      public Task Hide()
       {
-         DestroyFiring();
+         return DestroyFiring();
       }
 
-      private void DestroyFiring()
+      private Task DestroyFiring()
       {
          Destroy.Disposable(ref _timeout);
-         _toolTip.Close();
+         return _toolTip.Close();
       }
 
-      private void ShowToolTip(Element element)
+      private Task ShowToolTip(Element element)
       {
          string text = GetElementText(element);
-         _toolTip.Show(element.Id, text);
+         return _toolTip.Show(element.Id, text);
       }
 
       private Timer CreateTimer()

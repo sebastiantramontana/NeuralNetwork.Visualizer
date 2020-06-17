@@ -5,6 +5,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
+using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
@@ -19,16 +20,16 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          _cache = cache;
       }
 
-      public override void Draw(ICanvas canvas)
+      public override async Task Draw(ICanvas canvas)
       {
-         base.Draw(canvas);
-         DrawLabel(canvas);
+         await base.Draw(canvas);
+         await DrawLabel(canvas);
       }
 
-      private void DrawLabel(ICanvas canvas)
+      private Task DrawLabel(ICanvas canvas)
       {
          if (_preferences.InputFontLabel == FontLabel.Null || _cache.EllipseRectangle is null)
-            return;
+            return Task.CompletedTask;
 
          var fontLabel = _preferences.InputFontLabel;
 
@@ -42,7 +43,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
 
          var label = this.Element.Id;
 
-         canvas.DrawText(label, fontLabel, _cache.InputLabelRectangle);
+         return canvas.DrawText(label, fontLabel, _cache.InputLabelRectangle);
       }
    }
 }

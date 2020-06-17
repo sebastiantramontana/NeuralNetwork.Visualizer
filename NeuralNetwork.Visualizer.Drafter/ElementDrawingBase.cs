@@ -1,5 +1,6 @@
 ﻿using NeuralNetwork.Model;
 using NeuralNetwork.Visualizer.Contracts.Drawing;
+using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Drawing
 {
@@ -11,6 +12,6 @@ namespace NeuralNetwork.Visualizer.Drawing
       }
 
       public TElement Element { get; private set; }
-      public abstract void Draw(ICanvas canvas);
+      public abstract Task Draw(ICanvas canvas);
    }
 }

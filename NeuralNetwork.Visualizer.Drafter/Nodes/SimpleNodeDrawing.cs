@@ -5,6 +5,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Preferences;
 using NeuralNetwork.Visualizer.Contracts.Selection;
 using System;
+using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Drawing.Nodes
 {
@@ -19,15 +20,15 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          _cache = cache;
       }
 
-      protected override void DrawContent(ICanvas canvas, Rectangle rect)
+      protected override Task DrawContent(ICanvas canvas, Rectangle rect)
       {
          if (!this.Element.OutputValue.HasValue)
-            return;
+            return Task.CompletedTask;
 
          var outputRectangle = GetOutputRectangle(rect);
          var font = _preferences.OutputValueFormatter.GetFormat(this.Element.OutputValue.Value);
 
-         canvas.DrawText(Math.Round(this.Element.OutputValue.Value, _preferences.RoundingDigits).ToString(), font, outputRectangle);
+         return canvas.DrawText(Math.Round(this.Element.OutputValue.Value, _preferences.RoundingDigits).ToString(), font, outputRectangle);
       }
 
       private Rectangle GetOutputRectangle(Rectangle rect)

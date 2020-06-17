@@ -3,6 +3,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
+using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Drawing
 {
@@ -19,42 +20,42 @@ namespace NeuralNetwork.Visualizer.Drawing
 
       public Size Size => _rect.Size;
 
-      public void DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
+      public Task DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
       {
          var position = rect.Position + _rect.Position;
          var size = Size.Min(this.Size, rect.Size);
          var rectangle = new Rectangle(position, size);
 
-         _decorated.DrawEllipse(rectangle, pen, brush);
+         return _decorated.DrawEllipse(rectangle, pen, brush);
       }
 
-      public void DrawLine(Position p1, Position p2, Pen pen)
+      public Task DrawLine(Position p1, Position p2, Pen pen)
       {
          var newP1 = p1 + _rect.Position;
          var newP2 = p2 + _rect.Position;
 
-         _decorated.DrawLine(newP1, newP2, pen);
+         return _decorated.DrawLine(newP1, newP2, pen);
       }
 
-      public void DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
+      public Task DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
       {
          var position = rect.Position + _rect.Position;
          var size = Size.Min(this.Size, rect.Size);
          var rectangle = new Rectangle(position, size);
 
-         _decorated.DrawRectangle(rectangle, pen, brush);
+         return _decorated.DrawRectangle(rectangle, pen, brush);
       }
 
-      public void DrawText(string text, FontLabel font, Rectangle rect)
+      public Task DrawText(string text, FontLabel font, Rectangle rect)
       {
          var rectangle = rect + _rect.Position;
-         _decorated.DrawText(text, font, rectangle);
+         return _decorated.DrawText(text, font, rectangle);
       }
 
-      public void DrawText(string text, FontLabel font, Rectangle rect, float angle)
+      public Task DrawText(string text, FontLabel font, Rectangle rect, float angle)
       {
          var rectangle = rect + _rect.Position;
-         _decorated.DrawText(text, font, rectangle, angle);
+         return _decorated.DrawText(text, font, rectangle, angle);
       }
 
       public Position Translate(Position position, ICanvas destination)
