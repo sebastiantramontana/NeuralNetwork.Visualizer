@@ -25,6 +25,7 @@ namespace NeuralNetwork.Visualizer.Razor
    public abstract class NeuralNetworkVisualizerControl : ComponentBase, INeuralNetworkVisualizerControl
    {
       private NeuralNetworkVisualizerControlDrawing _neuralNetworkVisualizerControlInner;
+      private IDrawingRunner _drawingRunner;
 
       public event EventHandler<SelectionEventArgs<InputLayer>> SelectInputLayer;
       public event EventHandler<SelectionEventArgs<NeuronLayer>> SelectNeuronLayer;
@@ -52,6 +53,7 @@ namespace NeuralNetwork.Visualizer.Razor
             return drawableSurface;
          }
 
+         _drawingRunner = new DrawingRunner(jsInterop);
          _neuralNetworkVisualizerControlInner = new NeuralNetworkVisualizerControlDrawing(new ToolTipControl(jsInterop), new RegionBuilder(), drawableSurfaceBuilder);
 
          _neuralNetworkVisualizerControlInner.SelectInputLayer += NeuralNetworkVisualizerControlInner_SelectInputLayer;
@@ -78,6 +80,7 @@ namespace NeuralNetwork.Visualizer.Razor
             .Include("tootltip-registration.js")
                .Register(new ToolTipScriptRegistration())
             .Include("canvas-registration.js")
+
                .Register(new CanvasRegistration())
             .Execute();
       }
@@ -142,8 +145,7 @@ namespace NeuralNetwork.Visualizer.Razor
 
       public Task RedrawAsync()
       {
-
-         return _neuralNetworkVisualizerControlInner.RedrawAsync();
+         return _drawingRunner.Run(_neuralNetworkVisualizerControlInner.RedrawAsync);
       }
 
       /// <summary>

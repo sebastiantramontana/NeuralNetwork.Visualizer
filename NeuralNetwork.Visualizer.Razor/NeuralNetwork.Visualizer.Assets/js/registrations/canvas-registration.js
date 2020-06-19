@@ -15,7 +15,7 @@
         return _currentContext;
     };
 
-    const createPath = () => {
+    const getReadyContext = () => {
         const context = getCurrentContext();
         context.beginPath();
 
@@ -174,7 +174,7 @@
             context.rotate(angle * (Math.PI / 180));
         }
 
-        const context = createPath();
+        const context = getReadyContext();
 
         context.font = font.css;
 
@@ -191,7 +191,7 @@
     };
 
     const drawShape = (pen, brush, drawShapeFunc) => {
-        const context = createPath();
+        const context = getReadyContext();
 
         context.fillStyle = getBrushStyle(brush);
         configureStroke(pen, context);
@@ -227,7 +227,7 @@
             },
 
             drawLine: (position1, position2, pen) => {
-                const context = createPath();
+                const context = getReadyContext();
 
                 context.moveTo(position1.x, position1.y);
                 context.lineTo(position2.x, position2.y);

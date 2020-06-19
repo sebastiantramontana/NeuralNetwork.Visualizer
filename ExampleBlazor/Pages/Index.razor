@@ -18,8 +18,9 @@
             var size = await _visualizer.GetDrawingSize();
 
             Console.WriteLine($"{size.Width} x {size.Height}");
-        };
 
+            await _visualizer.RedrawAsync();
+        };
 
         await base.OnAfterRenderAsync(firstRender);
     }
