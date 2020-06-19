@@ -4,16 +4,21 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Dtos.Brushes
 {
    internal class ColorDto
    {
-      private readonly Color _color;
+      private readonly string _rgba;
 
       public ColorDto(Color color)
       {
-         _color = color;
+         _rgba = ConvertToRGBA(color);
       }
 
       public override string ToString()
       {
-         return $"#"
+         return _rgba;
+      }
+
+      private string ConvertToRGBA(Color color)
+      {
+         return $"rgba({string.Join(',', color.R, color.G, color.B, color.A)})";
       }
    }
 }

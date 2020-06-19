@@ -182,7 +182,7 @@
             return;
 
         context.fillStyle = getBrushStyle(font.brush);
-        context.textAlign = font.textAlign;
+        context.textAlign = font.horizontalAlignment;
         context.textBaseline = getTextBaseline();
 
         rotateText();
@@ -223,7 +223,7 @@
             },
 
             drawRectangle: (rectangle, pen, brush) => {
-                drawShape(pen, brush, (context) => context.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height));
+                drawShape(pen, brush, (context) => context.rect(rectangle.position.x, rectangle.position.y, rectangle.size.width, rectangle.size.height));
             },
 
             drawLine: (position1, position2, pen) => {
@@ -237,7 +237,7 @@
             },
 
             drawText: (text, font, rectangle, angle) => {
-                drawText(text, font, rectangle, angle);
+                drawText(text, font, rectangle.position.x, rectangle.position.y, rectangle.size.width, angle);
             }
         }
     };
