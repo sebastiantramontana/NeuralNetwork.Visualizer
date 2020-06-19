@@ -88,7 +88,7 @@
         const getCap = () => {
             let cap = null;
 
-            switch (pen.Cap) {
+            switch (pen.cap) {
                 case capStyle.none:
                     cap = "butt";
                     break;

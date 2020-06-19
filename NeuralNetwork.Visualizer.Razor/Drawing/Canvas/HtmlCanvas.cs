@@ -23,7 +23,9 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
 
       public async Task DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
       {
-         await _jsInterop.ExecuteOnInstance($"Canvas.drawEllipse").ConfigureAwait(false);
+         x, y, radiusX, radiusY, pen, brush
+
+         await _jsInterop.ExecuteOnInstance($"Canvas.drawEllipse",rect.Position.X,).ConfigureAwait(false);
       }
 
       public async Task DrawLine(Position p1, Position p2, Pen pen)
