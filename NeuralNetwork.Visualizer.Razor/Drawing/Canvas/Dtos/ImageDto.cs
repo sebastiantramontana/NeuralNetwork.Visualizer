@@ -7,10 +7,5 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos
    {
       public SizeDto Size { get; }
       public Base64 Base64Bytes { get; }
-
-      internal Image ToImage()
-      {
-         return new Image(this.Size.ToSize(), this.Base64Bytes);
-      }
    }
 }

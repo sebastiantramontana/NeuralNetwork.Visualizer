@@ -1,6 +1,7 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
+using NeuralNetwork.Visualizer.Razor.Drawing.Canvas;
 using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using System;
@@ -34,7 +35,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
 
       public Task<Image> GetImage()
       {
-         return CallDomMethod<ImageDto, Image>("getImage", dto => dto.ToImage());
+         return CallDomMethod<ImageDto, Image>("getImage", dto => dto.ToVisualizer());
       }
 
       public Task RedrawAsync()
@@ -44,7 +45,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
 
       private Task<Size> CallDomSizeMethod(string domSizeMethod)
       {
-         return CallDomMethod<SizeDto, Size>(domSizeMethod, dto => dto.ToSize());
+         return CallDomMethod<SizeDto, Size>(domSizeMethod, dto => dto.ToVisualizer());
       }
 
       private async Task<TPrimitive> CallDomMethod<TDto, TPrimitive>(string domMethod, Func<TDto, TPrimitive> converter)

@@ -6,10 +6,5 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos
    {
       public int Width { get; set; }
       public int Height { get; set; }
-
-      internal Size ToSize()
-      {
-         return new Size(this.Width, this.Height);
-      }
    }
 }

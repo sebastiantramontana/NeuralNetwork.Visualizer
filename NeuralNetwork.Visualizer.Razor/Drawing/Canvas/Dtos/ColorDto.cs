@@ -1,24 +1,17 @@
-﻿using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
-
-namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos
+﻿namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos
 {
    internal class ColorDto
    {
-      private readonly string _rgba;
+      private readonly string _cssColor;
 
-      public ColorDto(Color color)
+      public ColorDto(string cssColor)
       {
-         _rgba = ConvertToRGBA(color);
+         _cssColor = cssColor;
       }
 
       public override string ToString()
       {
-         return _rgba;
-      }
-
-      private string ConvertToRGBA(Color color)
-      {
-         return $"rgba({string.Join(',', color.R, color.G, color.B, color.A)})";
+         return _cssColor;
       }
    }
 }
