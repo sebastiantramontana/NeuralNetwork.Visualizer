@@ -23,15 +23,14 @@ namespace NeuralNetwork.Visualizer.Drawing.Selection
          RefreshSelection();
 
          return _registeredElements
-             .Values
-             .ToArray()
-             .AsParallel()
-             .Where(ri => ri.Region
-                 .IsVisible(_currentRootCanvas
-                     .Translate(position, ri.Canvas)))
-             .OrderByDescending(ri => ri.ZIndex)
-             .FirstOrDefault()?
-             .Element;
+              .Values
+              .ToArray()
+              .Where(ri => ri.Region
+                  .IsVisible(_currentRootCanvas
+                      .Translate(position, ri.Canvas)))
+              .OrderByDescending(ri => ri.ZIndex)
+              .FirstOrDefault()?
+              .Element;
       }
 
       private bool _needToBeRefreshed = false;

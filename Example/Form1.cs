@@ -127,31 +127,31 @@ namespace WindowsFormsApp1
          _input.AddNode(new Input("e2") { OutputValue = 0.455 });
          _input.AddNode(new Input("e3") { OutputValue = -0.78967656 });
          _input.AddNode(new Input("e4") { OutputValue = 0.0 });
-         //_input.AddNode(new Input("e5") { OutputValue = 0.255 });
-         //_input.AddNode(new Input("e6") { OutputValue = 0.455 });
-         //_input.AddNode(new Input("e7") { OutputValue = -0.78967656 });
-         //_input.AddNode(new Input("e8") { OutputValue = 0.011 });
-         //_input.AddNode(new Input("e9") { OutputValue = 0.2255 });
-         //_input.AddNode(new Input("e10") { OutputValue = 43.455 });
-         //_input.AddNode(new Input("e11") { OutputValue = -11.67656 });
-         //_input.AddNode(new Input("e12") { OutputValue = -1.001 });
+         _input.AddNode(new Input("e5") { OutputValue = 0.255 });
+         _input.AddNode(new Input("e6") { OutputValue = 0.455 });
+         _input.AddNode(new Input("e7") { OutputValue = -0.78967656 });
+         _input.AddNode(new Input("e8") { OutputValue = 0.011 });
+         _input.AddNode(new Input("e9") { OutputValue = 0.2255 });
+         _input.AddNode(new Input("e10") { OutputValue = 43.455 });
+         _input.AddNode(new Input("e11") { OutputValue = -11.67656 });
+         _input.AddNode(new Input("e12") { OutputValue = -1.001 });
 
          var hidden = new NeuronLayer("Hidden");
 
          hidden.AddNode(new Neuron("o1") { ActivationFunction = ActivationFunction.Tanh, OutputValue = 2.364, SumValue = 2.364 });
          hidden.AddNode(new Neuron("o2") { ActivationFunction = ActivationFunction.LeakyRelu, OutputValue = -0.552, SumValue = 55.44 });
          hidden.AddNode(new Neuron("o4") { ActivationFunction = ActivationFunction.Relu, OutputValue = 1.324, SumValue = 4.34 });
-         //hidden.AddNode(new Neuron("o3") { ActivationFunction = ActivationFunction.Linear, OutputValue = 0.0, SumValue = 19.22 });
-         //hidden.AddNode(new Neuron("o5") { ActivationFunction = ActivationFunction.Sigmoid, OutputValue = -0.12, SumValue = 25.224 });
-         //hidden.AddNode(new Neuron("o6") { ActivationFunction = ActivationFunction.Tanh, OutputValue = 10.3, SumValue = 1.222 });
+         hidden.AddNode(new Neuron("o3") { ActivationFunction = ActivationFunction.Linear, OutputValue = 0.0, SumValue = 19.22 });
+         hidden.AddNode(new Neuron("o5") { ActivationFunction = ActivationFunction.Sigmoid, OutputValue = -0.12, SumValue = 25.224 });
+         hidden.AddNode(new Neuron("o6") { ActivationFunction = ActivationFunction.Tanh, OutputValue = 10.3, SumValue = 1.222 });
 
          _input.Connect(hidden);
 
          var output = new NeuronLayer("Output");
          output.AddNode(new Neuron("s1") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.567656, SumValue = 0.454 });
          output.AddNode(new Neuron("s2") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.176545, SumValue = 0.54 });
-         //output.AddNode(new Neuron("s3") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.9545, SumValue = 0.133 });
-         //output.AddNode(new Neuron("s4") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.145, SumValue = 0.88 });
+         output.AddNode(new Neuron("s3") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.9545, SumValue = 0.133 });
+         output.AddNode(new Neuron("s4") { ActivationFunction = ActivationFunction.Softmax, OutputValue = 0.145, SumValue = 0.88 });
 
          hidden.Connect(output);
 
