@@ -1,10 +1,10 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
-using NeuralNetwork.Visualizer.Razor.Drawing.Dtos.Brushes;
+using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Brushes;
 using System;
 
-namespace NeuralNetwork.Visualizer.Razor.Drawing.Dtos
+namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos
 {
    internal class FontDto
    {

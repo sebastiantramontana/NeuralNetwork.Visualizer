@@ -1,4 +1,4 @@
-﻿namespace NeuralNetwork.Visualizer.Razor.Drawing.Dtos.Brushes
+﻿namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Brushes
 {
    internal abstract class BrushBaseDto
    {

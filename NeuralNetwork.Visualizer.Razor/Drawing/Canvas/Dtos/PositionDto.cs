@@ -1,4 +1,4 @@
-﻿namespace NeuralNetwork.Visualizer.Razor.Drawing.Dtos
+﻿namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos
 {
    internal class PositionDto
    {

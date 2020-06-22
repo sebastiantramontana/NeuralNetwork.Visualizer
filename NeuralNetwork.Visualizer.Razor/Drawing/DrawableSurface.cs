@@ -1,7 +1,7 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
-using NeuralNetwork.Visualizer.Razor.Drawing.Dtos;
+using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using System;
 using System.Threading.Tasks;

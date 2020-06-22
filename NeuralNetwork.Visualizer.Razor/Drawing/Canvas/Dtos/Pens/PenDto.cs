@@ -1,7 +1,7 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
-using NeuralNetwork.Visualizer.Razor.Drawing.Dtos.Brushes;
+using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Brushes;
 
-namespace NeuralNetwork.Visualizer.Razor.Drawing.Dtos.Pens
+namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Pens
 {
    internal class PenDto
    {

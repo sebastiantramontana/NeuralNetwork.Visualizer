@@ -1,6 +1,6 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 
-namespace NeuralNetwork.Visualizer.Razor.Drawing.Dtos.Brushes
+namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Brushes
 {
    internal class ColorDto
    {
