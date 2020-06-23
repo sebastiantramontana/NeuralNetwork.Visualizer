@@ -33,7 +33,8 @@ namespace NeuralNetwork.Visualizer.Drawing
 
       public async Task RedrawAsync(ICanvasBuilder canvasBuilder)
       {
-         ValidateInputLayer();
+         if (!ValidateInputLayer())
+            return;
 
          var zoomedControlSize = await GetZoomedControlSize().ConfigureAwait(false);
          var layerSizes = GetLayerSizes(zoomedControlSize);
@@ -42,10 +43,16 @@ namespace NeuralNetwork.Visualizer.Drawing
          await DrawLayersAsync(canvas, layerSizes).ConfigureAwait(false);
       }
 
-      private void ValidateInputLayer()
+      private bool ValidateInputLayer()
       {
          var inputLayer = _control.InputLayer;
-         inputLayer?.Validate();
+
+         if (inputLayer is null)
+            return false;
+
+         inputLayer.Validate();
+
+         return true;
       }
 
       private LayerSizesPreCalc GetLayerSizes(Size zoomedControlSize)
