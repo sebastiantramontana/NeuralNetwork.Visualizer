@@ -39,7 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NeuralNetwork.Model">
-      <HintPath>..\NeuralNetwork.Visualizer\Binaries\NeuralNetwork.Model.dll</HintPath>
+      <HintPath>..\Dependencies\NeuralNetwork.Model.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

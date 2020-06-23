@@ -60,7 +60,7 @@
 
   <ItemGroup>
     <Reference Include="NeuralNetwork.Model">
-      <HintPath>..\Example\bin\Debug\NeuralNetwork.Model.dll</HintPath>
+      <HintPath>..\Dependencies\NeuralNetwork.Model.dll</HintPath>
     </Reference>
   </ItemGroup>
 
