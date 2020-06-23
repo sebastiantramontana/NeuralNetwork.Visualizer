@@ -4,6 +4,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos;
 using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Brushes;
+using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Fonts;
 using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Pens;
 using System;
 
@@ -31,17 +32,71 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
 
       internal static PenDto ToDto(this Pen pen, Rectangle rectangle)
       {
-         return new PenDto(pen.Width, pen.Brush.ToDto(rectangle), pen.LineStyle, pen.StartCap == Cap.None ? pen.EndCap : pen.StartCap);
+         return new PenDto(pen.Width, pen.Brush.ToDto(rectangle), pen.LineStyle.ToDto((byte)pen.Width), pen.StartCap == Cap.None ? pen.EndCap.ToDto() : pen.StartCap.ToDto());
+      }
+
+      internal static LineCap ToDto(this Cap cap)
+      {
+         LineCap lineCap = cap switch
+         {
+            Cap.None => LineCap.Butt,
+            Cap.Circle => LineCap.Round,
+            Cap.Square => LineCap.Square,
+            Cap.Triangle => LineCap.Square,
+            _ => throw new NotImplementedException("Unknown Cap type:" + cap)
+         };
+
+         return lineCap;
+      }
+
+      internal static byte[] ToDto(this LineStyle lineStyle, byte penWidth)
+      {
+         byte[] segment = lineStyle switch
+         {
+            LineStyle.Solid => new byte[] { },
+            LineStyle.Dash => new[] { (byte)3, (byte)1 },
+            LineStyle.Dot => new[] { penWidth, penWidth },
+            LineStyle.DahsDot => new[] { (byte)3, (byte)1, penWidth, penWidth },
+            _ => throw new NotImplementedException("Unknown Line style: " + lineStyle),
+         };
+
+         return segment;
+      }
+
+      internal static TextBaseline ToDto(this VerticalAlignment verticalAlignment)
+      {
+         TextBaseline textBaseline = verticalAlignment switch
+         {
+            VerticalAlignment.Middle => TextBaseline.Middle,
+            VerticalAlignment.Top => TextBaseline.Top,
+            VerticalAlignment.Bottom => TextBaseline.Bottom,
+            _ => throw new NotImplementedException("Unknown Vertical Alignment: " + verticalAlignment)
+         };
+
+         return textBaseline;
+      }
+
+      internal static TextAligment ToDto(this HorizontalAlignment horizontalAlignment)
+      {
+         TextAligment textAlign = horizontalAlignment switch
+         {
+            HorizontalAlignment.Left => TextAligment.Start,
+            HorizontalAlignment.Center => TextAligment.Center,
+            HorizontalAlignment.Right => TextAligment.End,
+            _ => throw new NotImplementedException("Unknown Vertical Alignment: " + horizontalAlignment)
+         };
+
+         return textAlign;
       }
 
       internal static FontDto ToDto(this FontLabel fontLabel)
       {
          var css = ConvertToCss(fontLabel);
          var brush = fontLabel.Brush.ToDto(new Rectangle(new Position(0, 0), new Size(fontLabel.Size, fontLabel.Size)));
-         var horizontalAlignment = fontLabel.TextFormat.HorizontalAlignment;
-         var verticalAlignment = fontLabel.TextFormat.VerticalAligment;
+         var textAlignment = fontLabel.TextFormat.HorizontalAlignment.ToDto();
+         var verticalAlignment = fontLabel.TextFormat.VerticalAligment.ToDto();
 
-         return new FontDto(css, brush, horizontalAlignment, verticalAlignment);
+         return new FontDto(css, brush, textAlignment, verticalAlignment);
       }
 
       internal static PositionDto ToDto(this Position position)

@@ -27,26 +27,6 @@
         linearGradient: "LinearGradient"
     });
 
-    const lineStyle = Object.freeze({
-        solid: "Solid",
-        dash: "Dash",
-        dot: "Dot",
-        dahsDot: "DahsDot"
-    });
-
-    const capStyle = Object.freeze({
-        none: "None",
-        triangle: "Triangle",
-        square: "Square",
-        circle: "Circle"
-    });
-
-    const verticalAlignment = Object.freeze({
-        top: "Top",
-        middle: "Middle",
-        bottom: "bottom"
-    });
-
     const getBrushStyle = (brush, context) => {
 
         if (!brush)
@@ -85,80 +65,13 @@
         if (!pen)
             return;
 
-        const getCap = () => {
-            let cap = null;
-
-            switch (pen.cap) {
-                case capStyle.none:
-                    cap = "butt";
-                    break;
-                case capStyle.circle:
-                    cap = "round";
-                    break;
-                case capStyle.square:
-                case capStyle.triangle:
-                    cap = "square";
-                    break;
-                default:
-                    throw "Unknown Cap type:" + pen.cap;
-            }
-
-            return cap;
-        };
-
-        const getLineDashSegment = () => {
-            let segment = null;
-
-            switch (pen.lineStyle) {
-                case lineStyle.solid:
-                    segment = [];
-                    break;
-                case lineStyle.dash:
-                    segment = [3, 1];
-                    break;
-                case lineStyle.dot:
-                    segment = [pen.width, pen.width];
-                    break;
-                case lineStyle.dahsDot:
-                    segment = [3, 1, pen.width, pen.width];
-                    break;
-                default:
-                    throw "Unknown Line style: " + pen.lineStyle;
-            }
-
-            return segment;
-        };
-
-        context.strokeStyle = getBrushStyle(pen.brush);
+        context.strokeStyle = getBrushStyle(pen.brush, context);
         context.lineWidth = pen.width;
-        context.setLineDash(getLineDashSegment());
-        context.lineCap = getCap();
+        context.setLineDash(pen.lineDash);
+        context.lineCap = pen.cap;
     };
 
     const drawText = (text, font, x, y, maxWidth, angle) => {
-
-        const getTextBaseline = () => {
-
-            let textBaseline;
-
-            switch (font.verticalAlignment) {
-                case null:
-                case undefined:
-                case verticalAlignment.middle:
-                    textBaseline = "middle";
-                    break;
-                case verticalAlignment.top:
-                    textBaseline = "top";
-                    break;
-                case verticalAlignment.bottom:
-                    textBaseline = "bottom";
-                    break;
-                default:
-                    throw "Unknown Vertical Alignment: " + font.verticalAlignment;
-            }
-
-            return textBaseline;
-        };
 
         const measureIfTextVisible = (context) => {
             const textSize = context.measureText(text);
@@ -182,8 +95,8 @@
             return;
 
         context.fillStyle = getBrushStyle(font.brush);
-        context.textAlign = font.horizontalAlignment;
-        context.textBaseline = getTextBaseline();
+        context.textAlign = font.textAligment;
+        context.textBaseline = font.textBaseline;
 
         rotateText();
 
