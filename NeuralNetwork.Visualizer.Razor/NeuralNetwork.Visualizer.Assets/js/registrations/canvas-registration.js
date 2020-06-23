@@ -3,6 +3,7 @@
     const MINIMUM_FONT_SIZE = 8;
 
     let _currentContext = null;
+    let _currentOffScreenCanvas = null;
 
     const getCanvasElement = () => {
         const canvasId = 'neuralnetwork-visualizer-canvas-' + globalInstanceName;
@@ -120,14 +121,14 @@
         beginDraw: () => {
             canvas = getCanvasElement();
 
-            const offscreenCanvas = new OffscreenCanvas(canvas.offsetWidth, canvas.offsetHeight);
-            _currentContext = offscreenCanvas.getContext("2d");
+            _currentOffScreenCanvas = new OffscreenCanvas(canvas.offsetWidth, canvas.offsetHeight);
+            _currentContext = _currentOffScreenCanvas.getContext("2d");
         },
         endDraw: () => {
             const canvas = getCanvasElement();
-            const bitmap = _currentContext.canvas.transferToImageBitmap();
+            const bitmap = _currentOffScreenCanvas.transferToImageBitmap();
 
-            canvas.transferFromImageBitmap(bitmap);
+            canvas.getContext("bitmaprenderer").transferFromImageBitmap(bitmap);
         },
         Drawing:
         {
