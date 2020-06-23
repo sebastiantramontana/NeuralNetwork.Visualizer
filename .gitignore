@@ -20,4 +20,5 @@
 /NeuralNetwork.Visualizer.Razor/bin
 /NeuralNetwork.Visualizer.Razor/obj
 /ExampleBlazor/wwwroot/NeuralNetwork.Visualizer.Assets
+/ExampleBlazor/wwwroot/NeuralNetwork.Visualizer.Assets/*
 
