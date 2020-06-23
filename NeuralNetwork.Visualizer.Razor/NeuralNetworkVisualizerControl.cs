@@ -49,7 +49,7 @@ namespace NeuralNetwork.Visualizer.Razor
 
          IDrawableSurface drawableSurfaceBuilder(IDrafter drafter)
          {
-            var drawableSurface = new DrawableSurface(drafter, new CanvasBuilder(jsInterop, this.GlobalInstanceName), jsInterop);
+            var drawableSurface = new DrawableSurface(drafter, new CanvasBuilder(jsInterop), jsInterop);
             return drawableSurface;
          }
 

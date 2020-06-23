@@ -89,10 +89,10 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          return textAlign;
       }
 
-      internal static FontDto ToDto(this FontLabel fontLabel)
+      internal static FontDto ToDto(this FontLabel fontLabel, Rectangle rectangle)
       {
          var css = ConvertToCss(fontLabel);
-         var brush = fontLabel.Brush.ToDto(new Rectangle(new Position(0, 0), new Size(fontLabel.Size, fontLabel.Size)));
+         var brush = fontLabel.Brush.ToDto(rectangle);
          var textAlignment = fontLabel.TextFormat.HorizontalAlignment.ToDto();
          var verticalAlignment = fontLabel.TextFormat.VerticalAligment.ToDto();
 
