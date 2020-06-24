@@ -8,7 +8,7 @@ namespace NeuralNetwork.Visualizer.Razor.Selection
    {
       public bool IsVisible(Position position)
       {
-         throw new NotImplementedException();
+         return false; //TODO: UNMOCK
       }
    }
 }

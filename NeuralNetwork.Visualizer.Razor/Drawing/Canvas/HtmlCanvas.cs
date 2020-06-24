@@ -29,7 +29,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var penDto = pen.ToDto(rect);
          var brushDto = brush.ToDto(rect);
 
-         await _jsInterop.ExecuteOnInstance($"Canvas.drawEllipse", x, y, radiusX, radiusY, penDto, brushDto).ConfigureAwait(false);
+         await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawEllipse", x, y, radiusX, radiusY, penDto, brushDto).ConfigureAwait(false);
       }
 
       public async Task DrawLine(Position p1, Position p2, Pen pen)
@@ -38,7 +38,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var p2Dto = p2.ToDto();
          var penDto = pen.ToDto(new Rectangle(p1, new Size(Math.Abs(p1.X - p2.X), Math.Abs(p1.Y - p2.Y))));
 
-         await _jsInterop.ExecuteOnInstance($"Canvas.drawLine", p1Dto, p2Dto, penDto).ConfigureAwait(false);
+         await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawLine", p1Dto, p2Dto, penDto).ConfigureAwait(false);
       }
 
       public async Task DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
@@ -47,7 +47,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var penDto = pen.ToDto(rect);
          var brushDto = brush.ToDto(rect);
 
-         await _jsInterop.ExecuteOnInstance($"Canvas.drawRectangle", rectangleDto, penDto, brushDto).ConfigureAwait(false);
+         await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawRectangle", rectangleDto, penDto, brushDto).ConfigureAwait(false);
       }
 
       public Task DrawText(string text, FontLabel font, Rectangle rect)
@@ -60,7 +60,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var fontDto = font.ToDto(rect);
          var rectangleDto = rect.ToDto();
 
-         await _jsInterop.ExecuteOnInstance($"Canvas.drawText", text, fontDto, rectangleDto, angle).ConfigureAwait(false);
+         await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawText", text, fontDto, rectangleDto, angle).ConfigureAwait(false);
       }
 
       public Position Translate(Position position, ICanvas destination)

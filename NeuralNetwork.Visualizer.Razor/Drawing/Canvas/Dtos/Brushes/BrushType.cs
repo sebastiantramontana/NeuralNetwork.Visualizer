@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text.Json.Serialization;
 
 namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Brushes
 {
+   [JsonConverter(typeof(JsonStringEnumConverter))]
    internal enum BrushType
    {
       Solid,

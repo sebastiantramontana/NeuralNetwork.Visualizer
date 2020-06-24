@@ -8,17 +8,17 @@ namespace NeuralNetwork.Visualizer.Razor.Selection
    {
       public IRegion Ellipse(Rectangle rectangle)
       {
-         throw new System.NotImplementedException();
+         return new Region();
       }
 
       public IRegion Polygon(IEnumerable<Position> positions)
       {
-         throw new System.NotImplementedException();
+         return new Region();
       }
 
       public IRegion Rectangle(Rectangle rectangle)
       {
-         throw new System.NotImplementedException();
+         return new Region();
       }
    }
 }
