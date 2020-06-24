@@ -1,4 +1,6 @@
 ﻿using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Brushes;
+using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.JsonConverters;
+using System.Text.Json.Serialization;
 
 namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Pens
 {
@@ -14,7 +16,10 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Pens
 
       public int Width { get; }
       public BrushBaseDto Brush { get; }
+
+      [JsonConverter(typeof(ArrayJsonConverter))]
       public byte[] LineDash { get; }
+
       public LineCap Cap { get; }
    }
 }
