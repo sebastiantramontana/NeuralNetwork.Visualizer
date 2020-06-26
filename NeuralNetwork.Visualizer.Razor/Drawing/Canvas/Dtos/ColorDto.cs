@@ -2,16 +2,11 @@
 {
    internal class ColorDto
    {
-      private readonly string _cssColor;
-
       public ColorDto(string cssColor)
       {
-         _cssColor = cssColor;
+         this.Css = cssColor;
       }
 
-      public override string ToString()
-      {
-         return _cssColor;
-      }
+      public string Css { get; }
    }
 }

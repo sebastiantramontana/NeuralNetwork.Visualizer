@@ -34,28 +34,28 @@
             return;
 
         const getSolidBrush = () => {
-            return brush.color;
+            return brush.color.css;
         };
 
         const getLinearGradienBrush = () => {
             const gradient = context.createLinearGradient(brush.x1, brush.y1, brush.x2, brush.y2);
-            gradient.addColorStop(0, brush.color1);
-            gradient.addColorStop(1, brush.color2);
+            gradient.addColorStop(0, brush.color1.css);
+            gradient.addColorStop(1, brush.color2.css);
 
             return gradient;
         };
 
         let style = null;
 
-        switch (brush.type) {
+        switch (brush.typeDiscriminator) {
             case brushTypes.solid:
                 style = getSolidBrush();
                 break;
-            case brush.linearGradient:
+            case brushTypes.linearGradient:
                 style = getLinearGradienBrush();
                 break;
             default:
-                throw "Unknown Brush type: " + brush.type;
+                throw "Unknown Brush type: " + brush.typeDiscriminator;
         }
 
         return style;
@@ -95,7 +95,7 @@
         if (!measureIfTextVisible(context))
             return;
 
-        context.fillStyle = getBrushStyle(font.brush);
+        context.fillStyle = getBrushStyle(font.brush, context);
         context.textAlign = font.textAligment;
         context.textBaseline = font.textBaseline;
 
@@ -107,7 +107,7 @@
     const drawShape = (pen, brush, drawShapeFunc) => {
         const context = getReadyContext();
 
-        context.fillStyle = getBrushStyle(brush);
+        context.fillStyle = getBrushStyle(brush, context);
         configureStroke(pen, context);
 
         drawShapeFunc(context);

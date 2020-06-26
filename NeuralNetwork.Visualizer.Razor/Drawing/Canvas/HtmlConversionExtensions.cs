@@ -14,7 +14,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
    {
       internal static ColorDto ToDto(this Color color)
       {
-         string rgba = $"rgba({string.Join(',', color.R, color.G, color.B, color.A)})";
+         string rgba = $"rgba({string.Join(',', color.R, color.G, color.B, color.A / 255f)})";
          return new ColorDto(rgba);
       }
 
@@ -92,7 +92,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
       internal static FontDto ToDto(this FontLabel fontLabel, Rectangle rectangle)
       {
          var css = ConvertToCss(fontLabel);
-         var brush = fontLabel.Brush.ToDto(rectangle);
+         var brush = fontLabel.Brush?.ToDto(rectangle);
          var textAlignment = fontLabel.TextFormat.HorizontalAlignment.ToDto();
          var verticalAlignment = fontLabel.TextFormat.VerticalAligment.ToDto();
 

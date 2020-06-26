@@ -1,12 +1,16 @@
-﻿namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Brushes
+﻿using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.JsonConverters;
+using System.Text.Json.Serialization;
+
+namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Brushes
 {
+   [JsonConverter(typeof(PolymorphicJsonConverter<BrushBaseDto>))]
    internal abstract class BrushBaseDto
    {
-      protected BrushBaseDto(BrushType type)
+      protected BrushBaseDto(BrushType typeDiscriminator)
       {
-         this.Type = type;
+         this.TypeDiscriminator = typeDiscriminator;
       }
 
-      public BrushType Type { get; }
+      public BrushType TypeDiscriminator { get; }
    }
 }

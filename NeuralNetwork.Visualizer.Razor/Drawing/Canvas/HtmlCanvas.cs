@@ -26,8 +26,8 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var y = rect.Position.Y;
          var radiusX = rect.Size.Width / 2;
          var radiusY = rect.Size.Height / 2;
-         var penDto = pen.ToDto(rect);
-         var brushDto = brush.ToDto(rect);
+         var penDto = pen?.ToDto(rect);
+         var brushDto = brush?.ToDto(rect);
 
          await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawEllipse", x, y, radiusX, radiusY, penDto, brushDto).ConfigureAwait(false);
       }
@@ -36,7 +36,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
       {
          var p1Dto = p1.ToDto();
          var p2Dto = p2.ToDto();
-         var penDto = pen.ToDto(new Rectangle(p1, new Size(Math.Abs(p1.X - p2.X), Math.Abs(p1.Y - p2.Y))));
+         var penDto = pen?.ToDto(new Rectangle(p1, new Size(Math.Abs(p1.X - p2.X), Math.Abs(p1.Y - p2.Y))));
 
          await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawLine", p1Dto, p2Dto, penDto).ConfigureAwait(false);
       }
@@ -44,8 +44,8 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
       public async Task DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
       {
          var rectangleDto = rect.ToDto();
-         var penDto = pen.ToDto(rect);
-         var brushDto = brush.ToDto(rect);
+         var penDto = pen?.ToDto(rect);
+         var brushDto = brush?.ToDto(rect);
 
          await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawRectangle", rectangleDto, penDto, brushDto).ConfigureAwait(false);
       }
@@ -57,7 +57,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
 
       public async Task DrawText(string text, FontLabel font, Rectangle rect, float angle)
       {
-         var fontDto = font.ToDto(rect);
+         var fontDto = font?.ToDto(rect);
          var rectangleDto = rect.ToDto();
 
          await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawText", text, fontDto, rectangleDto, angle).ConfigureAwait(false);
