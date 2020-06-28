@@ -129,6 +129,8 @@
             //TODO: MAKE OFFSCREEN CANVAS!!!
         },
         endDraw: () => {
+            _currentContext = null;
+
             //TODO: MAKE OFFSCREEN CANVAS!!!
         },
         Drawing:

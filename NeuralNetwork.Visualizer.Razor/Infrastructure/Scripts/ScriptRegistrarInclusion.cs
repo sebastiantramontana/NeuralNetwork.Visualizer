@@ -53,7 +53,7 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
 
          await _taskUnit.StartAsync(() =>
          {
-            return _syncLoop.ForEachhAsync(_fileRegistrations, (fileRegistraion) =>
+            return _syncLoop.ForEachAsync(_fileRegistrations, (fileRegistraion) =>
             {
                return ExecuteScriptFileRegistration(fileRegistraion, dotNetObjectReference);
             });

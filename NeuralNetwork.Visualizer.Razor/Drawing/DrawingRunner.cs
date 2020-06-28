@@ -1,4 +1,5 @@
-﻿using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
+﻿using NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs;
+using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using System;
 using System.Threading.Tasks;
 
@@ -7,19 +8,25 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
    internal class DrawingRunner : IDrawingRunner
    {
       private readonly IJsInterop _jsInterop;
+      private readonly ISynchronize _synchronize;
 
-      public DrawingRunner(IJsInterop jsInterop)
+      public DrawingRunner(IJsInterop jsInterop, ISynchronize synchronize)
       {
          _jsInterop = jsInterop;
+         _synchronize = synchronize;
       }
 
       public Task Run(Func<Task> drawFunc)
       {
-         var beginTask = _jsInterop.ExecuteOnInstance("Canvas.beginDraw");
-         var drawTask = drawFunc.Invoke();
-         var endTask = _jsInterop.ExecuteOnInstance("Canvas.endDraw");
-
-         return Task.WhenAll(beginTask, drawTask, endTask);
+         return _synchronize.ForEachAsync(new[]
+         {
+           new Func<Task>( ()=>_jsInterop.ExecuteOnInstance("Canvas.beginDraw")),
+           drawFunc,
+           new Func<Task>( ()=>_jsInterop.ExecuteOnInstance("Canvas.endDraw"))
+         });
+         //return _jsInterop.ExecuteOnInstance("Canvas.beginDraw")
+         //   .ContinueWith(t => drawFunc.Invoke())
+         //   .ContinueWith(t => _jsInterop.ExecuteOnInstance("Canvas.endDraw"));
       }
    }
 }
