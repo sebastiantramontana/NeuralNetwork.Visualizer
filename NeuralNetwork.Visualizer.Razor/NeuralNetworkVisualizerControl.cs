@@ -76,6 +76,8 @@ namespace NeuralNetwork.Visualizer.Razor
 
       private void SACAR()
       {
+         this.Preferences.Layers.Title = null;
+
          var _input = new InputLayer("Input")
          {
             Bias = new Bias("bias") { OutputValue = 1.234 }

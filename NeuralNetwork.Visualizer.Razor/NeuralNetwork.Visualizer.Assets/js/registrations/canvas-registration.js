@@ -136,10 +136,12 @@
         Drawing:
         {
             drawEllipse: (x, y, radiusX, radiusY, pen, brush) => {
+                //console.log("x, y, radiusX, radiusY = %s, %s, %s, %s", x, y, radiusX, radiusY);
                 drawShape(pen, brush, (context) => context.ellipse(x, y, radiusX, radiusY, 0, 0, Math.PI * 2));
             },
 
             drawRectangle: (rectangle, pen, brush) => {
+                console.log("rectangle, pen, brush = %o %o %o", rectangle, pen, brush);
                 drawShape(pen, brush, (context) => context.rect(rectangle.position.x, rectangle.position.y, rectangle.size.width, rectangle.size.height));
             },
 
