@@ -24,9 +24,6 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
            drawFunc,
            new Func<Task>( ()=>_jsInterop.ExecuteOnInstance("Canvas.endDraw"))
          });
-         //return _jsInterop.ExecuteOnInstance("Canvas.beginDraw")
-         //   .ContinueWith(t => drawFunc.Invoke())
-         //   .ContinueWith(t => _jsInterop.ExecuteOnInstance("Canvas.endDraw"));
       }
    }
 }
