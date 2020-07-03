@@ -35,19 +35,19 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          if (!Validate(position))
             return;
 
-         await DestroyFiring();
+         await DestroyFiring().ConfigureAwait(false);
 
          _timeout = CreateTimer();
 
          _timeout.Elapsed += async (s, ev) =>
          {
-            await DestroyFiring();
+            await DestroyFiring().ConfigureAwait(false);
 
             var elem = _selectionResolver.GetElementFromLocation(position);
 
             if (elem != null)
             {
-               await ShowToolTip(elem);
+               await ShowToolTip(elem).ConfigureAwait(false);
                _lastToolTipLocation = position;
             }
          };

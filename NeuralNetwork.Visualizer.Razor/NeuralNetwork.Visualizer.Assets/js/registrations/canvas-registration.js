@@ -135,17 +135,21 @@
         },
         Drawing:
         {
-            drawEllipse: (x, y, radiusX, radiusY, pen, brush) => {
-                //console.log("x, y, radiusX, radiusY = %s, %s, %s, %s", x, y, radiusX, radiusY);
+            drawEllipse: (x, y, radiusX, radiusY, pen, brush, dotNetRef) => {
                 drawShape(pen, brush, (context) => context.ellipse(x, y, radiusX, radiusY, 0, 0, Math.PI * 2));
+
+                dotNetRef.invokeMethod('NotifyDrawIsDone');
+                dotNetRef.dispose();
             },
 
-            drawRectangle: (rectangle, pen, brush) => {
-                console.log("rectangle, pen, brush = %o %o %o", rectangle, pen, brush);
+            drawRectangle: (rectangle, pen, brush, dotNetRef) => {
                 drawShape(pen, brush, (context) => context.rect(rectangle.position.x, rectangle.position.y, rectangle.size.width, rectangle.size.height));
+
+                dotNetRef.invokeMethod('NotifyDrawIsDone');
+                dotNetRef.dispose();
             },
 
-            drawLine: (position1, position2, pen) => {
+            drawLine: (position1, position2, pen, dotNetRef) => {
                 const context = getReadyContext();
 
                 context.moveTo(position1.x, position1.y);
@@ -153,10 +157,16 @@
 
                 configureStroke(pen, context);
                 context.stroke();
+
+                dotNetRef.invokeMethod('NotifyDrawIsDone');
+                dotNetRef.dispose();
             },
 
-            drawText: (text, font, rectangle, angle) => {
+            drawText: (text, font, rectangle, angle, dotNetRef) => {
                 drawText(text, font, rectangle.position.x, rectangle.position.y, rectangle.size.width, angle);
+
+                dotNetRef.invokeMethod('NotifyDrawIsDone');
+                dotNetRef.dispose();
             }
         }
     };

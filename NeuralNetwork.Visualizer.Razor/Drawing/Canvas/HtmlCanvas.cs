@@ -1,8 +1,10 @@
-﻿using NeuralNetwork.Visualizer.Contracts.Drawing;
+﻿using Microsoft.JSInterop;
+using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
+using NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using System;
 using System.Threading.Tasks;
@@ -12,11 +14,13 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
    internal class HtmlCanvas : ICanvas
    {
       private readonly IJsInterop _jsInterop;
+      private readonly ITaskUnit _taskUnit;
 
-      internal HtmlCanvas(Size size, IJsInterop jsInterop)
+      internal HtmlCanvas(Size size, IJsInterop jsInterop, ITaskUnit taskUnit)
       {
          this.Size = size;
          _jsInterop = jsInterop;
+         _taskUnit = taskUnit;
       }
       public Size Size { get; }
 
@@ -29,25 +33,31 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var penDto = pen?.ToDto(rect);
          var brushDto = brush?.ToDto(rect);
 
-         await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawEllipse", x, y, radiusX, radiusY, penDto, brushDto).ConfigureAwait(false);
+         using var dotNetObjectReference = DotNetObjectReference.Create(this);
+
+         await _taskUnit.StartAsync(() => _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawEllipse", x, y, radiusX, radiusY, penDto, brushDto, dotNetObjectReference));
       }
 
-      public async Task DrawLine(Position p1, Position p2, Pen pen)
+      public Task DrawLine(Position p1, Position p2, Pen pen)
       {
          var p1Dto = p1.ToDto();
          var p2Dto = p2.ToDto();
          var penDto = pen?.ToDto(new Rectangle(p1, new Size(Math.Abs(p1.X - p2.X), Math.Abs(p1.Y - p2.Y))));
 
-         await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawLine", p1Dto, p2Dto, penDto).ConfigureAwait(false);
+         using var dotNetObjectReference = DotNetObjectReference.Create(this);
+
+         return _taskUnit.StartAsync(() => _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawLine", p1Dto, p2Dto, penDto, dotNetObjectReference));
       }
 
-      public async Task DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
+      public Task DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
       {
          var rectangleDto = rect.ToDto();
          var penDto = pen?.ToDto(rect);
          var brushDto = brush?.ToDto(rect);
 
-         await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawRectangle", rectangleDto, penDto, brushDto).ConfigureAwait(false);
+         using var dotNetObjectReference = DotNetObjectReference.Create(this);
+
+         return _taskUnit.StartAsync(() => _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawRectangle", rectangleDto, penDto, brushDto, dotNetObjectReference));
       }
 
       public Task DrawText(string text, FontLabel font, Rectangle rect)
@@ -55,12 +65,14 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          return DrawText(text, font, rect, 0);
       }
 
-      public async Task DrawText(string text, FontLabel font, Rectangle rect, float angle)
+      public Task DrawText(string text, FontLabel font, Rectangle rect, float angle)
       {
          var fontDto = font?.ToDto(rect);
          var rectangleDto = rect.ToDto();
 
-         await _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawText", text, fontDto, rectangleDto, angle).ConfigureAwait(false);
+         using var dotNetObjectReference = DotNetObjectReference.Create(this);
+
+         return _taskUnit.StartAsync(() => _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawText", text, fontDto, rectangleDto, angle, dotNetObjectReference));
       }
 
       public Position Translate(Position position, ICanvas destination)
@@ -71,6 +83,12 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var posTranslated = destination.Translate(new Position(0, 0), this);
          position = new Position(position.X - posTranslated.X, position.Y - posTranslated.Y);
          return position;
+      }
+
+      [JSInvokable]
+      public void NotifyDrawIsDone()
+      {
+         _taskUnit.Finish();
       }
    }
 }

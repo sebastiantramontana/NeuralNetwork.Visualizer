@@ -20,10 +20,12 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          _cache = cache;
       }
 
-      public override async Task Draw(ICanvas canvas)
+      public override Task Draw(ICanvas canvas)
       {
-         await base.Draw(canvas);
-         await DrawLabel(canvas);
+         var taskBase = base.Draw(canvas);
+         var taskLabel = DrawLabel(canvas);
+
+         return Task.WhenAll(taskBase, taskLabel);
       }
 
       private Task DrawLabel(ICanvas canvas)

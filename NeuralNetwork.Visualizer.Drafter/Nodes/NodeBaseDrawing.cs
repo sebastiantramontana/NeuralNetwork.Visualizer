@@ -29,7 +29,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
       public Position EdgeStartPosition { get; private set; }
       public ICanvas Canvas { get; private set; }
 
-      public override async Task Draw(ICanvas canvas)
+      public override Task Draw(ICanvas canvas)
       {
          if (_cache.EllipseRectangle is null)
          {
@@ -49,9 +49,11 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          bool isSelected = _selectionChecker.IsSelected(this.Element);
 
          var info = _preferences.GetInfoBySelection(isSelected);
-         await canvas.DrawEllipse(_cache.EllipseRectangle, info.Border, info.Background);
 
-         await DrawContent(canvas, _cache.EllipseRectangle);
+         var taskEllipse = canvas.DrawEllipse(_cache.EllipseRectangle, info.Border, info.Background);
+         var taskContent = DrawContent(canvas, _cache.EllipseRectangle);
+
+         return Task.WhenAll(taskEllipse, taskContent);
       }
 
       private void RegisterSelectableNodeEllipse(ICanvas canvas)

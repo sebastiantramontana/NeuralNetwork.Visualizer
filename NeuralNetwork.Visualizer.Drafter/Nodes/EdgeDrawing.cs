@@ -33,14 +33,16 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          _regionBuilder = regionBuilder;
       }
 
-      public override async Task Draw(ICanvas canvas)
+      public override Task Draw(ICanvas canvas)
       {
          RegisterSelectableConnectorLine(canvas);
 
          var pen = GetPen();
-         await canvas.DrawLine(_fromPosition, _toPosition, pen);
 
-         await DrawWeight(canvas);
+         var taskLine = canvas.DrawLine(_fromPosition, _toPosition, pen);
+         var taskWeight = DrawWeight(canvas);
+
+         return Task.WhenAll(taskLine, taskWeight);
       }
 
       private void RegisterSelectableConnectorLine(ICanvas canvas)

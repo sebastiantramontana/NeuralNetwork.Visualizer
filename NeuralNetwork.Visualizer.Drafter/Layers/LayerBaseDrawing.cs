@@ -38,7 +38,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Layer
 
       public IEnumerable<INodeDrawing> NodesDrawing { get { return _nodesDrawing; } }
 
-      public override async Task Draw(ICanvas canvas)
+      public override Task Draw(ICanvas canvas)
       {
          var rect = new Rectangle(new Position(0, 0), canvas.Size);
          _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, _regionBuilder.Rectangle(rect), 1));
@@ -46,35 +46,42 @@ namespace NeuralNetwork.Visualizer.Drawing.Layer
          var isSelected = _selectionChecker.IsSelected(this.Element);
          var info = _preferences.Layers.GetInfoBySelection(isSelected);
 
-         await canvas.DrawRectangle(rect, info.Border, info.Background);
+         var taskRectangle = canvas.DrawRectangle(rect, info.Border, info.Background);
+         var taskTitle = DrawTitle(canvas);
+         var taskNodes = DrawNodes(canvas);
 
-         await DrawTitle(canvas);
-         await DrawNodes(canvas);
+         return Task.WhenAll(taskRectangle, taskTitle, taskNodes);
       }
 
-      private async Task DrawNodes(ICanvas canvas)
+      private Task DrawNodes(ICanvas canvas)
       {
          int centeredY = _cache.StartingY + (_cache.TotalNodesHeight - _cache.NodeHeight * this.Element.GetAllNodes().Count()) / 2;
          centeredY = Math.Max(centeredY, _cache.StartingY);
 
+         var tasks = new List<Task>();
+
          if (this.Element.Bias != null)
          {
             var biasDrawing = new BiasDrawing(this.Element.Bias, _preferences, _biasCache, _selectableElementRegister, _selectionChecker, _regionBuilder);
-            await InternalDrawNode(biasDrawing);
+            tasks.Add(InternalDrawNode(biasDrawing));
          }
 
          foreach (var node in this.Element.Nodes)
          {
             var nodeDrawing = CreateDrawingNode(node);
-            await InternalDrawNode(nodeDrawing);
+            tasks.Add(InternalDrawNode(nodeDrawing));
          }
 
-         async Task InternalDrawNode(INodeDrawing nodeDrawing)
+         return Task.WhenAll(tasks);
+
+         Task InternalDrawNode(INodeDrawing nodeDrawing)
          {
             _nodesDrawing.Add(nodeDrawing);
 
-            await DrawNode(nodeDrawing, canvas, centeredY);
+            var task = DrawNode(nodeDrawing, canvas, centeredY);
             centeredY += _cache.NodeHeight;
+
+            return task;
          }
       }
 
@@ -84,17 +91,19 @@ namespace NeuralNetwork.Visualizer.Drawing.Layer
          return nodeDrawing.Draw(newCanvas);
       }
 
-      private async Task DrawTitle(ICanvas canvas)
+      private Task DrawTitle(ICanvas canvas)
       {
          if (_preferences.Layers.Title.Height <= 0)
          {
-            return;
+            return Task.CompletedTask;
          }
 
          var rectTitle = new Rectangle(new Position(0, 0), new Size(canvas.Size.Width, _preferences.Layers.Title.Height));
 
-         await canvas.DrawRectangle(rectTitle, null, _preferences.Layers.Title.Background);
-         await canvas.DrawText(this.Element.Id, _preferences.Layers.Title.Font, rectTitle);
+         var taskRectangle = canvas.DrawRectangle(rectTitle, null, _preferences.Layers.Title.Background);
+         var taskText = canvas.DrawText(this.Element.Id, _preferences.Layers.Title.Font, rectTitle);
+
+         return Task.WhenAll(taskRectangle, taskText);
       }
 
       protected abstract INodeDrawing CreateDrawingNode(TNode node);

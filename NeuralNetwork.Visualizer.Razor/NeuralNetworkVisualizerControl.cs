@@ -45,13 +45,13 @@ namespace NeuralNetwork.Visualizer.Razor
          var jsInterop = new JsInterop(jsRuntime, globalInstanceName);
          var synchronize = new Synchronize();
 
-         var scriptFileRegistrarInclusion = GetScriptFileRegistrarInclusion(jsInterop, synchronize, globalInstanceName);
+         var scriptFileRegistrarInclusion = GetScriptFileRegistrarInclusion(jsInterop, synchronize, TaskUnit.Create(), globalInstanceName);
 
          await RegisterScripts(scriptFileRegistrarInclusion).ConfigureAwait(false);
 
          IDrawableSurface drawableSurfaceBuilder(IDrafter drafter)
          {
-            var drawableSurface = new DrawableSurface(drafter, new CanvasBuilder(jsInterop), jsInterop);
+            var drawableSurface = new DrawableSurface(drafter, new CanvasBuilder(jsInterop, TaskUnit.Create()), jsInterop);
             return drawableSurface;
          }
 
@@ -153,9 +153,9 @@ namespace NeuralNetwork.Visualizer.Razor
             .Execute();
       }
 
-      private IScriptFileRegistrarInclusion GetScriptFileRegistrarInclusion(IJsInterop jsInterop, ISynchronize synchronize, string globalInstanceName)
+      private IScriptFileRegistrarInclusion GetScriptFileRegistrarInclusion(IJsInterop jsInterop, ISynchronize synchronize, ITaskUnit taskUnit, string globalInstanceName)
       {
-         var scriptRegistrarInclusion = new ScriptRegistrarInclusion(jsInterop, synchronize, new TaskUnit(), "NeuralNetwork.Visualizer.Assets/js/registrations/", globalInstanceName);
+         var scriptRegistrarInclusion = new ScriptRegistrarInclusion(jsInterop, synchronize, taskUnit, "NeuralNetwork.Visualizer.Assets/js/registrations/", globalInstanceName);
          return scriptRegistrarInclusion;
       }
 
