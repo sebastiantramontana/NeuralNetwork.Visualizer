@@ -9,16 +9,15 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
    internal class CanvasBuilder : ICanvasBuilder
    {
       private readonly IJsInterop _jsInterop;
-      private readonly ITaskUnit _taskUnit;
 
-      internal CanvasBuilder(IJsInterop jsInterop, ITaskUnit taskUnit)
+      internal CanvasBuilder(IJsInterop jsInterop)
       {
          _jsInterop = jsInterop;
-         _taskUnit = taskUnit;
       }
+
       public ICanvas Build(Size size)
       {
-         return new HtmlCanvas(size, _jsInterop, _taskUnit);
+         return new HtmlCanvas(size, _jsInterop);
       }
    }
 }

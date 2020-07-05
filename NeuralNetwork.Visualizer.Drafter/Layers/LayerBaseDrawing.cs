@@ -69,7 +69,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Layer
          foreach (var node in this.Element.Nodes)
          {
             var nodeDrawing = CreateDrawingNode(node);
-            tasks.Add(InternalDrawNode(nodeDrawing));
+            tasks.Add(Task.Run(async () => await InternalDrawNode(nodeDrawing)));
          }
 
          return Task.WhenAll(tasks);

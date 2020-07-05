@@ -4,7 +4,6 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
-using NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using System;
 using System.Threading.Tasks;
@@ -14,17 +13,15 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
    internal class HtmlCanvas : ICanvas
    {
       private readonly IJsInterop _jsInterop;
-      private readonly ITaskUnit _taskUnit;
 
-      internal HtmlCanvas(Size size, IJsInterop jsInterop, ITaskUnit taskUnit)
+      internal HtmlCanvas(Size size, IJsInterop jsInterop)
       {
          this.Size = size;
          _jsInterop = jsInterop;
-         _taskUnit = taskUnit;
       }
       public Size Size { get; }
 
-      public async Task DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
+      public Task DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
       {
          var x = rect.Position.X;
          var y = rect.Position.Y;
@@ -33,9 +30,8 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var penDto = pen?.ToDto(rect);
          var brushDto = brush?.ToDto(rect);
 
-         using var dotNetObjectReference = DotNetObjectReference.Create(this);
-
-         await _taskUnit.StartAsync(() => _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawEllipse", x, y, radiusX, radiusY, penDto, brushDto, dotNetObjectReference));
+         _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawEllipse", x, y, radiusX, radiusY, penDto, brushDto).Wait();
+         return Task.CompletedTask;
       }
 
       public Task DrawLine(Position p1, Position p2, Pen pen)
@@ -44,9 +40,8 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var p2Dto = p2.ToDto();
          var penDto = pen?.ToDto(new Rectangle(p1, new Size(Math.Abs(p1.X - p2.X), Math.Abs(p1.Y - p2.Y))));
 
-         using var dotNetObjectReference = DotNetObjectReference.Create(this);
-
-         return _taskUnit.StartAsync(() => _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawLine", p1Dto, p2Dto, penDto, dotNetObjectReference));
+         _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawLine", p1Dto, p2Dto, penDto).Wait();
+         return Task.CompletedTask;
       }
 
       public Task DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
@@ -55,9 +50,8 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var penDto = pen?.ToDto(rect);
          var brushDto = brush?.ToDto(rect);
 
-         using var dotNetObjectReference = DotNetObjectReference.Create(this);
-
-         return _taskUnit.StartAsync(() => _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawRectangle", rectangleDto, penDto, brushDto, dotNetObjectReference));
+         _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawRectangle", rectangleDto, penDto, brushDto).Wait();
+         return Task.CompletedTask;
       }
 
       public Task DrawText(string text, FontLabel font, Rectangle rect)
@@ -70,9 +64,8 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var fontDto = font?.ToDto(rect);
          var rectangleDto = rect.ToDto();
 
-         using var dotNetObjectReference = DotNetObjectReference.Create(this);
-
-         return _taskUnit.StartAsync(() => _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawText", text, fontDto, rectangleDto, angle, dotNetObjectReference));
+         _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawText", text, fontDto, rectangleDto, angle).Wait();
+         return Task.CompletedTask;
       }
 
       public Position Translate(Position position, ICanvas destination)
@@ -83,12 +76,6 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var posTranslated = destination.Translate(new Position(0, 0), this);
          position = new Position(position.X - posTranslated.X, position.Y - posTranslated.Y);
          return position;
-      }
-
-      [JSInvokable]
-      public void NotifyDrawIsDone()
-      {
-         _taskUnit.Finish();
       }
    }
 }

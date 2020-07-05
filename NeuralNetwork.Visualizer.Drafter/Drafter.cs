@@ -99,7 +99,7 @@ namespace NeuralNetwork.Visualizer.Drawing
             var canvasRect = new Rectangle(new Position(x, 0), new Size(layerSizesPreCalc.Width, layerSizesPreCalc.Height));
             var layerCanvas = new NestedCanvas(canvasRect, canvas);
 
-            tasks.Add(layerDrawing.Draw(layerCanvas));
+            tasks.Add(Task.Run(() => layerDrawing.Draw(layerCanvas)));
 
             previousNodesDic = layerDrawing.NodesDrawing.ToDictionary(n => n.Node, n => n);
             x += layerSizesPreCalc.Width;
