@@ -31,7 +31,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
 
       private async Task<TPrimitive> CallDomMethod<TDto, TPrimitive>(string domMethod, Func<TDto, TPrimitive> converter)
       {
-         var dto = await _jsInterop.ExecuteOnInstance<TDto>($"DrawableSurface.{domMethod}").ConfigureAwait(false);
+         var dto = await _jsInterop.ExecuteOnInstanceAsync<TDto>($"DrawableSurface.{domMethod}").ConfigureAwait(false);
          return converter.Invoke(dto);
       }
    }

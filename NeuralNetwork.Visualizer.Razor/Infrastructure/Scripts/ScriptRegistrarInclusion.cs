@@ -104,7 +104,7 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
       private Task ExecuteInsertScriptTagCode()
       {
          string insertCode = BuildInsertScriptCode();
-         return _jsInterop.ExcuteCode(insertCode);
+         return _jsInterop.ExcuteCodeAsync(insertCode);
       }
 
       private string BuildInsertScriptCode()
@@ -158,7 +158,7 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
          where T : class
       {
          var functions = StringifyFunctionsArray(instanceRegistrations);
-         return _jsInterop.ExcuteFunction(INSERT_SCRIPT_FUNCTION_NAME, id, src, functions, globalInstanceName, dotNetReference);
+         return _jsInterop.ExcuteFunctionAsync(INSERT_SCRIPT_FUNCTION_NAME, id, src, functions, globalInstanceName, dotNetReference);
       }
 
       private string[] StringifyFunctionsArray(IEnumerable<ScriptInstanceRegistration> instanceRegistrations)

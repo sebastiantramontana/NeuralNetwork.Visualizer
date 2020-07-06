@@ -14,32 +14,37 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Interops
          _globalInstanceName = globalInstanceName;
       }
 
-      public Task ExcuteCode(string code)
+      public Task ExcuteCodeAsync(string code)
       {
          return _jsRuntime.InvokeVoidAsync($"window.eval", code).AsTask();
       }
 
-      public Task<TReturn> ExcuteCode<TReturn>(string code)
+      public Task<TReturn> ExcuteCodeAsync<TReturn>(string code)
       {
          return _jsRuntime.InvokeAsync<TReturn>($"window.eval", code).AsTask();
       }
 
-      public Task ExcuteFunction(string functionName, params object[] args)
+      public Task ExcuteFunctionAsync(string functionName, params object[] args)
       {
          return _jsRuntime.InvokeVoidAsync(functionName, args).AsTask();
       }
 
-      public Task<TReturn> ExcuteFunction<TReturn>(string functionName, params object[] args)
+      public Task<TReturn> ExcuteFunctionAsync<TReturn>(string functionName, params object[] args)
       {
          return _jsRuntime.InvokeAsync<TReturn>(functionName, args).AsTask();
       }
 
-      public Task ExecuteOnInstance(string functionPath, params object[] args)
+      public void ExecuteOnInstance(string functionPath, params object[] args)
+      {
+         throw new System.NotImplementedException();
+      }
+
+      public Task ExecuteOnInstanceAsync(string functionPath, params object[] args)
       {
          return _jsRuntime.InvokeVoidAsync($"{_globalInstanceName}.{functionPath}", args).AsTask();
       }
 
-      public Task<TReturn> ExecuteOnInstance<TReturn>(string functionPath, params object[] args)
+      public Task<TReturn> ExecuteOnInstanceAsync<TReturn>(string functionPath, params object[] args)
       {
          return _jsRuntime.InvokeAsync<TReturn>($"{_globalInstanceName}.{functionPath}", args).AsTask();
       }

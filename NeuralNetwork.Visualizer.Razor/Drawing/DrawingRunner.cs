@@ -20,9 +20,9 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
       {
          return _synchronize.ForEachAsync(new[]
          {
-           new Func<Task>( ()=>_jsInterop.ExecuteOnInstance("Canvas.beginDraw")),
+           new Func<Task>( ()=>_jsInterop.ExecuteOnInstanceAsync("Canvas.beginDraw")),
            drawFunc,
-           new Func<Task>( ()=>_jsInterop.ExecuteOnInstance("Canvas.endDraw"))
+           new Func<Task>( ()=>_jsInterop.ExecuteOnInstanceAsync("Canvas.endDraw"))
          });
       }
    }
