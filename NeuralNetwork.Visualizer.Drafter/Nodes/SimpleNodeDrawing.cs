@@ -20,15 +20,15 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          _cache = cache;
       }
 
-      protected override Task DrawContent(ICanvas canvas, Rectangle rect)
+      protected override void DrawContent(ICanvas canvas, Rectangle rect)
       {
          if (!this.Element.OutputValue.HasValue)
-            return Task.CompletedTask;
+            return;
 
          var outputRectangle = GetOutputRectangle(rect);
          var font = _preferences.OutputValueFormatter.GetFormat(this.Element.OutputValue.Value);
 
-         return canvas.DrawText(Math.Round(this.Element.OutputValue.Value, _preferences.RoundingDigits).ToString(), font, outputRectangle);
+         canvas.DrawText(Math.Round(this.Element.OutputValue.Value, _preferences.RoundingDigits).ToString(), font, outputRectangle);
       }
 
       private Rectangle GetOutputRectangle(Rectangle rect)

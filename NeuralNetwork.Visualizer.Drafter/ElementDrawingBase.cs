@@ -12,6 +12,6 @@ namespace NeuralNetwork.Visualizer.Drawing
       }
 
       public TElement Element { get; private set; }
-      public abstract Task Draw(ICanvas canvas);
+      public abstract void Draw(ICanvas canvas);
    }
 }

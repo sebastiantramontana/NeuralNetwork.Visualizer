@@ -73,7 +73,7 @@ namespace NeuralNetwork.Visualizer.Drawing
          return size;
       }
 
-      private Task DrawLayersAsync(ICanvas canvas, LayerSizesPreCalc layerSizesPreCalc)
+      private async Task DrawLayersAsync(ICanvas canvas, LayerSizesPreCalc layerSizesPreCalc)
       {
          int x = 0;
 
@@ -88,8 +88,6 @@ namespace NeuralNetwork.Visualizer.Drawing
          NeuronSizesPreCalc neuronCache = new NeuronSizesPreCalc(preferences);
          EdgeSizesPreCalc edgesCache = new EdgeSizesPreCalc();
 
-         var tasks = new List<Task>();
-
          for (LayerBase layer = inputLayer; layer != null; layer = layer.Next)
          {
             ILayerDrawing layerDrawing = (layer == inputLayer)
@@ -99,13 +97,11 @@ namespace NeuralNetwork.Visualizer.Drawing
             var canvasRect = new Rectangle(new Position(x, 0), new Size(layerSizesPreCalc.Width, layerSizesPreCalc.Height));
             var layerCanvas = new NestedCanvas(canvasRect, canvas);
 
-            tasks.Add(Task.Run(() => layerDrawing.Draw(layerCanvas)));
+            await Task.Run(() => layerDrawing.Draw(layerCanvas));
 
             previousNodesDic = layerDrawing.NodesDrawing.ToDictionary(n => n.Node, n => n);
             x += layerSizesPreCalc.Width;
          }
-
-         return Task.WhenAll(tasks);
       }
    }
 }

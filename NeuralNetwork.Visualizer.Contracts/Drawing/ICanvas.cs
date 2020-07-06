@@ -11,10 +11,10 @@ namespace NeuralNetwork.Visualizer.Contracts.Drawing
       Size Size { get; }
 
       Position Translate(Position position, ICanvas destination);
-      Task DrawEllipse(Rectangle rect, Pen pen, IBrush brush);
-      Task DrawLine(Position p1, Position p2, Pen pen);
-      Task DrawRectangle(Rectangle rect, Pen pen, IBrush brush);
-      Task DrawText(string text, FontLabel font, Rectangle rect);
-      Task DrawText(string text, FontLabel font, Rectangle rect, float angle);
+      void DrawEllipse(Rectangle rect, Pen pen, IBrush brush);
+      void DrawLine(Position p1, Position p2, Pen pen);
+      void DrawRectangle(Rectangle rect, Pen pen, IBrush brush);
+      void DrawText(string text, FontLabel font, Rectangle rect);
+      void DrawText(string text, FontLabel font, Rectangle rect, float angle);
    }
 }

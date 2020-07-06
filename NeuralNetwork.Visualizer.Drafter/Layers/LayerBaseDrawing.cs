@@ -9,7 +9,6 @@ using NeuralNetwork.Visualizer.Drawing.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Drawing.Layer
 {
@@ -38,7 +37,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Layer
 
       public IEnumerable<INodeDrawing> NodesDrawing { get { return _nodesDrawing; } }
 
-      public override Task Draw(ICanvas canvas)
+      public override void Draw(ICanvas canvas)
       {
          var rect = new Rectangle(new Position(0, 0), canvas.Size);
          _selectableElementRegister.Register(new RegistrationInfo(this.Element, canvas, _regionBuilder.Rectangle(rect), 1));
@@ -46,64 +45,54 @@ namespace NeuralNetwork.Visualizer.Drawing.Layer
          var isSelected = _selectionChecker.IsSelected(this.Element);
          var info = _preferences.Layers.GetInfoBySelection(isSelected);
 
-         var taskRectangle = canvas.DrawRectangle(rect, info.Border, info.Background);
-         var taskTitle = DrawTitle(canvas);
-         var taskNodes = DrawNodes(canvas);
-
-         return Task.WhenAll(taskRectangle, taskTitle, taskNodes);
+         canvas.DrawRectangle(rect, info.Border, info.Background);
+         DrawTitle(canvas);
+         DrawNodes(canvas);
       }
 
-      private Task DrawNodes(ICanvas canvas)
+      private void DrawNodes(ICanvas canvas)
       {
          int centeredY = _cache.StartingY + (_cache.TotalNodesHeight - _cache.NodeHeight * this.Element.GetAllNodes().Count()) / 2;
          centeredY = Math.Max(centeredY, _cache.StartingY);
 
-         var tasks = new List<Task>();
-
          if (this.Element.Bias != null)
          {
             var biasDrawing = new BiasDrawing(this.Element.Bias, _preferences, _biasCache, _selectableElementRegister, _selectionChecker, _regionBuilder);
-            tasks.Add(InternalDrawNode(biasDrawing));
+            InternalDrawNode(biasDrawing);
          }
 
          foreach (var node in this.Element.Nodes)
          {
             var nodeDrawing = CreateDrawingNode(node);
-            tasks.Add(Task.Run(async () => await InternalDrawNode(nodeDrawing)));
+            InternalDrawNode(nodeDrawing);
          }
 
-         return Task.WhenAll(tasks);
-
-         Task InternalDrawNode(INodeDrawing nodeDrawing)
+         void InternalDrawNode(INodeDrawing nodeDrawing)
          {
             _nodesDrawing.Add(nodeDrawing);
 
-            var task = DrawNode(nodeDrawing, canvas, centeredY);
+            DrawNode(nodeDrawing, canvas, centeredY);
             centeredY += _cache.NodeHeight;
-
-            return task;
          }
       }
 
-      private Task DrawNode(INodeDrawing nodeDrawing, ICanvas parentCanvas, int y)
+      private void DrawNode(INodeDrawing nodeDrawing, ICanvas parentCanvas, int y)
       {
          var newCanvas = new NestedCanvas(new Rectangle(new Position(_preferences.NodeMargins, y), new Size(_cache.NodeWidth, _cache.NodeEllipseHeight)), parentCanvas);
-         return nodeDrawing.Draw(newCanvas);
+         nodeDrawing.Draw(newCanvas);
       }
 
-      private Task DrawTitle(ICanvas canvas)
+      private void DrawTitle(ICanvas canvas)
       {
          if (_preferences.Layers.Title.Height <= 0)
          {
-            return Task.CompletedTask;
+            return;
          }
 
          var rectTitle = new Rectangle(new Position(0, 0), new Size(canvas.Size.Width, _preferences.Layers.Title.Height));
 
-         var taskRectangle = canvas.DrawRectangle(rectTitle, null, _preferences.Layers.Title.Background);
-         var taskText = canvas.DrawText(this.Element.Id, _preferences.Layers.Title.Font, rectTitle);
-
-         return Task.WhenAll(taskRectangle, taskText);
+         canvas.DrawRectangle(rectTitle, null, _preferences.Layers.Title.Background);
+         canvas.DrawText(this.Element.Id, _preferences.Layers.Title.Font, rectTitle);
       }
 
       protected abstract INodeDrawing CreateDrawingNode(TNode node);

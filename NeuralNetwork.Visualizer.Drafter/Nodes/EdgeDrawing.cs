@@ -33,16 +33,14 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          _regionBuilder = regionBuilder;
       }
 
-      public override Task Draw(ICanvas canvas)
+      public override void Draw(ICanvas canvas)
       {
          RegisterSelectableConnectorLine(canvas);
 
          var pen = GetPen();
 
-         var taskLine = canvas.DrawLine(_fromPosition, _toPosition, pen);
-         var taskWeight = DrawWeight(canvas);
-
-         return Task.WhenAll(taskLine, taskWeight);
+         canvas.DrawLine(_fromPosition, _toPosition, pen);
+         DrawWeight(canvas);
       }
 
       private void RegisterSelectableConnectorLine(ICanvas canvas)
@@ -67,16 +65,16 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          return pen;
       }
 
-      private Task DrawWeight(ICanvas canvas)
+      private void DrawWeight(ICanvas canvas)
       {
          if (!this.Element.Weight.HasValue)
-            return Task.CompletedTask;
+            return;
 
          var weightValue = Math.Round(this.Element.Weight.Value, _preferences.RoundingDigits).ToString();
          var sizesPositions = GetSizesPositions();
          var fontLabel = _preferences.WeightFormatter.GetFormat(this.Element.Weight.Value);
 
-         return canvas.DrawText(weightValue, fontLabel, sizesPositions.TextRectangle, sizesPositions.Angle);
+         canvas.DrawText(weightValue, fontLabel, sizesPositions.TextRectangle, sizesPositions.Angle);
       }
 
       private (Rectangle TextRectangle, float Angle) GetSizesPositions()

@@ -4,6 +4,6 @@ namespace NeuralNetwork.Visualizer.Contracts.Drawing
 {
    public interface IElementDrawing
    {
-      Task Draw(ICanvas canvas);
+      void Draw(ICanvas canvas);
    }
 }
