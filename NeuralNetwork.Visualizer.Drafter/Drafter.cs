@@ -31,16 +31,16 @@ namespace NeuralNetwork.Visualizer.Drawing
 
       public IRegionBuilder RegionBuilder { get; }
 
-      public async Task RedrawAsync(ICanvasBuilder canvasBuilder)
+      public Task RedrawAsync(ICanvasBuilder canvasBuilder)
       {
          if (!ValidateInputLayer())
-            return;
+            return Task.CompletedTask;
 
-         var zoomedControlSize = await GetZoomedControlSize().ConfigureAwait(false);
+         var zoomedControlSize = GetZoomedControlSize();
          var layerSizes = GetLayerSizes(zoomedControlSize);
          var canvas = canvasBuilder.Build(new Size(zoomedControlSize.Width, layerSizes.Height));
 
-         await DrawLayersAsync(canvas, layerSizes).ConfigureAwait(false);
+         return DrawLayersAsync(canvas, layerSizes);
       }
 
       private bool ValidateInputLayer()
@@ -65,9 +65,9 @@ namespace NeuralNetwork.Visualizer.Drawing
          return layerSize;
       }
 
-      private async Task<Size> GetZoomedControlSize()
+      private Size GetZoomedControlSize()
       {
-         var controlSize = await _control.GetSize().ConfigureAwait(false);
+         var controlSize = _control.Size;
 
          var size = new Size((int)(_control.Zoom * controlSize.Width), (int)(_control.Zoom * controlSize.Height));
          return size;

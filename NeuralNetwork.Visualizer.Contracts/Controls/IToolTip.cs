@@ -5,7 +5,7 @@ namespace NeuralNetwork.Visualizer.Contracts.Controls
 {
    public interface IToolTip
    {
-      Task Show(string title, string text);
-      Task Close();
+      void Show(string title, string text);
+      void Close();
    }
 }

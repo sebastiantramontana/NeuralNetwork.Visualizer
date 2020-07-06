@@ -8,22 +8,20 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
    internal class DrawingRunner : IDrawingRunner
    {
       private readonly IJsInterop _jsInterop;
-      private readonly ISynchronize _synchronize;
 
-      public DrawingRunner(IJsInterop jsInterop, ISynchronize synchronize)
+      public DrawingRunner(IJsInterop jsInterop)
       {
          _jsInterop = jsInterop;
-         _synchronize = synchronize;
       }
 
       public Task Run(Func<Task> drawFunc)
       {
-         return _synchronize.ForEachAsync(new[]
+         _jsInterop.ExecuteOnInstance("Canvas.beginDraw");
+
+         return drawFunc.Invoke().ContinueWith((t) =>
          {
-           new Func<Task>( ()=>_jsInterop.ExecuteOnInstanceAsync("Canvas.beginDraw")),
-           drawFunc,
-           new Func<Task>( ()=>_jsInterop.ExecuteOnInstanceAsync("Canvas.endDraw"))
-         });
+            _jsInterop.ExecuteOnInstance("Canvas.endDraw");
+         }, TaskContinuationOptions.OnlyOnRanToCompletion);
       }
    }
 }

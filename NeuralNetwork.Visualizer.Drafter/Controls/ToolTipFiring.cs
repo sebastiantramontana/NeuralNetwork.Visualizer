@@ -30,24 +30,24 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          _lastToolTipLocation = new Position(0, 0);
       }
 
-      public async Task Show(Position position)
+      public void Show(Position position)
       {
          if (!Validate(position))
             return;
 
-         await DestroyFiring().ConfigureAwait(false);
+         DestroyFiring();
 
          _timeout = CreateTimer();
 
-         _timeout.Elapsed += async (s, ev) =>
+         _timeout.Elapsed += (s, ev) =>
          {
-            await DestroyFiring().ConfigureAwait(false);
+            DestroyFiring();
 
             var elem = _selectionResolver.GetElementFromLocation(position);
 
             if (elem != null)
             {
-               await ShowToolTip(elem).ConfigureAwait(false);
+               ShowToolTip(elem);
                _lastToolTipLocation = position;
             }
          };
@@ -55,21 +55,21 @@ namespace NeuralNetwork.Visualizer.Drawing.Controls
          _timeout.Start();
       }
 
-      public Task Hide()
+      public void Hide()
       {
-         return DestroyFiring();
+         DestroyFiring();
       }
 
-      private Task DestroyFiring()
+      private void DestroyFiring()
       {
          Destroy.Disposable(ref _timeout);
-         return _toolTip.Close();
+         _toolTip.Close();
       }
 
-      private Task ShowToolTip(Element element)
+      private void ShowToolTip(Element element)
       {
          string text = GetElementText(element);
-         return _toolTip.Show(element.Id, text);
+         _toolTip.Show(element.Id, text);
       }
 
       private Timer CreateTimer()

@@ -114,8 +114,8 @@ namespace NeuralNetwork.Visualizer.Winform
          set => _neuralNetworkVisualizerControlInner.Zoom = value;
       }
 
-      public Task<Size> GetSize() => _neuralNetworkVisualizerControlInner.GetSize();
-      public Task<Size> GetDrawingSize() => _neuralNetworkVisualizerControlInner.GetDrawingSize();
+      Size INeuralNetworkVisualizerControl.Size => _neuralNetworkVisualizerControlInner.Size;
+      public Size DrawingSize => _neuralNetworkVisualizerControlInner.DrawingSize;
 
       public Task<Image> ExportToImage()
       {
@@ -167,14 +167,14 @@ namespace NeuralNetwork.Visualizer.Winform
          await _neuralNetworkVisualizerControlInner.DispatchMouseDown(e.Location.ToVisualizer(), Modifierkey);
       }
 
-      private async void PicCanvas_MouseLeave(object sender, EventArgs e)
+      private void PicCanvas_MouseLeave(object sender, EventArgs e)
       {
-         await _neuralNetworkVisualizerControlInner.DispatchMouseLeave();
+         _neuralNetworkVisualizerControlInner.DispatchMouseLeave();
       }
 
-      private async void PicCanvas_MouseMove(object sender, Winforms.MouseEventArgs e)
+      private void PicCanvas_MouseMove(object sender, Winforms.MouseEventArgs e)
       {
-         await _neuralNetworkVisualizerControlInner.DispatchMouseMove(e.Location.ToVisualizer());
+         _neuralNetworkVisualizerControlInner.DispatchMouseMove(e.Location.ToVisualizer());
       }
 
       protected override void Dispose(bool disposing)

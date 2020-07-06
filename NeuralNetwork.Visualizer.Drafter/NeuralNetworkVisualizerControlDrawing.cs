@@ -70,8 +70,9 @@ namespace NeuralNetwork.Visualizer.Drawing
          set => MakeZoom(value);
       }
 
-      public Task<Size> GetSize() => _drawableSurface.GetSize();
-      public Task<Size> GetDrawingSize() => _drawableSurface.GetDrawingSize();
+      public Size Size => _drawableSurface.Size;
+      public Size DrawingSize => _drawableSurface.DrawingSize;
+
       public Task RedrawAsync()
       {
          SetReadyForAutoRedraw();
@@ -96,13 +97,13 @@ namespace NeuralNetwork.Visualizer.Drawing
 
       public Task<Image> ExportToImage()
       {
-         return _drawableSurface.GetImage();
+         return Task.FromResult(_drawableSurface.Image);
       }
 
       private Size _previousSize;
       public async Task DispatchOnSizeChange()
       {
-         var currentSize = await _drawableSurface.GetSize().ConfigureAwait(false);
+         var currentSize = _drawableSurface.Size;
 
          if (currentSize.IsNull || currentSize == _previousSize || !_readyToRedrawWhenPropertyChange)
          {
@@ -137,20 +138,20 @@ namespace NeuralNetwork.Visualizer.Drawing
          return _selectionEventFiring.FireSelectionEvent(position, selectionEvent);
       }
 
-      public Task DispatchMouseLeave()
+      public void DispatchMouseLeave()
       {
          if (!_readyToRedrawWhenPropertyChange)
-            return Task.CompletedTask;
+            return;
 
-         return _toolTipFiring.Hide();
+         _toolTipFiring.Hide();
       }
 
-      public Task DispatchMouseMove(Position position)
+      public void DispatchMouseMove(Position position)
       {
          if (!_readyToRedrawWhenPropertyChange)
-            return Task.CompletedTask;
+            return;
 
-         return _toolTipFiring.Show(position);
+         _toolTipFiring.Show(position);
       }
 
       private void SetReadyForAutoRedraw()

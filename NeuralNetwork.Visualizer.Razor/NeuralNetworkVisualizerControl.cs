@@ -39,15 +39,14 @@ namespace NeuralNetwork.Visualizer.Razor
          this.GlobalInstanceName = "neuralnetwork_visualizer_" + Guid.NewGuid().ToString().Replace("-", "_");
       }
 
-      public async Task Initialize(IJSRuntime jsRuntime)
+      public void Initialize(IJSRuntime jsRuntime)
       {
          var globalInstanceName = this.GlobalInstanceName;
          var jsInterop = new JsInterop(jsRuntime, globalInstanceName);
-         var synchronize = new Synchronize();
 
-         var scriptFileRegistrarInclusion = GetScriptFileRegistrarInclusion(jsInterop, synchronize, TaskUnit.Create(), globalInstanceName);
+         var scriptFileRegistrarInclusion = GetScriptFileRegistrarInclusion(jsInterop, globalInstanceName);
 
-         await RegisterScripts(scriptFileRegistrarInclusion).ConfigureAwait(false);
+         RegisterScripts(scriptFileRegistrarInclusion);
 
          IDrawableSurface drawableSurfaceBuilder(IDrafter drafter)
          {
@@ -55,7 +54,7 @@ namespace NeuralNetwork.Visualizer.Razor
             return drawableSurface;
          }
 
-         _drawingRunner = new DrawingRunner(jsInterop, synchronize);
+         _drawingRunner = new DrawingRunner(jsInterop);
          _neuralNetworkVisualizerControlInner = new NeuralNetworkVisualizerControlDrawing(new ToolTipControl(jsInterop), new RegionBuilder(), drawableSurfaceBuilder);
 
          _neuralNetworkVisualizerControlInner.SelectInputLayer += NeuralNetworkVisualizerControlInner_SelectInputLayer;
@@ -138,9 +137,9 @@ namespace NeuralNetwork.Visualizer.Razor
          this.InputLayer = _input;
       }
 
-      private Task RegisterScripts(IScriptFileRegistrarInclusion scriptFileRegistrarInclusion)
+      private void RegisterScripts(IScriptFileRegistrarInclusion scriptFileRegistrarInclusion)
       {
-         return scriptFileRegistrarInclusion
+         scriptFileRegistrarInclusion
             .Include("global-instance-registration.js")
                .Register(new GlobalInstanceScriptRegistration())
             .Include("drawable-surface-registration.js")
@@ -148,14 +147,13 @@ namespace NeuralNetwork.Visualizer.Razor
             .Include("tootltip-registration.js")
                .Register(new ToolTipScriptRegistration())
             .Include("canvas-registration.js")
-
                .Register(new CanvasRegistration())
             .Execute();
       }
 
-      private IScriptFileRegistrarInclusion GetScriptFileRegistrarInclusion(IJsInterop jsInterop, ISynchronize synchronize, ITaskUnit taskUnit, string globalInstanceName)
+      private IScriptFileRegistrarInclusion GetScriptFileRegistrarInclusion(IJsInterop jsInterop, string globalInstanceName)
       {
-         var scriptRegistrarInclusion = new ScriptRegistrarInclusion(jsInterop, synchronize, taskUnit, "NeuralNetwork.Visualizer.Assets/js/registrations/", globalInstanceName);
+         var scriptRegistrarInclusion = new ScriptRegistrarInclusion(jsInterop, "NeuralNetwork.Visualizer.Assets/js/registrations/", globalInstanceName);
          return scriptRegistrarInclusion;
       }
 
@@ -207,8 +205,8 @@ namespace NeuralNetwork.Visualizer.Razor
          set => _neuralNetworkVisualizerControlInner.Zoom = value;
       }
 
-      public Task<Size> GetSize() => _neuralNetworkVisualizerControlInner.GetSize();
-      public Task<Size> GetDrawingSize() => _neuralNetworkVisualizerControlInner.GetDrawingSize();
+      public Size Size => _neuralNetworkVisualizerControlInner.Size;
+      public Size DrawingSize => _neuralNetworkVisualizerControlInner.DrawingSize;
       public Task<Image> ExportToImage() => _neuralNetworkVisualizerControlInner.ExportToImage();
 
       public Task RedrawAsync()

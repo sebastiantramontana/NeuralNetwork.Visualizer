@@ -13,9 +13,9 @@
 
         if (firstRender)
         {
-            await _visualizer.Initialize(_jsRuntime);
+            _visualizer.Initialize(_jsRuntime);
 
-            var size = await _visualizer.GetDrawingSize();
+            var size = _visualizer.DrawingSize;
 
             Console.WriteLine($"{size.Width} x {size.Height}");
 

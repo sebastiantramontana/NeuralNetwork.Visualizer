@@ -26,20 +26,20 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
          _gdiImageCanvasBuilder = gdiImageCanvasBuilder;
       }
 
-      public Task<Image> GetImage()
+      public Image Image
       {
-         return Task.Run(() =>
+         get
          {
             var img = _invoker.SafeInvoke(() => _pictureBox.Image?.Clone() as Gdi.Image
              ?? new Gdi.Bitmap(_control.ClientSize.Width, _control.ClientSize.Height));  //Clone for safe handling
 
             return img.ToVisualizer();
-         });
+         }
       }
 
       public IDrafter Drafter { get; }
-      public Task<Size> GetSize() => Task.Run(() => _control.Size.ToVisualizer());
-      public Task<Size> GetDrawingSize() => Task.Run(() => _pictureBox.ClientSize.ToVisualizer());
+      public Size Size => _control.Size.ToVisualizer();
+      public Size DrawingSize => _pictureBox.ClientSize.ToVisualizer();
 
       private bool _isDrawing = false;
 

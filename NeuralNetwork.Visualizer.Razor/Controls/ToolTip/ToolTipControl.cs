@@ -13,14 +13,14 @@ namespace NeuralNetwork.Visualizer.Razor.Controls.ToolTip
          _jsInterop = jsInterop;
       }
 
-      public Task Show(string title, string text)
+      public void Show(string title, string text)
       {
-         return _jsInterop.ExecuteOnInstanceAsync("ToolTip.show");
+         _jsInterop.ExecuteOnInstance("ToolTip.show");
       }
 
-      public Task Close()
+      public void Close()
       {
-         return _jsInterop.ExecuteOnInstanceAsync("ToolTip.close");
+         _jsInterop.ExecuteOnInstance("ToolTip.close");
       }
    }
 }

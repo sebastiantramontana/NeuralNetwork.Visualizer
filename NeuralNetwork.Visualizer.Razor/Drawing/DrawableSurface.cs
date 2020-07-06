@@ -22,16 +22,16 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
       }
 
       public IDrafter Drafter { get; }
-      public Task<Size> GetSize() => CallDomSizeMethod("getSize");
-      public Task<Size> GetDrawingSize() => CallDomSizeMethod("getDrawingSize");
-      public Task<Image> GetImage() => CallDomMethod<ImageDto, Image>("getImage", dto => dto.ToVisualizer());
+      public Size Size => CallDomSizeMethod("getSize");
+      public Size DrawingSize => CallDomSizeMethod("getDrawingSize");
+      public Image Image => CallDomMethod<ImageDto, Image>("getImage", dto => dto.ToVisualizer());
       public Task RedrawAsync() => this.Drafter.RedrawAsync(_canvasBuilder);
 
-      private Task<Size> CallDomSizeMethod(string domSizeMethod) => CallDomMethod<SizeDto, Size>(domSizeMethod, dto => dto.ToVisualizer());
+      private Size CallDomSizeMethod(string domSizeMethod) => CallDomMethod<SizeDto, Size>(domSizeMethod, dto => dto.ToVisualizer());
 
-      private async Task<TPrimitive> CallDomMethod<TDto, TPrimitive>(string domMethod, Func<TDto, TPrimitive> converter)
+      private TPrimitive CallDomMethod<TDto, TPrimitive>(string domMethod, Func<TDto, TPrimitive> converter)
       {
-         var dto = await _jsInterop.ExecuteOnInstanceAsync<TDto>($"DrawableSurface.{domMethod}").ConfigureAwait(false);
+         var dto = _jsInterop.ExecuteOnInstance<TDto>($"DrawableSurface.{domMethod}");
          return converter.Invoke(dto);
       }
    }
