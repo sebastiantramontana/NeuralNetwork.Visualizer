@@ -172,7 +172,6 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
                         break;
 
                     case jsDrawingMethods.rectangle:
-                        console.log("rectangle ", drawingCall.args);
                         drawingMethod = drawRectangle;
                         break;
 
