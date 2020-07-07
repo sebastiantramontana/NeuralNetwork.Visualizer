@@ -1,4 +1,6 @@
-﻿var registerToolTipDomAccess = registerToolTipDomAccess || ((globalInstanceName) => {
+﻿"use strict";
+
+var registerToolTipDomAccess = registerToolTipDomAccess || ((globalInstanceName) => {
 
     const changeDisplay = (value) => {
 

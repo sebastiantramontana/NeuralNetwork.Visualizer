@@ -1,4 +1,6 @@
-﻿var registerDrawableSurfaceDomAccess = registerDrawableSurfaceDomAccess || ((globalInstanceName) => {
+﻿"use strict";
+
+var registerDrawableSurfaceDomAccess = registerDrawableSurfaceDomAccess || ((globalInstanceName) => {
 
     const getVisualizerElement = () => {
         const visualizerId = 'neuralnetwork-visualizer-' + globalInstanceName;

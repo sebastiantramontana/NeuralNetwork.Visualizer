@@ -1,4 +1,6 @@
-﻿var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) => {
+﻿"use strict";
+
+var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) => {
 
     const MINIMUM_FONT_SIZE = 8;
 
@@ -25,6 +27,14 @@
     const brushTypes = Object.freeze({
         solid: "Solid",
         linearGradient: "LinearGradient"
+    });
+
+    const jsDrawingMethods = Object.freeze({
+        unknown: "Unknown",
+        ellipse: "Ellipse",
+        rectangle: "Rectangle",
+        line: "Line",
+        text: "Text"
     });
 
     const getBrushStyle = (brush, context) => {
@@ -115,6 +125,28 @@
         context.stroke();
     };
 
+    const drawEllipse = (x, y, radiusX, radiusY, pen, brush) => {
+        drawShape(pen, brush, (context) => context.ellipse(x, y, radiusX, radiusY, 0, 0, Math.PI * 2));
+    };
+
+    const drawRectangle = (rectangle, pen, brush) => {
+        drawShape(pen, brush, (context) => context.rect(rectangle.position.x, rectangle.position.y, rectangle.size.width, rectangle.size.height));
+    };
+
+    const drawLine = (position1, position2, pen) => {
+        const context = getReadyContext();
+
+        context.moveTo(position1.x, position1.y);
+        context.lineTo(position2.x, position2.y);
+
+        configureStroke(pen, context);
+        context.stroke();
+    };
+
+    const drawRectText = (text, font, rectangle, angle) => {
+        drawText(text, font, rectangle.position.x, rectangle.position.y, rectangle.size.width, angle);
+    };
+
     window[globalInstanceName].Canvas = {
 
         beginDraw: () => {
@@ -128,34 +160,41 @@
 
             //TODO: MAKE OFFSCREEN CANVAS!!!
         },
-        endDraw: () => {
+        endDraw: (drawingCallObj) => {
+            
+            drawingCallObj.calls.forEach(drawingCall => {
+
+                let drawingMethod = null;
+
+                switch (drawingCall.jsDrawingMethod) {
+                    case jsDrawingMethods.ellipse:
+                        drawingMethod = drawEllipse;
+                        break;
+
+                    case jsDrawingMethods.rectangle:
+                        console.log("rectangle ", drawingCall.args);
+                        drawingMethod = drawRectangle;
+                        break;
+
+                    case jsDrawingMethods.line:
+                        drawingMethod = drawLine;
+                        break;
+
+                    case jsDrawingMethods.text:
+                        drawingMethod = drawRectText;
+                        break;
+
+                    case jsDrawingMethods.unknown:
+                    default:
+                        throw "Unknown drawing method: " + drawingCall.jsDrawingMethod;
+                }
+
+                drawingMethod(...drawingCall.args);
+            });
+
             _currentContext = null;
 
             //TODO: MAKE OFFSCREEN CANVAS!!!
-        },
-        Drawing:
-        {
-            drawEllipse: (x, y, radiusX, radiusY, pen, brush) => {
-                drawShape(pen, brush, (context) => context.ellipse(x, y, radiusX, radiusY, 0, 0, Math.PI * 2));
-            },
-
-            drawRectangle: (rectangle, pen, brush) => {
-                drawShape(pen, brush, (context) => context.rect(rectangle.position.x, rectangle.position.y, rectangle.size.width, rectangle.size.height));
-            },
-
-            drawLine: (position1, position2, pen) => {
-                const context = getReadyContext();
-
-                context.moveTo(position1.x, position1.y);
-                context.lineTo(position2.x, position2.y);
-
-                configureStroke(pen, context);
-                context.stroke();
-            },
-
-            drawText: (text, font, rectangle, angle) => {
-                drawText(text, font, rectangle.position.x, rectangle.position.y, rectangle.size.width, angle);
-            }
         }
     };
 });

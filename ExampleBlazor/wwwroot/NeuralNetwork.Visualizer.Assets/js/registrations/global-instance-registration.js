@@ -1,3 +1,5 @@
-﻿var registerGlobalInstance = registerGlobalInstance || ((globalInstanceName) => {
+﻿"use strict";
+
+var registerGlobalInstance = registerGlobalInstance || ((globalInstanceName) => {
     window[globalInstanceName] = {};
 });

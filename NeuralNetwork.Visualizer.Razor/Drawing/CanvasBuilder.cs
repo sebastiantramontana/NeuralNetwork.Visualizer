@@ -1,23 +1,22 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Razor.Drawing.Canvas;
-using NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs;
-using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
+using NeuralNetwork.Visualizer.Razor.Drawing.JsDrawingCallAccumulation;
 
 namespace NeuralNetwork.Visualizer.Razor.Drawing
 {
    internal class CanvasBuilder : ICanvasBuilder
    {
-      private readonly IJsInterop _jsInterop;
+      private readonly IJsDrawingCallAccumulator _jsDrawingCallAccumulator;
 
-      internal CanvasBuilder(IJsInterop jsInterop)
+      internal CanvasBuilder(IJsDrawingCallAccumulator jsDrawingCallAccumulator)
       {
-         _jsInterop = jsInterop;
+         _jsDrawingCallAccumulator = jsDrawingCallAccumulator;
       }
 
       public ICanvas Build(Size size)
       {
-         return new HtmlCanvas(size, _jsInterop);
+         return new HtmlCanvas(size, _jsDrawingCallAccumulator);
       }
    }
 }

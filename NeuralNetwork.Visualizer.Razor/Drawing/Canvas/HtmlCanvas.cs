@@ -3,6 +3,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
+using NeuralNetwork.Visualizer.Razor.Drawing.JsDrawingCallAccumulation;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using System;
 
@@ -10,13 +11,14 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
 {
    internal class HtmlCanvas : ICanvas
    {
-      private readonly IJsInterop _jsInterop;
+      private readonly IJsDrawingCallAccumulator _jsDrawingCallAccumulator;
 
-      internal HtmlCanvas(Size size, IJsInterop jsInterop)
+      internal HtmlCanvas(Size size,  IJsDrawingCallAccumulator jsDrawingCallAccumulator)
       {
          this.Size = size;
-         _jsInterop = jsInterop;
+         _jsDrawingCallAccumulator = jsDrawingCallAccumulator;
       }
+
       public Size Size { get; }
 
       public void DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
@@ -28,7 +30,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var penDto = pen?.ToDto(rect);
          var brushDto = brush?.ToDto(rect);
 
-         _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawEllipse", x, y, radiusX, radiusY, penDto, brushDto);
+         _jsDrawingCallAccumulator.AddEllipse(x, y, radiusX, radiusY, penDto, brushDto);
       }
 
       public void DrawLine(Position p1, Position p2, Pen pen)
@@ -37,7 +39,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var p2Dto = p2.ToDto();
          var penDto = pen?.ToDto(new Rectangle(p1, new Size(Math.Abs(p1.X - p2.X), Math.Abs(p1.Y - p2.Y))));
 
-         _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawLine", p1Dto, p2Dto, penDto);
+         _jsDrawingCallAccumulator.AddLine(p1Dto, p2Dto, penDto);
       }
 
       public void DrawRectangle(Rectangle rect, Pen pen, IBrush brush)
@@ -46,7 +48,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var penDto = pen?.ToDto(rect);
          var brushDto = brush?.ToDto(rect);
 
-         _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawRectangle", rectangleDto, penDto, brushDto);
+         _jsDrawingCallAccumulator.AddRectangle(rectangleDto, penDto, brushDto);
       }
 
       public void DrawText(string text, FontLabel font, Rectangle rect)
@@ -59,7 +61,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var fontDto = font?.ToDto(rect);
          var rectangleDto = rect.ToDto();
 
-         _jsInterop.ExecuteOnInstance($"Canvas.Drawing.drawText", text, fontDto, rectangleDto, angle);
+         _jsDrawingCallAccumulator.AddText(text, fontDto, rectangleDto, angle);
       }
 
       public Position Translate(Position position, ICanvas destination)

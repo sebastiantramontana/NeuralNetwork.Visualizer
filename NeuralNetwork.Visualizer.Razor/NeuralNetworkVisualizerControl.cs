@@ -12,6 +12,7 @@ using NeuralNetwork.Visualizer.Drawing;
 using NeuralNetwork.Visualizer.Razor.Controls.ToolTip;
 using NeuralNetwork.Visualizer.Razor.Drawing;
 using NeuralNetwork.Visualizer.Razor.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Razor.Drawing.JsDrawingCallAccumulation;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts;
@@ -43,6 +44,7 @@ namespace NeuralNetwork.Visualizer.Razor
       {
          var globalInstanceName = this.GlobalInstanceName;
          var jsInterop = new JsInterop(jsRuntime, globalInstanceName);
+         var jsDrawingCallAccumulator = new JsDrawingCallAccumulator();
          var taskUnit = TaskUnit.Create();
 
          var scriptFileRegistrarInclusion = GetScriptFileRegistrarInclusion(jsInterop, taskUnit, globalInstanceName);
@@ -51,11 +53,11 @@ namespace NeuralNetwork.Visualizer.Razor
 
          IDrawableSurface drawableSurfaceBuilder(IDrafter drafter)
          {
-            var drawableSurface = new DrawableSurface(drafter, new CanvasBuilder(jsInterop), jsInterop);
+            var drawableSurface = new DrawableSurface(drafter, new CanvasBuilder(jsDrawingCallAccumulator), jsInterop);
             return drawableSurface;
          }
 
-         _drawingRunner = new DrawingRunner(jsInterop);
+         _drawingRunner = new DrawingRunner(jsInterop, jsDrawingCallAccumulator);
          _neuralNetworkVisualizerControlInner = new NeuralNetworkVisualizerControlDrawing(new ToolTipControl(jsInterop), new RegionBuilder(), drawableSurfaceBuilder);
 
          _neuralNetworkVisualizerControlInner.SelectInputLayer += NeuralNetworkVisualizerControlInner_SelectInputLayer;
