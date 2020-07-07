@@ -12,7 +12,6 @@ using NeuralNetwork.Visualizer.Drawing;
 using NeuralNetwork.Visualizer.Razor.Controls.ToolTip;
 using NeuralNetwork.Visualizer.Razor.Drawing;
 using NeuralNetwork.Visualizer.Razor.Drawing.Canvas;
-using NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts;
 using NeuralNetwork.Visualizer.Razor.Selection;

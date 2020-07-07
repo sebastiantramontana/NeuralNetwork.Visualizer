@@ -1,5 +1,4 @@
-﻿using NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs;
-using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
+﻿using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using System;
 using System.Threading.Tasks;
 

@@ -1,6 +1,5 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Controls;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
-using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Razor.Controls.ToolTip
 {
