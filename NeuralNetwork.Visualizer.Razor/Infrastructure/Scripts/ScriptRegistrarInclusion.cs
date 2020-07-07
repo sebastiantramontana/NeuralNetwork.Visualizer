@@ -1,7 +1,10 @@
-﻿using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
+﻿using Microsoft.JSInterop;
+using NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs;
+using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
 {
@@ -10,14 +13,16 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
       private const string INSERT_SCRIPT_FUNCTION_NAME = "neuralNetworkVisualizerInsertScript";
 
       private readonly IJsInterop _jsInterop;
+      private readonly ITaskUnit _taskUnit;
       private readonly string _globalInstanceName;
       private readonly string _scriptBaseUrl;
       private readonly ICollection<ScriptFileRegistration> _fileRegistrations;
 
-      internal ScriptRegistrarInclusion(IJsInterop jsInterop, string scriptBaseUrl, string globalInstanceName)
+      internal ScriptRegistrarInclusion(IJsInterop jsInterop, ITaskUnit taskUnit, string scriptBaseUrl, string globalInstanceName)
       {
          _fileRegistrations = new List<ScriptFileRegistration>();
          _jsInterop = jsInterop;
+         _taskUnit = taskUnit;
          _globalInstanceName = globalInstanceName;
          _scriptBaseUrl = NormalizeBaseUrl(scriptBaseUrl);
       }
@@ -38,22 +43,44 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
          return this;
       }
 
-      public void Execute()
+      public async Task Execute()
       {
          ExecuteInsertScriptTagCode();
 
-         foreach (var fileRegistraion in _fileRegistrations)
+         using var dotNetObjectReference = DotNetObjectReference.Create(this);
+
+         await _taskUnit.StartAsync(() =>
          {
-            ExecuteScriptFileRegistration(fileRegistraion);
+            var tasks = new List<Task>();
+
+            foreach (var fileRegistraion in _fileRegistrations)
+            {
+               tasks.Add(ExecuteScriptFileRegistration(fileRegistraion, dotNetObjectReference));
+            }
+
+            return Task.WhenAll(tasks);
+         });
+      }
+
+      private int _onScriptRegisteredCount = 0;
+
+      [JSInvokable]
+      public void OnScriptRegistered()
+      {
+         _onScriptRegisteredCount++;
+
+         if (_fileRegistrations.Count == _onScriptRegisteredCount)
+         {
+            _taskUnit.Finish();
          }
       }
 
-      private void ExecuteScriptFileRegistration(ScriptFileRegistration scriptFileRegistration)
+      private Task ExecuteScriptFileRegistration(ScriptFileRegistration scriptFileRegistration, DotNetObjectReference<ScriptRegistrarInclusion> dotNetReference)
       {
          string src = BuildSrcAttribute(_scriptBaseUrl, scriptFileRegistration.FileName);
          string id = BuildIdAttributte(src);
 
-         ExecuteInsertScript(id, src, scriptFileRegistration.InstanceRegistrations, _globalInstanceName);
+         return ExecuteInsertScript(id, src, scriptFileRegistration.InstanceRegistrations, _globalInstanceName, dotNetReference);
       }
 
       private string NormalizeBaseUrl(string scriptBaseUrl)
@@ -84,12 +111,14 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
 
       private string BuildInsertScriptCode()
       {
-         return @$"var {INSERT_SCRIPT_FUNCTION_NAME} = {INSERT_SCRIPT_FUNCTION_NAME} || ((id, src, registrationFunctions, globalInstanceName) =>
+         return @$"var {INSERT_SCRIPT_FUNCTION_NAME} = {INSERT_SCRIPT_FUNCTION_NAME} || ((id, src, registrationFunctions, globalInstanceName, dotNetRef) =>
                {{
                   const executeRegistrations = () =>
                   {{
                      registrationFunctions
                            .forEach(rf => window[rf](globalInstanceName));
+
+                     dotNetRef.invokeMethod('{nameof(OnScriptRegistered)}');
                   }};
                   
                   const createScriptTag = () =>
@@ -127,10 +156,10 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts
                }})";
       }
 
-      private void ExecuteInsertScript(string id, string src, IEnumerable<ScriptInstanceRegistration> instanceRegistrations, string globalInstanceName)
+      private Task ExecuteInsertScript(string id, string src, IEnumerable<ScriptInstanceRegistration> instanceRegistrations, string globalInstanceName, DotNetObjectReference<ScriptRegistrarInclusion> dotNetReference)
       {
          var functions = StringifyFunctionsArray(instanceRegistrations);
-         _jsInterop.ExcuteFunction(INSERT_SCRIPT_FUNCTION_NAME, id, src, functions, globalInstanceName);
+         return _jsInterop.ExcuteFunctionAsync(INSERT_SCRIPT_FUNCTION_NAME, id, src, functions, globalInstanceName, dotNetReference);
       }
 
       private string[] StringifyFunctionsArray(IEnumerable<ScriptInstanceRegistration> instanceRegistrations)

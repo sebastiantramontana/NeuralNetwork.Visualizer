@@ -1,5 +1,6 @@
 ﻿using Microsoft.JSInterop;
 using Microsoft.JSInterop.WebAssembly;
+using System.Threading.Tasks;
 
 namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Interops
 {
@@ -32,6 +33,11 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Interops
       public TReturn ExcuteFunction<TReturn>(string functionName, params object[] args)
       {
          return _jsRuntime.Invoke<TReturn>(functionName, args);
+      }
+
+      public Task ExcuteFunctionAsync(string functionName, params object[] args)
+      {
+         return _jsRuntime.InvokeVoidAsync(functionName, args).AsTask();
       }
 
       public void ExecuteOnInstance(string functionPath, params object[] args)

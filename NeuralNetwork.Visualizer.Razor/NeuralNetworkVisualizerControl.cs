@@ -12,6 +12,7 @@ using NeuralNetwork.Visualizer.Drawing;
 using NeuralNetwork.Visualizer.Razor.Controls.ToolTip;
 using NeuralNetwork.Visualizer.Razor.Drawing;
 using NeuralNetwork.Visualizer.Razor.Drawing.Canvas;
+using NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using NeuralNetwork.Visualizer.Razor.Infrastructure.Scripts;
 using NeuralNetwork.Visualizer.Razor.Selection;
@@ -38,14 +39,15 @@ namespace NeuralNetwork.Visualizer.Razor
          this.GlobalInstanceName = "neuralnetwork_visualizer_" + Guid.NewGuid().ToString().Replace("-", "_");
       }
 
-      public void Initialize(IJSRuntime jsRuntime)
+      public async Task Initialize(IJSRuntime jsRuntime)
       {
          var globalInstanceName = this.GlobalInstanceName;
          var jsInterop = new JsInterop(jsRuntime, globalInstanceName);
+         var taskUnit = TaskUnit.Create();
 
-         var scriptFileRegistrarInclusion = GetScriptFileRegistrarInclusion(jsInterop, globalInstanceName);
+         var scriptFileRegistrarInclusion = GetScriptFileRegistrarInclusion(jsInterop, taskUnit, globalInstanceName);
 
-         RegisterScripts(scriptFileRegistrarInclusion);
+         await RegisterScripts(scriptFileRegistrarInclusion);
 
          IDrawableSurface drawableSurfaceBuilder(IDrafter drafter)
          {
@@ -136,9 +138,9 @@ namespace NeuralNetwork.Visualizer.Razor
          this.InputLayer = _input;
       }
 
-      private void RegisterScripts(IScriptFileRegistrarInclusion scriptFileRegistrarInclusion)
+      private Task RegisterScripts(IScriptFileRegistrarInclusion scriptFileRegistrarInclusion)
       {
-         scriptFileRegistrarInclusion
+         return scriptFileRegistrarInclusion
             .Include("global-instance-registration.js")
                .Register(new GlobalInstanceScriptRegistration())
             .Include("drawable-surface-registration.js")
@@ -150,9 +152,9 @@ namespace NeuralNetwork.Visualizer.Razor
             .Execute();
       }
 
-      private IScriptFileRegistrarInclusion GetScriptFileRegistrarInclusion(IJsInterop jsInterop, string globalInstanceName)
+      private IScriptFileRegistrarInclusion GetScriptFileRegistrarInclusion(IJsInterop jsInterop, ITaskUnit taskUnit, string globalInstanceName)
       {
-         var scriptRegistrarInclusion = new ScriptRegistrarInclusion(jsInterop, "NeuralNetwork.Visualizer.Assets/js/registrations/", globalInstanceName);
+         var scriptRegistrarInclusion = new ScriptRegistrarInclusion(jsInterop, taskUnit, "NeuralNetwork.Visualizer.Assets/js/registrations/", globalInstanceName);
          return scriptRegistrarInclusion;
       }
 

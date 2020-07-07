@@ -16,7 +16,6 @@
     };
 
     const getReadyContext = () => {
-        console.log("getReadyContext");
         const context = getCurrentContext();
         context.beginPath();
 

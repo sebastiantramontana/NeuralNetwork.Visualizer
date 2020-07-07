@@ -13,7 +13,7 @@
 
         if (firstRender)
         {
-            _visualizer.Initialize(_jsRuntime);
+            await _visualizer.Initialize(_jsRuntime);
 
             var size = _visualizer.DrawingSize;
 
