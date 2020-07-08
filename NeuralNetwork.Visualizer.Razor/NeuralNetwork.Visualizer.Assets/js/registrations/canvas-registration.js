@@ -108,9 +108,12 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
         context.textAlign = font.textAligment;
         context.textBaseline = font.textBaseline;
 
+        context.save();
         rotateText();
 
         context.fillText(text, x, y, maxWidth);
+
+        context.restore();
     };
 
     const drawShape = (pen, brush, drawShapeFunc) => {
@@ -161,7 +164,7 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
             //TODO: MAKE OFFSCREEN CANVAS!!!
         },
         endDraw: (drawingCallObj) => {
-            
+
             drawingCallObj.calls.forEach(drawingCall => {
 
                 let drawingMethod = null;
