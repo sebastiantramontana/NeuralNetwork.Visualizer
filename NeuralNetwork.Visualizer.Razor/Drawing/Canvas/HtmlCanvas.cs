@@ -4,7 +4,6 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
 using NeuralNetwork.Visualizer.Razor.Drawing.JsDrawingCallAccumulation;
-using NeuralNetwork.Visualizer.Razor.Infrastructure.Interops;
 using System;
 
 namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
@@ -13,7 +12,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
    {
       private readonly IJsDrawingCallAccumulator _jsDrawingCallAccumulator;
 
-      internal HtmlCanvas(Size size,  IJsDrawingCallAccumulator jsDrawingCallAccumulator)
+      internal HtmlCanvas(Size size, IJsDrawingCallAccumulator jsDrawingCallAccumulator)
       {
          this.Size = size;
          _jsDrawingCallAccumulator = jsDrawingCallAccumulator;
@@ -23,10 +22,10 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
 
       public void DrawEllipse(Rectangle rect, Pen pen, IBrush brush)
       {
-         var x = rect.Position.X;
-         var y = rect.Position.Y;
          var radiusX = rect.Size.Width / 2;
          var radiusY = rect.Size.Height / 2;
+         var x = rect.Position.X + radiusX;
+         var y = rect.Position.Y + radiusY;
          var penDto = pen?.ToDto(rect);
          var brushDto = brush?.ToDto(rect);
 
