@@ -25,16 +25,16 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
     };
 
     const brushTypes = Object.freeze({
-        solid: "Solid",
-        linearGradient: "LinearGradient"
+        solid: "solid",
+        linearGradient: "linearGradient"
     });
 
     const jsDrawingMethods = Object.freeze({
-        unknown: "Unknown",
-        ellipse: "Ellipse",
-        rectangle: "Rectangle",
-        line: "Line",
-        text: "Text"
+        unknown: "unknown",
+        ellipse: "ellipse",
+        rectangle: "rectangle",
+        line: "line",
+        text: "text"
     });
 
     const getBrushStyle = (brush, context) => {
@@ -81,39 +81,56 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
         context.lineCap = pen.cap;
     };
 
-    const drawText = (text, font, x, y, maxWidth, angle) => {
+    const drawText = (text, font, x, y, maxWidth, maxHeight, angle) => {
 
-        const measureIfTextVisible = (context) => {
-            const textSize = context.measureText(text);
+        const checkIfTextVisible = (textSize) => {
             return (textSize.width >= MINIMUM_FONT_SIZE);
         };
 
-        const rotateText = () => {
+        const rotateText = (innerTextFunction) => {
 
-            if (!angle || angle === 0 || angle === 360)
+            if (!angle || angle === 0 || angle === 360) {
+                innerTextFunction();
                 return;
+            }
+
+            context.save();
 
             context.translate(x, y);
-            context.rotate(angle * (Math.PI / 180));
-        }
+            context.rotate(-angle * (Math.PI / 180));
+
+            innerTextFunction();
+
+            context.restore();
+        };
+
+        const adjustTextFontToMaxSize = () => {
+            for (let adjustedWidth = maxWidth; adjustedWidth >= MINIMUM_FONT_SIZE; adjustedWidth--) {
+
+                context.font = `${font.css.cssFontStyle} ${font.css.cssFontWeight} ${adjustedWidth}px ${font.css.cssFontFamily}`;
+
+                const adjustedTextSize = context.measureText(text);
+                if (!checkIfTextVisible(adjustedTextSize))
+                    return false;
+
+                if (maxWidth > adjustedTextSize.width && maxHeight > adjustedTextSize.actualBoundingBoxAscent) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
 
         const context = getReadyContext();
 
-        context.font = font.css;
-
-        if (!measureIfTextVisible(context))
+        if (!adjustTextFontToMaxSize())
             return;
 
         context.fillStyle = getBrushStyle(font.brush, context);
         context.textAlign = font.textAligment;
         context.textBaseline = font.textBaseline;
 
-        context.save();
-        rotateText();
-
-        context.fillText(text, x, y, maxWidth);
-
-        context.restore();
+        rotateText(() => context.fillText(text, x, y, maxWidth));
     };
 
     const drawShape = (pen, brush, drawShapeFunc) => {
@@ -147,7 +164,7 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
     };
 
     const drawRectText = (text, font, rectangle, angle) => {
-        drawText(text, font, rectangle.position.x, rectangle.position.y, rectangle.size.width, angle);
+        drawText(text, font, rectangle.position.x, rectangle.position.y, rectangle.size.width, rectangle.size.height, angle);
     };
 
     window[globalInstanceName].Canvas = {

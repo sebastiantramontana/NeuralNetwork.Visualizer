@@ -32,7 +32,7 @@ namespace NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text
 
       public string Family { get; }
       public FontStyle Style { get; }
-      public int Size { get; }
+      public int Size { get; } //TODO: REMOVE THIS!!!
       public IBrush Brush { get; }
       public TextFormat TextFormat { get; }
 

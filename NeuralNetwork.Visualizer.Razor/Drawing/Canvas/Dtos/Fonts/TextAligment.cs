@@ -1,11 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.JsonConverters;
+using System.Text.Json.Serialization;
 
 namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Fonts
 {
-   [JsonConverter(typeof(JsonStringEnumConverter))]
+   [JsonConverter(typeof(EnumJsonConverter<TextAligment>))]
    internal enum TextAligment
    {
-      Start,
+      Start = 0,
       Center,
       End
    }

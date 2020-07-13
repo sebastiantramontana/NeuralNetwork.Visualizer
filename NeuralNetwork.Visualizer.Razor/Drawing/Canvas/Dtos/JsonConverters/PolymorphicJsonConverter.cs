@@ -43,12 +43,13 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.JsonConverters
          writer.WriteEndObject();
       }
 
-      private void WriteProperty(object value, PropertyInfo property, Utf8JsonWriter writer)
+      private void WriteProperty(object obj, PropertyInfo property, Utf8JsonWriter writer)
       {
-         var propertyName = char.ToLowerInvariant(property.Name[0]) + property.Name.Substring(1);
-         var propertyValue = property.GetValue(value);
+         var propertyName = property.Name.ToCamelCase();
+         var propertyValue = property.GetValue(obj);
+         var typeCode = Type.GetTypeCode(property.PropertyType);
 
-         switch (Type.GetTypeCode(property.PropertyType))
+         switch (typeCode)
          {
             case TypeCode.Boolean:
                writer.WriteBoolean(propertyName, (bool)propertyValue);
@@ -80,7 +81,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.JsonConverters
                WriteNumberValue(propertyName, propertyValue, property.PropertyType, writer);
                break;
             default:
-               break;
+               throw new InvalidOperationException($"Invalid TypeCode: {typeCode}");
          }
       }
 
@@ -88,7 +89,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.JsonConverters
       {
          if (propertyType.IsEnum)
          {
-            writer.WriteString(propertyName, propertyValue.ToString());
+            writer.WriteString(propertyName, propertyValue.ToString().ToCamelCase());
          }
          else
          {

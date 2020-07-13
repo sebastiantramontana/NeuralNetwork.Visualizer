@@ -4,7 +4,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Fonts
 {
    internal class FontDto
    {
-      public FontDto(string css, BrushBaseDto brush, TextAligment textAligment, TextBaseline textBaseline)
+      public FontDto(FontCssDto css, BrushBaseDto brush, TextAligment textAligment, TextBaseline textBaseline)
       {
          this.Css = css;
          this.Brush = brush;
@@ -12,7 +12,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Fonts
          this.TextBaseline = textBaseline;
       }
 
-      public string Css { get; }
+      public FontCssDto Css { get; }
       public BrushBaseDto Brush { get; }
       public TextAligment TextAligment { get; }
       public TextBaseline TextBaseline { get; }

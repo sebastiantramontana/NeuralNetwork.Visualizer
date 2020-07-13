@@ -24,12 +24,12 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
       {
          var radiusX = rect.Size.Width / 2;
          var radiusY = rect.Size.Height / 2;
-         var x = rect.Position.X + radiusX;
-         var y = rect.Position.Y + radiusY;
+         var adaptedCenteredX = rect.Position.X + radiusX;
+         var adaptedCenteredY = rect.Position.Y + radiusY;
          var penDto = pen?.ToDto(rect);
          var brushDto = brush?.ToDto(rect);
 
-         _jsDrawingCallAccumulator.AddEllipse(x, y, radiusX, radiusY, penDto, brushDto);
+         _jsDrawingCallAccumulator.AddEllipse(adaptedCenteredX, adaptedCenteredY, radiusX, radiusY, penDto, brushDto);
       }
 
       public void DrawLine(Position p1, Position p2, Pen pen)
@@ -57,8 +57,12 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
 
       public void DrawText(string text, FontLabel font, Rectangle rect, float angle)
       {
+         var adaptedCenteredX = rect.Position.X + rect.Size.Width / 2;
+         var adaptedCenteredY = rect.Position.Y + rect.Size.Height / 2;
+         var htmlCanvasRect = new Rectangle(new Position(adaptedCenteredX, adaptedCenteredY), rect.Size);
+
+         var rectangleDto = htmlCanvasRect.ToDto();
          var fontDto = font?.ToDto(rect);
-         var rectangleDto = rect.ToDto();
 
          _jsDrawingCallAccumulator.AddText(text, fontDto, rectangleDto, angle);
       }

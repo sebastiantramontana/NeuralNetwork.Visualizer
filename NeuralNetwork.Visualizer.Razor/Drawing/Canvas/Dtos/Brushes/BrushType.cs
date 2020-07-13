@@ -1,11 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.JsonConverters;
+using System.Text.Json.Serialization;
 
 namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Brushes
 {
-   [JsonConverter(typeof(JsonStringEnumConverter))]
+   [JsonConverter(typeof(EnumJsonConverter<BrushType>))]
    internal enum BrushType
    {
-      Solid,
+      Solid = 0,
       LinearGradient
    }
 }

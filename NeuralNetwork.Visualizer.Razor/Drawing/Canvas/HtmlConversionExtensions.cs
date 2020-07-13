@@ -12,6 +12,11 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
 {
    internal static class HtmlConversionExtensions
    {
+      internal static string ToCamelCase(this string value)
+      {
+         return Char.ToLowerInvariant(value[0]) + value.Substring(1);
+      }
+
       internal static ColorDto ToDto(this Color color)
       {
          string rgba = $"rgba({string.Join(',', color.R, color.G, color.B, color.A / 255f)})";
@@ -68,8 +73,8 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          TextBaseline textBaseline = verticalAlignment switch
          {
             VerticalAlignment.Middle => TextBaseline.Middle,
-            VerticalAlignment.Top => TextBaseline.Top,
-            VerticalAlignment.Bottom => TextBaseline.Bottom,
+            VerticalAlignment.Top => TextBaseline.Bottom,
+            VerticalAlignment.Bottom => TextBaseline.Top,
             _ => throw new NotImplementedException("Unknown Vertical Alignment: " + verticalAlignment)
          };
 
@@ -94,9 +99,9 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var css = ConvertToCss(fontLabel);
          var brush = fontLabel.Brush?.ToDto(rectangle);
          var textAlignment = fontLabel.TextFormat.HorizontalAlignment.ToDto();
-         var verticalAlignment = fontLabel.TextFormat.VerticalAligment.ToDto();
+         var textBaseline = fontLabel.TextFormat.VerticalAligment.ToDto();
 
-         return new FontDto(css, brush, textAlignment, verticalAlignment);
+         return new FontDto(css, brush, textAlignment, textBaseline);
       }
 
       internal static PositionDto ToDto(this Position position)
@@ -124,14 +129,13 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          return new Image(image.Size.ToVisualizer(), image.Base64Bytes);
       }
 
-      private static string ConvertToCss(FontLabel fontLabel)
+      private static FontCssDto ConvertToCss(FontLabel fontLabel)
       {
          var cssFontStyle = GetCssFontStyle(fontLabel.Style);
          var cssFontWeight = GetCssFontWeight(fontLabel.Style);
-         var cssFontSize = fontLabel.Size + "px";
          var cssFontFamily = fontLabel.Family;
 
-         return $"{cssFontStyle} {cssFontWeight} {cssFontSize} {cssFontFamily}";
+         return new FontCssDto(cssFontFamily, cssFontStyle, cssFontWeight);
       }
 
       private static string GetCssFontWeight(FontStyle fontStyle)
