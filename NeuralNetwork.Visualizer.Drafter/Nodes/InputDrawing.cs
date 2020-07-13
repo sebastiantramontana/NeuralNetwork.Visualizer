@@ -36,7 +36,8 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          {
             var rect = _cache.EllipseRectangle;
             var labelWidth = rect.Position.X - _preferences.NodeMargins;
-            var labelHeight = fontLabel.Size;
+            var labelHeight = rect.Size.Height / 3;
+
             _cache.InputLabelRectangle = new Rectangle(new Position(0, (rect.Size.Height - labelHeight) / 2), new Size(labelWidth, labelHeight));
          }
 

@@ -120,12 +120,12 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Canvas
       {
          for (int adjustedWidth = containerSize.Width; adjustedWidth >= MINIMUM_FONT_SIZE; adjustedWidth--)
          {
-            var testFont = new Gdi.Font(fontLabel.Family, adjustedWidth, fontLabel.Style.ToGdi(), Gdi.GraphicsUnit.Pixel);
+            var testFont = fontLabel.ToGdi(adjustedWidth);
 
             var adjustedSizeNew = _graph.MeasureString(text, testFont);
 
-            if (containerSize.Width >= (int)adjustedSizeNew.Width
-                && (containerSize.Height) >= (int)adjustedSizeNew.Height)
+            if (containerSize.Width > (int)adjustedSizeNew.Width
+                && (containerSize.Height) > (int)adjustedSizeNew.Height)
             {
                return testFont;
             }

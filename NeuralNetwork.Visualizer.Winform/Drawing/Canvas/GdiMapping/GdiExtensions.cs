@@ -74,9 +74,9 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Canvas.GdiMapping
          return new Position(position.X, position.Y);
       }
 
-      public static Gdi.Font ToGdi(this FontLabel fontLabel)
+      public static Gdi.Font ToGdi(this FontLabel fontLabel, float size)
       {
-         return new Gdi.Font(fontLabel.Family, fontLabel.Size, fontLabel.Style.ToGdi(), Gdi.GraphicsUnit.Pixel);
+         return new Gdi.Font(fontLabel.Family, size, fontLabel.Style.ToGdi(), Gdi.GraphicsUnit.Pixel);
       }
 
       public static Size ToVisualizer(this Gdi.SizeF size)

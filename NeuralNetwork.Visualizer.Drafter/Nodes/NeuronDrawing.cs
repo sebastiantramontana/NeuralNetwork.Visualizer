@@ -77,7 +77,8 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          {
             var rect = _cache.EllipseRectangle;
             var labelWidth = canvas.Size.Width - (rect.Position.X + rect.Size.Width + _preferences.NodeMargins);
-            var labelHeight = fontLabel.Size;
+            var labelHeight = rect.Size.Height / 3;
+
             _cache.OutputLabelRectangle = new Rectangle(new Position(rect.Position.X + rect.Size.Width + _preferences.NodeMargins, (rect.Size.Height - labelHeight) / 2), new Size(labelWidth, labelHeight));
          }
 
@@ -209,7 +210,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
 
          var format = new TextFormat(HorizontalAlignment.Center, VerticalAlignment.Middle, TextTrimming.None);
          var brush = new SolidBrush(Color.Black);
-         var font = new FontLabel(fontfamily, FontStyle.Italic, 8, brush, format);
+         var font = new FontLabel(fontfamily, FontStyle.Italic, brush, format);
 
          canvas.DrawText(character.ToString(), font, new Rectangle(new Position(position.X - factor, position.Y - factor), new Size(size.Width + factorSize, size.Height + factorSize)));
       }
