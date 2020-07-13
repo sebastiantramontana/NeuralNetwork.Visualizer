@@ -81,7 +81,7 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
         context.lineCap = pen.cap;
     };
 
-    const drawText = (text, font, x, y, maxWidth, maxHeight, angle) => {
+    const drawText = (text, font, rectangle, angle) => {
 
         const checkIfTextVisible = (textSize) => {
             return (textSize.width >= MINIMUM_FONT_SIZE);
@@ -96,7 +96,7 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
 
             context.save();
 
-            context.translate(x, y);
+            context.translate(rectangle.x, rectangle.y);
             context.rotate(-angle * (Math.PI / 180));
 
             innerTextFunction();
@@ -105,7 +105,7 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
         };
 
         const adjustTextFontToMaxSize = () => {
-            for (let adjustedWidth = maxWidth; adjustedWidth >= MINIMUM_FONT_SIZE; adjustedWidth--) {
+            for (let adjustedWidth = rectangle.width; adjustedWidth >= MINIMUM_FONT_SIZE; adjustedWidth--) {
 
                 context.font = `${font.css.cssFontStyle} ${font.css.cssFontWeight} ${adjustedWidth}px ${font.css.cssFontFamily}`;
 
@@ -113,9 +113,8 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
                 if (!checkIfTextVisible(adjustedTextSize))
                     return false;
 
-                if (maxWidth > adjustedTextSize.width && maxHeight > adjustedTextSize.actualBoundingBoxAscent) {
+                if (rectangle.width > adjustedTextSize.width && rectangle.height > adjustedTextSize.actualBoundingBoxAscent)
                     return true;
-                }
             }
 
             return false;
@@ -130,7 +129,7 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
         context.textAlign = font.textAligment;
         context.textBaseline = font.textBaseline;
 
-        rotateText(() => context.fillText(text, x, y, maxWidth));
+        rotateText(() => context.fillText(text, rectangle.x, rectangle.y, rectangle.width));
     };
 
     const drawShape = (pen, brush, drawShapeFunc) => {
@@ -161,10 +160,6 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
 
         configureStroke(pen, context);
         context.stroke();
-    };
-
-    const drawRectText = (text, font, rectangle, angle) => {
-        drawText(text, font, rectangle.position.x, rectangle.position.y, rectangle.size.width, rectangle.size.height, angle);
     };
 
     window[globalInstanceName].Canvas = {
@@ -200,7 +195,7 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
                         break;
 
                     case jsDrawingMethods.text:
-                        drawingMethod = drawRectText;
+                        drawingMethod = drawText;
                         break;
 
                     case jsDrawingMethods.unknown:
