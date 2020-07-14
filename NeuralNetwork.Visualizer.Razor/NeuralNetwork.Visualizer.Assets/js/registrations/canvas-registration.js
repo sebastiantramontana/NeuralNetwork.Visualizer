@@ -96,8 +96,8 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
 
             context.save();
 
-            context.translate(rectangle.x, rectangle.y);
-            context.rotate(-angle * (Math.PI / 180));
+            context.translate(rectangle.position.x, rectangle.position.y);
+            context.rotate(angle * (Math.PI / 180));
 
             innerTextFunction();
 
@@ -105,7 +105,7 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
         };
 
         const adjustTextFontToMaxSize = () => {
-            for (let adjustedWidth = rectangle.width; adjustedWidth >= MINIMUM_FONT_SIZE; adjustedWidth--) {
+            for (let adjustedWidth = rectangle.size.width; adjustedWidth >= MINIMUM_FONT_SIZE; adjustedWidth--) {
 
                 context.font = `${font.css.cssFontStyle} ${font.css.cssFontWeight} ${adjustedWidth}px ${font.css.cssFontFamily}`;
 
@@ -113,7 +113,7 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
                 if (!checkIfTextVisible(adjustedTextSize))
                     return false;
 
-                if (rectangle.width > adjustedTextSize.width && rectangle.height > adjustedTextSize.actualBoundingBoxAscent)
+                if (rectangle.size.width > adjustedTextSize.width && rectangle.size.height > adjustedTextSize.actualBoundingBoxAscent)
                     return true;
             }
 
@@ -129,7 +129,7 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
         context.textAlign = font.textAligment;
         context.textBaseline = font.textBaseline;
 
-        rotateText(() => context.fillText(text, rectangle.x, rectangle.y, rectangle.width));
+        rotateText(() => context.fillText(text, rectangle.position.x, rectangle.position.y, rectangle.size.width));
     };
 
     const drawShape = (pen, brush, drawShapeFunc) => {
