@@ -87,7 +87,7 @@ namespace NeuralNetwork.Visualizer.Razor
 
          _input.AddNode(new Input("e1") { OutputValue = 0.255 });
          _input.AddNode(new Input("e2") { OutputValue = 0.455 });
-         _input.AddNode(new Input("e3") { OutputValue = -0.78967656 });
+         _input.AddNode(new Input("bla bla bla bla bla") { OutputValue = -0.78967656 });
          //_input.AddNode(new Input("e4") { OutputValue = 0.0 });
          //_input.AddNode(new Input("e5") { OutputValue = 0.255 });
          //_input.AddNode(new Input("e6") { OutputValue = 0.455 });

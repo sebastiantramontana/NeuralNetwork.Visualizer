@@ -37,6 +37,12 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
         text: "text"
     });
 
+    const textBaselines = Object.freeze({
+        middle: "middle",
+        top: "top",
+        bottom: "bottom"
+    });
+
     const getBrushStyle = (brush, context) => {
 
         if (!brush)
@@ -83,10 +89,6 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
 
     const drawText = (text, font, rectangle, angle) => {
 
-        const checkIfTextVisible = (textSize) => {
-            return (textSize.width >= MINIMUM_FONT_SIZE);
-        };
-
         const rotateText = (innerTextFunction) => {
 
             if (!angle || angle === 0 || angle === 360) {
@@ -105,15 +107,43 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
         };
 
         const adjustTextFontToMaxSize = () => {
+
+            const checkIfTextVisible = (textSize) => {
+                return (textSize.width >= MINIMUM_FONT_SIZE);
+            };
+
+            const getTextHeight = (textSize) => {
+
+                let textHeight = null;
+
+                switch (font.textBaseline) {
+                    case textBaselines.top:
+                        textHeight = textSize.actualBoundingBoxDescent;
+                        break;
+                    case textBaselines.middle:
+                        textHeight = textSize.actualBoundingBoxAscent * 2;
+                        break;
+                    case textBaselines.bottom:
+                        textHeight = textSize.actualBoundingBoxAscent;
+                        break;
+                    default:
+                        throw "Unknown TextBaseline: " + font.textBaseline;
+                }
+
+                return textHeight;
+            };
+
             for (let adjustedWidth = rectangle.size.width; adjustedWidth >= MINIMUM_FONT_SIZE; adjustedWidth--) {
 
                 context.font = `${font.css.cssFontStyle} ${font.css.cssFontWeight} ${adjustedWidth}px ${font.css.cssFontFamily}`;
 
-                const adjustedTextSize = context.measureText(text);
-                if (!checkIfTextVisible(adjustedTextSize))
+                const textSize = context.measureText(text);
+                if (!checkIfTextVisible(textSize))
                     return false;
 
-                if (rectangle.size.width > adjustedTextSize.width && rectangle.size.height > adjustedTextSize.actualBoundingBoxAscent)
+                let textHeight = getTextHeight(textSize);
+
+                if (rectangle.size.width > textSize.width && rectangle.size.height > textHeight)
                     return true;
             }
 

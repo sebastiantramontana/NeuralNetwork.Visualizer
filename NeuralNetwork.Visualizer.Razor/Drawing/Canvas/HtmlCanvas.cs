@@ -58,7 +58,10 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
 
       public void DrawText(string text, FontLabel font, Rectangle rect, float angle)
       {
-         var htmlCanvasRect = AdaptTextPosition(rect, font.TextFormat.HorizontalAlignment.ToDto());
+         var x = AdaptHorizontalTextPosition(rect.Position.X,rect.Size.Width, font.TextFormat.HorizontalAlignment.ToDto());
+         var y = AdaptVerticalTextPosition(rect.Position.Y, rect.Size.Height, font.TextFormat.VerticalAligment.ToDto());
+         var htmlCanvasRect = new Rectangle(new Position(x, y), rect.Size);
+
          var rectangleDto = htmlCanvasRect.ToDto();
          var fontDto = font?.ToDto(rect);
 
@@ -75,17 +78,30 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          return position;
       }
 
-      private Rectangle AdaptTextPosition(Rectangle originalTextPosition, TextAligment textAlignment)
+      private int AdaptHorizontalTextPosition(int xOriginalTextPosition, int rectangleWidth, TextAligment textAlignment)
       {
-         Position adaptedPosition = textAlignment switch
+         int adaptedXPosition = textAlignment switch
          {
-            TextAligment.Start => originalTextPosition.Position,
-            TextAligment.Center => new Position(originalTextPosition.Position.X + originalTextPosition.Size.Width / 2, originalTextPosition.Position.Y + originalTextPosition.Size.Height / 2),
-            TextAligment.End => new Position(originalTextPosition.Position.X + originalTextPosition.Size.Width, originalTextPosition.Position.Y + originalTextPosition.Size.Height),
+            TextAligment.Start => xOriginalTextPosition,
+            TextAligment.Center => xOriginalTextPosition + rectangleWidth / 2,
+            TextAligment.End => xOriginalTextPosition + rectangleWidth,
             _ => throw new NotImplementedException($"Unknown TextAligment: {textAlignment}")
          };
 
-         return new Rectangle(adaptedPosition, originalTextPosition.Size);
+         return adaptedXPosition;
+      }
+
+      private int AdaptVerticalTextPosition(int yOriginalTextPosition, int rectangleHeight, TextBaseline textBaseline)
+      {
+         int adaptedYPosition = textBaseline switch
+         {
+            TextBaseline.Top => yOriginalTextPosition+ rectangleHeight,
+            TextBaseline.Middle => yOriginalTextPosition + rectangleHeight / 2,
+            TextBaseline.Bottom => yOriginalTextPosition + rectangleHeight,
+            _ => throw new NotImplementedException($"Unknown TextAligment: {textBaseline}")
+         };
+
+         return adaptedYPosition;
       }
    }
 }
