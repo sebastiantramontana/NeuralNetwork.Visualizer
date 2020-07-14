@@ -3,6 +3,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Brushes;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Pens;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Text;
+using NeuralNetwork.Visualizer.Razor.Drawing.Canvas.Dtos.Fonts;
 using NeuralNetwork.Visualizer.Razor.Drawing.JsDrawingCallAccumulation;
 using System;
 
@@ -57,10 +58,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
 
       public void DrawText(string text, FontLabel font, Rectangle rect, float angle)
       {
-         var adaptedCenteredX = rect.Position.X + rect.Size.Width / 2;
-         var adaptedCenteredY = rect.Position.Y + rect.Size.Height / 2;
-         var htmlCanvasRect = new Rectangle(new Position(adaptedCenteredX, adaptedCenteredY), rect.Size);
-
+         var htmlCanvasRect = AdaptTextPosition(rect, font.TextFormat.HorizontalAlignment.ToDto());
          var rectangleDto = htmlCanvasRect.ToDto();
          var fontDto = font?.ToDto(rect);
 
@@ -75,6 +73,19 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
          var posTranslated = destination.Translate(new Position(0, 0), this);
          position = new Position(position.X - posTranslated.X, position.Y - posTranslated.Y);
          return position;
+      }
+
+      private Rectangle AdaptTextPosition(Rectangle originalTextPosition, TextAligment textAlignment)
+      {
+         Position adaptedPosition = textAlignment switch
+         {
+            TextAligment.Start => originalTextPosition.Position,
+            TextAligment.Center => new Position(originalTextPosition.Position.X + originalTextPosition.Size.Width / 2, originalTextPosition.Position.Y + originalTextPosition.Size.Height / 2),
+            TextAligment.End => new Position(originalTextPosition.Position.X + originalTextPosition.Size.Width, originalTextPosition.Position.Y + originalTextPosition.Size.Height),
+            _ => throw new NotImplementedException($"Unknown TextAligment: {textAlignment}")
+         };
+
+         return new Rectangle(adaptedPosition, originalTextPosition.Size);
       }
    }
 }
