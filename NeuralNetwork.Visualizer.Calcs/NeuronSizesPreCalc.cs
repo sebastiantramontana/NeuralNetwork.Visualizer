@@ -1,16 +1,10 @@
 ﻿using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
-using NeuralNetwork.Visualizer.Contracts.Preferences;
 
 namespace NeuralNetwork.Visualizer.Calcs
 {
    public class NeuronSizesPreCalc : NodeSizesPreCalc
    {
-      private readonly IPreference _preferences;
-
-      public NeuronSizesPreCalc(IPreference preferences)
-      {
-         _preferences = preferences;
-      }
+      public int ActivationFunctionVerticalMargins { get; } = 7;
 
       private Size _sumSize = null;
       public Size SumSize
@@ -19,7 +13,7 @@ namespace NeuralNetwork.Visualizer.Calcs
          {
             if (_sumSize is null)
             {
-               var valuesHeight = this.Div3 / 2 - _preferences.NodeMargins;
+               var valuesHeight = this.Div3 / 2;
                var valuesWidth = valuesHeight * 5.23; //buena proporción
                _sumSize = new Size((int)valuesWidth, (int)valuesHeight);
             }
@@ -36,7 +30,7 @@ namespace NeuralNetwork.Visualizer.Calcs
             if (_activationFunctionSize is null)
             {
                var div_3 = (int)this.Div3;
-               _activationFunctionSize = new Size(div_3, div_3);
+               _activationFunctionSize = new Size(div_3, div_3 - this.ActivationFunctionVerticalMargins * 2);
             }
 
             return _activationFunctionSize;
@@ -71,7 +65,7 @@ namespace NeuralNetwork.Visualizer.Calcs
 
       public Position GetActivationFunctionPosition(Rectangle origin)
       {
-         return new Position((int)(origin.Position.X + this.Div3), (int)(origin.Position.Y + this.Div3));
+         return new Position((int)(origin.Position.X + this.Div3), (int)(origin.Position.Y + this.Div3 + this.ActivationFunctionVerticalMargins));
       }
 
       private double? _ouputPositionYOffset = null;
@@ -79,7 +73,7 @@ namespace NeuralNetwork.Visualizer.Calcs
       {
          if (!_ouputPositionYOffset.HasValue)
          {
-            _ouputPositionYOffset = this.Div3 * 2 + _preferences.NodeMargins;
+            _ouputPositionYOffset = this.Div3 * 2;
          }
 
          return (int)(fromY + _ouputPositionYOffset.Value);

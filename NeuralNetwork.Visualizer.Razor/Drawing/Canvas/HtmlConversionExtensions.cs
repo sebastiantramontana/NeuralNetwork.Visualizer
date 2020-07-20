@@ -148,7 +148,7 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing.Canvas
       private static string GetCssFontStyle(FontStyle fontStyle)
       {
          return (fontStyle == FontStyle.Italic || fontStyle == FontStyle.BoldItalic)
-            ? "italic"
+            ? "oblique"
             : string.Empty;
       }
    }

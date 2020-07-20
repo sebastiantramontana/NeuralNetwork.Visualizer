@@ -46,24 +46,28 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
       {
          var sizesPositions = GetSizePositions(rect);
 
-         var roundingDigits = _preferences.Neurons.RoundingDigits;
-
-         if (this.Element.SumValue.HasValue)
-         {
-            var sumFont = _preferences.Neurons.SumValueFormatter.GetFormat(this.Element.SumValue.Value);
-            canvas.DrawText('\u2211' + " " + Math.Round(this.Element.SumValue.Value, roundingDigits).ToString(), sumFont, sizesPositions.SumRectangle);
-         }
-
-         DrawActivationFunction(sizesPositions.ActivationFunctionPosition, sizesPositions.ActivationFunctionSize, canvas);
-
-         if (this.Element.OutputValue.HasValue)
-         {
-            var outputFont = _preferences.Neurons.OutputValueFormatter.GetFormat(this.Element.OutputValue.Value);
-
-            canvas.DrawText(Math.Round(this.Element.OutputValue.Value, roundingDigits).ToString(), outputFont, sizesPositions.OutputRectangle);
-         }
-
+         DrawSumValue(sizesPositions.SumRectangle, canvas);
+         DrawActivationFunction(sizesPositions.ActivationFunctionRectangle, canvas);
+         DrawOutputValue(sizesPositions.OutputRectangle, canvas);
          DrawEdges(sizesPositions.InputPosition, canvas, sizesPositions.OutputRectangle.Size.Height);
+      }
+
+      private void DrawSumValue(Rectangle rectangle, ICanvas canvas)
+      {
+         if (!this.Element.SumValue.HasValue)
+            return;
+
+         var sumFont = _preferences.Neurons.SumValueFormatter.GetFormat(this.Element.SumValue.Value);
+         canvas.DrawText('\u2211' + " " + Math.Round(this.Element.SumValue.Value, _preferences.Neurons.RoundingDigits).ToString(), sumFont, rectangle);
+      }
+
+      private void DrawOutputValue(Rectangle rectangle, ICanvas canvas)
+      {
+         if (!this.Element.OutputValue.HasValue)
+            return;
+
+         var outputFont = _preferences.Neurons.OutputValueFormatter.GetFormat(this.Element.OutputValue.Value);
+         canvas.DrawText(Math.Round(this.Element.OutputValue.Value, _preferences.Neurons.RoundingDigits).ToString(), outputFont, rectangle);
       }
 
       private void DrawLabel(ICanvas canvas)
@@ -100,7 +104,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          }
       }
 
-      private (Rectangle SumRectangle, Position ActivationFunctionPosition, Size ActivationFunctionSize, Rectangle OutputRectangle, Position InputPosition)
+      private (Rectangle SumRectangle, Rectangle ActivationFunctionRectangle, Rectangle OutputRectangle, Position InputPosition)
           GetSizePositions(Rectangle rect)
       {
          if (_cache.OutputSize is null)
@@ -113,24 +117,27 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          var inputPosition = new Position(rect.Position.X, _cache.GetInputPositionY(rect.Position.Y));
          var valuesX = (rect.Position.X + side / 2) - (_cache.SumSize.Width / 2);
 
-         var activationFunctionPosition = _cache.GetActivationFunctionPosition(rect);
-         var sumRectangle = new Rectangle(new Position(valuesX, (activationFunctionPosition.Y - _cache.SumSize.Height) - _preferences.NodeMargins), _cache.SumSize);
+         var activationFunctionRectangle = new Rectangle(_cache.GetActivationFunctionPosition(rect), _cache.ActivationFunctionSize);
+         var sumRectangle = new Rectangle(new Position(valuesX, (activationFunctionRectangle.Position.Y - _cache.SumSize.Height) - _cache.ActivationFunctionVerticalMargins), _cache.SumSize);
          var outputRectangle = new Rectangle(new Position(valuesX, _cache.GetOutputPositionY(rect.Position.Y)), _cache.OutputSize);
 
-         return (sumRectangle, activationFunctionPosition, _cache.ActivationFunctionSize, outputRectangle, inputPosition);
+         return (sumRectangle, activationFunctionRectangle, outputRectangle, inputPosition);
       }
 
-      private void DrawActivationFunction(Position position, Size size, ICanvas canvas)
+      private void DrawActivationFunction(Rectangle rectangle, ICanvas canvas)
       {
-         if (size.Width <= 8 || size.Height <= 8)
+         if (rectangle.Size.Width <= 8 || rectangle.Size.Height <= 8)
          {
             return;
          }
 
+         var position = rectangle.Position;
+         var size = rectangle.Size;
+
          switch (this.Element.ActivationFunction)
          {
             case ActivationFunction.Relu:
-               DrawStrokedActivationFunction(size, (pen, stroke) =>
+               DrawStrokedActivationFunction(rectangle.Size, (pen, stroke) =>
                {
                   canvas.DrawLine(new Position(position.X, (position.Y + size.Height) - stroke), new Position(position.X + size.Width / 2, (position.Y + size.Height) - stroke), pen);
                   canvas.DrawLine(new Position(position.X + size.Width / 2 - stroke / 2, (position.Y + size.Height) - stroke), new Position((position.X + size.Width) - stroke, position.Y), pen);
@@ -183,11 +190,11 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
                break;
 
             case ActivationFunction.Sigmoid:
-               DrawByCharActivationFunction('\u0283', "verdana", position, size, canvas);
+               DrawByCharActivationFunction('S', "verdana", FontStyle.Italic, rectangle, canvas);
                break;
 
             case ActivationFunction.Tanh:
-               DrawByCharActivationFunction('\u222B', "Verdana", position, size, canvas);
+               DrawByCharActivationFunction('\u222B', "verdana", FontStyle.Regular, rectangle, canvas);
                break;
 
             default:
@@ -203,16 +210,13 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
          drawAction(pen, stroke);
       }
 
-      private void DrawByCharActivationFunction(char character, string fontfamily, Position position, Size size, ICanvas canvas)
+      private void DrawByCharActivationFunction(char character, string fontfamily, FontStyle fontStyle, Rectangle rectangle, ICanvas canvas)
       {
-         var factor = size.Height / 5;
-         var factorSize = factor * 2 - factor / 3;
-
          var format = new TextFormat(HorizontalAlignment.Center, VerticalAlignment.Middle, TextTrimming.None);
          var brush = new SolidBrush(Color.Black);
-         var font = new FontLabel(fontfamily, FontStyle.Italic, brush, format);
+         var font = new FontLabel(fontfamily, fontStyle, brush, format);
 
-         canvas.DrawText(character.ToString(), font, new Rectangle(new Position(position.X - factor, position.Y - factor), new Size(size.Width + factorSize, size.Height + factorSize)));
+         canvas.DrawText(character.ToString(), font, rectangle);
       }
    }
 }

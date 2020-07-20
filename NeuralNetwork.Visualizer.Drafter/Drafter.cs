@@ -85,7 +85,7 @@ namespace NeuralNetwork.Visualizer.Drawing
          var preferences = _control.Preferences;
 
          SimpleNodeSizesPreCalc simpleNodeSizesCache = new SimpleNodeSizesPreCalc();
-         NeuronSizesPreCalc neuronCache = new NeuronSizesPreCalc(preferences);
+         NeuronSizesPreCalc neuronCache = new NeuronSizesPreCalc();
          EdgeSizesPreCalc edgesCache = new EdgeSizesPreCalc();
 
          for (LayerBase layer = inputLayer; layer != null; layer = layer.Next)
