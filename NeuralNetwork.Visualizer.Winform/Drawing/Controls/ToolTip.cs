@@ -22,10 +22,6 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
       {
          _tooltip = new WinToolTip
          {
-            AutomaticDelay = 0,
-            AutoPopDelay = 0,
-            InitialDelay = 0,
-            ReshowDelay = 0,
             ToolTipIcon = ToolTipIcon.Info,
             UseFading = true,
 

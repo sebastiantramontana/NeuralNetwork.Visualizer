@@ -53,8 +53,7 @@ namespace NeuralNetwork.Visualizer.Winform
          this.BackColor = Color.White.ToGdi();
 
          picCanvas.MouseDown += PicCanvas_MouseDown;
-         picCanvas.MouseMove += PicCanvas_MouseMove;
-         picCanvas.MouseLeave += PicCanvas_MouseLeave;
+         picCanvas.MouseHover += PicCanvas_MouseHover;
 
          _neuralNetworkVisualizerControlInner.SelectInputLayer += NeuralNetworkVisualizerControlInner_SelectInputLayer;
          _neuralNetworkVisualizerControlInner.SelectNeuronLayer += NeuralNetworkVisualizerControlInner_SelectNeuronLayer;
@@ -167,14 +166,13 @@ namespace NeuralNetwork.Visualizer.Winform
          await _neuralNetworkVisualizerControlInner.DispatchMouseDown(e.Location.ToVisualizer(), Modifierkey);
       }
 
-      private void PicCanvas_MouseLeave(object sender, EventArgs e)
+      private void PicCanvas_MouseHover(object sender, EventArgs e)
       {
-         _neuralNetworkVisualizerControlInner.DispatchMouseLeave();
-      }
+         var cursorPosition = picCanvas
+            .PointToClient(Winforms.Cursor.Position)
+            .ToVisualizer();
 
-      private void PicCanvas_MouseMove(object sender, Winforms.MouseEventArgs e)
-      {
-         _neuralNetworkVisualizerControlInner.DispatchMouseMove(e.Location.ToVisualizer());
+         _neuralNetworkVisualizerControlInner.DispatchMouseHover(cursorPosition);
       }
 
       protected override void Dispose(bool disposing)

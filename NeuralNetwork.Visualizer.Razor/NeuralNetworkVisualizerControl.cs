@@ -261,7 +261,7 @@ namespace NeuralNetwork.Visualizer.Razor
 
       private void PicCanvas_MouseLeave(object sender, EventArgs e)
       {
-         _neuralNetworkVisualizerControlInner.DispatchMouseLeave();
+         //_neuralNetworkVisualizerControlInner.DispatchMouseLeave();
       }
 
       /*

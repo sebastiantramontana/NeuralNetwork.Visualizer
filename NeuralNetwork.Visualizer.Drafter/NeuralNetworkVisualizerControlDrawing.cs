@@ -40,7 +40,7 @@ namespace NeuralNetwork.Visualizer.Drawing
 
          var drafter = new Drafter(this, _selector, selectableElementRegisterResolver, selectableElementRegisterResolver, regionBuilder);
 
-         _toolTipFiring = new ToolTipFiring(toolTip, this, selectableElementRegisterResolver);
+         _toolTipFiring = new ToolTipFiring(toolTip, selectableElementRegisterResolver);
          _selectionEventFiring = new SelectionEventFiring(this, _selector,
                                     () => this.SelectInputLayer,
                                     () => this.SelectNeuronLayer,
@@ -141,15 +141,7 @@ namespace NeuralNetwork.Visualizer.Drawing
          return _selectionEventFiring.FireSelectionEvent(position, selectionEvent);
       }
 
-      public void DispatchMouseLeave()
-      {
-         if (!CheckEventCanBeDispatched())
-            return;
-
-         _toolTipFiring.Hide();
-      }
-
-      public void DispatchMouseMove(Position position)
+      public void DispatchMouseHover(Position position)
       {
          if (!CheckEventCanBeDispatched())
             return;
