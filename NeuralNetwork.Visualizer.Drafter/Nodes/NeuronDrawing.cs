@@ -190,7 +190,7 @@ namespace NeuralNetwork.Visualizer.Drawing.Nodes
                break;
 
             case ActivationFunction.Sigmoid:
-               DrawByCharActivationFunction('S', "verdana", FontStyle.Italic, rectangle, canvas);
+               DrawByCharActivationFunction('S', "tahoma", FontStyle.Italic, rectangle, canvas);
                break;
 
             case ActivationFunction.Tanh:

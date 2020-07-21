@@ -125,7 +125,7 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Canvas
             var adjustedSizeNew = _graph.MeasureString(text, testFont);
 
             if (containerSize.Width > (int)adjustedSizeNew.Width
-                && (containerSize.Height) > (int)adjustedSizeNew.Height)
+                && (containerSize.Height) > (int)testFont.Size)
             {
                return testFont;
             }
