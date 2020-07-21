@@ -103,9 +103,12 @@ namespace NeuralNetwork.Visualizer.Drawing
       private Size _previousSize;
       public async Task DispatchOnSizeChange()
       {
+         if (!CheckEventCanBeDispatched())
+            return;
+
          var currentSize = _drawableSurface.Size;
 
-         if (currentSize.IsNull || currentSize == _previousSize || !_readyToRedrawWhenPropertyChange)
+         if (currentSize.IsNull || currentSize == _previousSize)
          {
             return;
          }
@@ -116,7 +119,7 @@ namespace NeuralNetwork.Visualizer.Drawing
 
       public Task DispatchMouseDown(Position position, Keys modifierKeys)
       {
-         if (!_readyToRedrawWhenPropertyChange)
+         if (!CheckEventCanBeDispatched())
             return Task.CompletedTask;
 
          SelectionEvent selectionEvent;
@@ -140,7 +143,7 @@ namespace NeuralNetwork.Visualizer.Drawing
 
       public void DispatchMouseLeave()
       {
-         if (!_readyToRedrawWhenPropertyChange)
+         if (!CheckEventCanBeDispatched())
             return;
 
          _toolTipFiring.Hide();
@@ -148,10 +151,15 @@ namespace NeuralNetwork.Visualizer.Drawing
 
       public void DispatchMouseMove(Position position)
       {
-         if (!_readyToRedrawWhenPropertyChange)
+         if (!CheckEventCanBeDispatched())
             return;
 
          _toolTipFiring.Show(position);
+      }
+
+      private bool CheckEventCanBeDispatched()
+      {
+         return !(this.InputLayer is null) && _readyToRedrawWhenPropertyChange;
       }
 
       private void SetReadyForAutoRedraw()
