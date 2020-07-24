@@ -41,26 +41,16 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
       public Size Size => _control.Size.ToVisualizer();
       public Size DrawingSize => _pictureBox.ClientSize.ToVisualizer();
 
-      private bool _isDrawing = false;
-
       public async Task RedrawAsync()
       {
-         if (!_control.IsHandleCreated || _isDrawing)
+         if (!_control.IsHandleCreated)
             return;
 
-         _isDrawing = true;
-
-         if (CheckBlank(_control, _pictureBox, _invoker))
+         if (await this.Drafter.RedrawAsync(this, () => { SetBlank(_control, _pictureBox, _invoker); }))
          {
-            _isDrawing = false;
-            return;
+            UpdatePictureBox(_gdiImageCanvasBuilder.CurrentImage, _pictureBox, _invoker);
+            _gdiImageCanvasBuilder.Dispose();
          }
-
-         await this.Drafter.RedrawAsync(this).ConfigureAwait(false);
-         UpdatePictureBox(_gdiImageCanvasBuilder.CurrentImage, _pictureBox, _invoker);
-
-         _gdiImageCanvasBuilder.Dispose();
-         _isDrawing = false;
       }
 
       public ICanvas Build(Size size)
@@ -75,15 +65,6 @@ namespace NeuralNetwork.Visualizer.Winform.Drawing.Controls
             pictureBox.ClientSize = image.Size;
             pictureBox.Image = image;
          });
-      }
-
-      private bool CheckBlank(NeuralNetworkVisualizerControl control, PictureBox pictureBox, IInvoker invoker)
-      {
-         if (control.InputLayer != null)
-            return false;
-
-         SetBlank(control, pictureBox, invoker);
-         return true;
       }
 
       private void SetBlank(NeuralNetworkVisualizerControl control, PictureBox pictureBox, IInvoker invoker)

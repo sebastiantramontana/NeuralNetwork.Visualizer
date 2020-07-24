@@ -101,20 +101,20 @@ namespace NeuralNetwork.Visualizer.Drawing
       }
 
       private Size _previousSize;
-      public async Task DispatchOnSizeChange()
+      public Task DispatchOnSizeChange()
       {
          if (!CheckEventCanBeDispatched())
-            return;
+            return Task.CompletedTask;
 
          var currentSize = _drawableSurface.Size;
 
          if (currentSize.IsNull || currentSize == _previousSize)
          {
-            return;
+            return Task.CompletedTask;
          }
 
          _previousSize = currentSize;
-         await _drawableSurface.RedrawAsync().ConfigureAwait(false);
+         return _drawableSurface.RedrawAsync();
       }
 
       public Task DispatchMouseDown(Position position, Keys modifierKeys)
@@ -166,12 +166,12 @@ namespace NeuralNetwork.Visualizer.Drawing
             CheckSelectionPreferenceChanged();
          }
 
-         await AutoRedraw().ConfigureAwait(false);
+         await AutoRedraw();
       }
 
       private async void InputLayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
       {
-         await AutoRedraw().ConfigureAwait(false);
+         await AutoRedraw();
          _selector.MarkToBeRefreshed(_InputLayer);
       }
 
@@ -205,7 +205,7 @@ namespace NeuralNetwork.Visualizer.Drawing
 
          if (_readyToRedrawWhenPropertyChange)
          {
-            await RedrawAsync().ConfigureAwait(false);
+            await RedrawAsync();
          }
       }
 
@@ -220,7 +220,7 @@ namespace NeuralNetwork.Visualizer.Drawing
 
          if (_readyToRedrawWhenPropertyChange)
          {
-            await RedrawAsync().ConfigureAwait(false);
+            await RedrawAsync();
          }
       }
 

@@ -45,6 +45,13 @@ var registerDrawableSurfaceDomAccess = registerDrawableSurfaceDomAccess || ((glo
             const elem = getVisualizerElement();
             return getElementSize(elem);
 
+        },
+
+        clearCanvas: () => {
+            const canvas = getCanvasElement();
+            const context = canvas.getContext("2d");
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
         }
     };
 });

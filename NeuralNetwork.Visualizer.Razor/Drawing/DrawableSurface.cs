@@ -25,9 +25,14 @@ namespace NeuralNetwork.Visualizer.Razor.Drawing
       public Size Size => CallDomSizeMethod("getSize");
       public Size DrawingSize => CallDomSizeMethod("getDrawingSize");
       public Image Image => CallDomMethod<ImageDto, Image>("getImage", dto => dto.ToVisualizer());
-      public Task RedrawAsync() => this.Drafter.RedrawAsync(_canvasBuilder);
+      public Task RedrawAsync() => this.Drafter.RedrawAsync(_canvasBuilder, ClearCanvas);
 
       private Size CallDomSizeMethod(string domSizeMethod) => CallDomMethod<SizeDto, Size>(domSizeMethod, dto => dto.ToVisualizer());
+
+      private void ClearCanvas()
+      {
+         _jsInterop.ExecuteOnInstance("clearCanvas");
+      }
 
       private TPrimitive CallDomMethod<TDto, TPrimitive>(string domMethod, Func<TDto, TPrimitive> converter)
       {

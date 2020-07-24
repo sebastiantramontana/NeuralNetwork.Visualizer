@@ -17,7 +17,7 @@ namespace NeuralNetwork.Visualizer.Razor.Infrastructure.Asyncs
 
          foreach (var obj in objects)
          {
-            await task.ContinueWith((t) => task = action.Invoke(obj)).ConfigureAwait(false);
+            await task.ContinueWith((t) => task = action.Invoke(obj));
          }
       }
    }

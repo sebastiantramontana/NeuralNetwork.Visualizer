@@ -7,6 +7,7 @@ using NeuralNetwork.Visualizer.Contracts.Drawing;
 using NeuralNetwork.Visualizer.Contracts.Drawing.Core.Primitives;
 using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing.Layer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,11 +32,43 @@ namespace NeuralNetwork.Visualizer.Drawing
 
       public IRegionBuilder RegionBuilder { get; }
 
-      public Task RedrawAsync(ICanvasBuilder canvasBuilder)
+      private bool _isDrawing = false;
+      private bool _isPendingLastDrawing = false;
+
+      public async Task<bool> RedrawAsync(ICanvasBuilder canvasBuilder, Action drawBlankAction)
       {
          if (!ValidateInputLayer())
-            return Task.CompletedTask;
+         {
+            drawBlankAction();
 
+            _isDrawing = false;
+            _isPendingLastDrawing = false;
+
+            return false;
+         }
+
+         if (_isDrawing)
+         {
+            _isPendingLastDrawing = true;
+            return false;
+         }
+
+         _isDrawing = true;
+
+         await RedrawOnCanvasAsync(canvasBuilder);
+
+         while (_isPendingLastDrawing)
+         {
+            _isPendingLastDrawing = false;
+            await RedrawOnCanvasAsync(canvasBuilder);
+         }
+
+         _isDrawing = false;
+         return true;
+      }
+
+      private Task RedrawOnCanvasAsync(ICanvasBuilder canvasBuilder)
+      {
          var zoomedControlSize = GetZoomedControlSize();
          var layerSizes = GetLayerSizes(zoomedControlSize);
          var canvas = canvasBuilder.Build(new Size(zoomedControlSize.Width, layerSizes.Height));
@@ -97,7 +130,7 @@ namespace NeuralNetwork.Visualizer.Drawing
             var canvasRect = new Rectangle(new Position(x, 0), new Size(layerSizesPreCalc.Width, layerSizesPreCalc.Height));
             var layerCanvas = new NestedCanvas(canvasRect, canvas);
 
-            await Task.Run(() => layerDrawing.Draw(layerCanvas)).ConfigureAwait(false);
+            await Task.Run(() => layerDrawing.Draw(layerCanvas));
 
             previousNodesDic = layerDrawing.NodesDrawing.ToDictionary(n => n.Node, n => n);
             x += layerSizesPreCalc.Width;
