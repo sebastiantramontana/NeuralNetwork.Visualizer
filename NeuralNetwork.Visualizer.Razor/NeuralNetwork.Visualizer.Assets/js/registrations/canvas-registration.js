@@ -89,21 +89,19 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
 
     const drawText = (text, font, rectangle, angle) => {
 
-        const rotateText = (innerTextFunction) => {
+        const rotateText = (innerTextFunction, textSize) => {
 
             if (!angle || angle === 0 || angle === 360) {
-                innerTextFunction();
+                innerTextFunction(rectangle.position.x, rectangle.position.y);
                 return;
             }
-
-            context.save();
 
             context.translate(rectangle.position.x, rectangle.position.y);
             context.rotate(angle * (Math.PI / 180));
 
-            innerTextFunction();
+            innerTextFunction(0, textSize.height / 2);
 
-            context.restore();
+            context.setTransform(1, 0, 0, 1, 0, 0);
         };
 
         const adjustTextFontToMaxSize = () => {
@@ -141,25 +139,26 @@ var registerCanvasDomAccess = registerCanvasDomAccess || ((globalInstanceName) =
                 if (!checkIfTextVisible(textSize))
                     return false;
 
-                let textHeight = getTextHeight(textSize);
+                const textHeight = getTextHeight(textSize);
 
                 if (rectangle.size.width > textSize.width && rectangle.size.height > textHeight)
-                    return true;
+                    return { width: textSize.width, height: textHeight };
             }
 
-            return false;
+            return null;
         };
 
         const context = getReadyContext();
+        const textSize = adjustTextFontToMaxSize();
 
-        if (!adjustTextFontToMaxSize())
+        if (!textSize)
             return;
 
         context.fillStyle = getBrushStyle(font.brush, context);
         context.textAlign = font.textAligment;
         context.textBaseline = font.textBaseline;
 
-        rotateText(() => context.fillText(text, rectangle.position.x, rectangle.position.y, rectangle.size.width));
+        rotateText((x, y) => context.fillText(text, x, y, rectangle.size.width), textSize);
     };
 
     const drawShape = (pen, brush, drawShapeFunc) => {
