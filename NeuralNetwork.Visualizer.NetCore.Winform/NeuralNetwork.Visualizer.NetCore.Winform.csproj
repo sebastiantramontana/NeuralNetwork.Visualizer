@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Authors>Sebastian Tramontana</Authors>
+    <Version>2.0.0</Version>
+    <Description>Easy neural network visualizer winform control for .Net</Description>
+    <Copyright>Copyright ©  2020</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <AssemblyName>NeuralNetwork.Visualizer.NetCore.Winform</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>NeuralNetwork.Visualizer.NetCore.Winform</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\NeuralNetwork.Visualizer.NetCore.Winform\**\*.cs" />
+    <EmbeddedResource Include="..\NeuralNetwork.Visualizer.NetCore.Winform\**\*.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Contracts\NeuralNetwork.Visualizer.Contracts.csproj" />
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Drafter\NeuralNetwork.Visualizer.Drawing.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="NeuralNetwork.Infraestructure.Winform">
+      <HintPath>..\Dependencies\NeuralNetwork.Infraestructure.Winform.dll</HintPath>
+    </Reference>
+    <Reference Include="NeuralNetwork.Model">
+      <HintPath>..\Dependencies\NeuralNetwork.Model.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
