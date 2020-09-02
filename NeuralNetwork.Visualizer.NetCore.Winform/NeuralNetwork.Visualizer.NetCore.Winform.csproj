@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <Authors>Sebastian Tramontana</Authors>
     <Version>2.0.0</Version>
@@ -13,10 +13,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>NeuralNetwork.Visualizer.NetCore.Winform</RootNamespace>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\NeuralNetwork.Visualizer.NetCore.Winform\**\*.cs" />
-    <EmbeddedResource Include="..\NeuralNetwork.Visualizer.NetCore.Winform\**\*.resx" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NeuralNetwork.Visualizer.Contracts\NeuralNetwork.Visualizer.Contracts.csproj" />
     <ProjectReference Include="..\NeuralNetwork.Visualizer.Drafter\NeuralNetwork.Visualizer.Drawing.csproj" />

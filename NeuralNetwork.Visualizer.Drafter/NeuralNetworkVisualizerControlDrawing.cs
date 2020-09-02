@@ -9,7 +9,6 @@ using NeuralNetwork.Visualizer.Contracts.Selection;
 using NeuralNetwork.Visualizer.Drawing.Controls;
 using NeuralNetwork.Visualizer.Drawing.Selection;
 using NeuralNetwork.Visualizer.Preferences;
-using NeuralNetwork.Visualizer.Winform.Selection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

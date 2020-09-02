@@ -22,4 +22,8 @@
 /ExampleBlazor/wwwroot/NeuralNetwork.Visualizer.Assets
 /ExampleBlazor/wwwroot/NeuralNetwork.Visualizer.Assets/*
 /ExampleBlazor/wwwroot/NeuralNetwork.Visualizer.Assets/*.*
-
+/NeuralNetwork.Visualizer.NetCore.Winform/.vs
+/NeuralNetwork.Visualizer.NetCore.Winform/bin
+/NeuralNetwork.Visualizer.NetCore.Winform/obj
+/ExampleNetCoreWinform/bin
+/ExampleNetCoreWinform/obj

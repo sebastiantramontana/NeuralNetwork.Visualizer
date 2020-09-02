@@ -11,7 +11,7 @@ using SelectInputLayer = System.Func<System.EventHandler<NeuralNetwork.Visualize
 using SelectNeuron = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Nodes.Neuron>>>;
 using SelectNeuronLayer = System.Func<System.EventHandler<NeuralNetwork.Visualizer.Contracts.Selection.SelectionEventArgs<NeuralNetwork.Model.Layers.NeuronLayer>>>;
 
-namespace NeuralNetwork.Visualizer.Winform.Selection
+namespace NeuralNetwork.Visualizer.Drawing.Selection
 {
    public class SelectionEventFiring : ISelectionEventFiring
    {

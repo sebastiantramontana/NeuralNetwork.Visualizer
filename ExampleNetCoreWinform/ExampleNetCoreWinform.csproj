@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Contracts\NeuralNetwork.Visualizer.Contracts.csproj" />
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.NetCore.Winform\NeuralNetwork.Visualizer.NetCore.Winform.csproj" />
+    <ProjectReference Include="..\NeuralNetwork.Visualizer.Preferences\NeuralNetwork.Visualizer.Preferences.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NeuralNetwork.Model">
+      <HintPath>..\Dependencies\NeuralNetwork.Model.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
